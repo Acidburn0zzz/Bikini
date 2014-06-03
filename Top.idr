@@ -19,14 +19,16 @@ quest file = do
                                                          fw == a
                                              ) fmap
 
-                                let out = case fw of
-                                           Just f => "a" --f # 0
-                                           _      => "b" --Just a
-
-                                --case fw of Just (_, v) => do putStrLn "fregre" --let c = replace a v [a]
-                                                             --putStrLn $ concat c
-                                --           _ => putStrLn "fregre"
-
+                                -- .>>= : Eff m a xs xs' -> ((val : a) -> Eff m b (xs' val) xs'') -> Eff m b xs xs''
+                                -- And there we got recursive type inference! So we should specify the type
+                                let out : String = case fw of
+                                                    Just f => do let Just f1 = f # 1
+                                                                 let fs = splitOn '\n' f1
+                                                                 let Just fs1 = fs # 0
+                                                                 (pack fs1)
+                                                    _      => a
+                                                    
+                                putStrLn out
                                 quest file
        Right p => do putStrLn "Invalid input!"; quest file
 
