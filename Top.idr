@@ -19,15 +19,13 @@ quest file = do
                                                          fw == a
                                              ) fmap
 
-                                -- CASE IS BROKEN
-                                {-
-                                (4:54:41 PM) edwinb: okay, I can reproduce this strange behaviour Heather has found
-                                (4:54:53 PM) edwinb: no idea what's going on but it'll keep me entertained on the train later
-                                -}
+                                let out = case fw of
+                                           Just f => "a" --f # 0
+                                           _      => "b" --Just a
 
-                                --case f of Just (_, v) => do let c = replace a v [a]
-                                --                            putStrLn $ concat c
-                                --          _ => putStrLn "fregre"
+                                --case fw of Just (_, v) => do putStrLn "fregre" --let c = replace a v [a]
+                                                             --putStrLn $ concat c
+                                --           _ => putStrLn "fregre"
 
                                 quest file
        Right p => do putStrLn "Invalid input!"; quest file
