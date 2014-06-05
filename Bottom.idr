@@ -42,11 +42,17 @@ bracketBuilder : String -> String
 bracketBuilder noBra = do
     let lines   = splitOn '\n' $ unpack noBra
     let slines  = map pack lines
-    let fld     = foldr1 (\a, b => do let la = length $ takeWhile (== ' ') $ unpack a
+    let fld     = foldr1 (\a, b => do let ua = unpack a
+                                      let len = length ua
+                                      let la = length $ takeWhile (== ' ') ua
                                       let lb = length $ takeWhile (== ' ') $ unpack b
-                                      if la == lb then (a ++ ";\n" ++ b)
-                                                  else if la > lb then (a ++ ";\n}" ++ b)
-                                                                  else (a ++ " {\n" ++ b)
+                                      let fa = length $ takeWhile (== '#') ua
+                                      if len == 0 || fa > 0
+                                        then (a ++ "\n" ++ b)
+                                        else if la == lb
+                                            then (a ++ ";\n" ++ b)
+                                           else if la > lb then (a ++ ";\n}" ++ b)
+                                                           else (a ++ " {\n" ++ b)
                                       ) slines
     fld
 
