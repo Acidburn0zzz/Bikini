@@ -1,4 +1,4 @@
 @echo off
-Bikini  Bikini.cxx
+Bikini Bikini.cxx
 
 pause

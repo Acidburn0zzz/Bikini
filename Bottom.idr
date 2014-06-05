@@ -58,8 +58,6 @@ finalize v bra = do
 quest : (List String) -> Bool -> { [STDIO] } Eff IO ()
 quest file bra = do
     let onestring = concat file
-    putStrLn onestring
-    putStrLn " >>> \n"
     case parse (some bParser) onestring of
       Left err => putStrLn $ "error: " ++ err
       Right v  => putStrLn $ finalize v bra
