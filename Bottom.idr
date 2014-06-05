@@ -40,7 +40,8 @@ complete a b = do
         then (a ++ "\n" ++ b)
         else if la == lb
                 then (a ++ ";\n" ++ b)
-                else if la > lb then (a ++ ";\n}" ++ b)
+                else if la > lb then let rpl = pack $ with List replicate lb ' '
+                                     in (a ++ ";\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
        
 bracketBuilder : String -> String
