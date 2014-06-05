@@ -38,23 +38,26 @@ bParser : Parser BValue
 bParser =  (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
        <|> (map JustParse justParse)
 
+
+complete : String -> String -> String
+complete a b = do
+    let ua = unpack a
+    let len = length ua
+    let la = length $ takeWhile (== ' ') ua
+    let lb = length $ takeWhile (== ' ') $ unpack b
+    let fa = length $ takeWhile (== '#') ua
+    if len == 0 || fa > 0
+        then (a ++ "\n" ++ b)
+        else if la == lb
+                then (a ++ ";\n" ++ b)
+                else if la > lb then (a ++ ";\n}" ++ b)
+                                else (a ++ " {\n" ++ b)
+       
 bracketBuilder : String -> String
 bracketBuilder noBra = do
     let lines   = splitOn '\n' $ unpack noBra
     let slines  = map pack lines
-    let fld     = foldr1 (\a, b => do let ua = unpack a
-                                      let len = length ua
-                                      let la = length $ takeWhile (== ' ') ua
-                                      let lb = length $ takeWhile (== ' ') $ unpack b
-                                      let fa = length $ takeWhile (== '#') ua
-                                      if len == 0 || fa > 0
-                                        then (a ++ "\n" ++ b)
-                                        else if la == lb
-                                            then (a ++ ";\n" ++ b)
-                                           else if la > lb then (a ++ ";\n}" ++ b)
-                                                           else (a ++ " {\n" ++ b)
-                                      ) slines
-    fld
+    foldr1 complete slines
 
 finalize : (List BValue) -> Bool -> String
 finalize v bra = do
