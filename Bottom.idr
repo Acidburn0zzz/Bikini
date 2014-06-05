@@ -11,21 +11,12 @@ import Lightyear.Combinators
 import Lightyear.Strings
 
 data BValue = BLet String
-            | BIndent String
             | JustParse Char
                
 instance Show BValue where
   show (BLet s)         = "auto "
-  show (BIndent s)      = s
   show (JustParse c)    = let cc : List Char = [c]
                           in pack cc
-
-bIndent' : Parser (List Char)
-bIndent' = (char ' ' $!> pure Prelude.List.Nil) <|> do
-  c <- satisfy (/= ' '); map (c ::) bIndent'
-
-bIndent : Parser String
-bIndent = string "    " $> map pack bIndent' <?> "BIndent"
 
 parseWord' : Parser (List Char)
 parseWord' = (char ' ' $!> pure Prelude.List.Nil) <|> do
@@ -37,7 +28,6 @@ justParse = satisfy (const True) <?> "Whatever"
 bParser : Parser BValue
 bParser =  (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
        <|> (map JustParse justParse)
-
 
 complete : String -> String -> String
 complete a b = do
