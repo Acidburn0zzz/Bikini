@@ -15,8 +15,7 @@ data BValue = BLet String
                
 instance Show BValue where
   show (BLet s)         = "auto "
-  show (JustParse c)    = let cc : List Char = [c]
-                          in pack cc
+  show (JustParse c)    = pack $ with List [c]
 
 parseWord' : Parser (List Char)
 parseWord' = (char ' ' $!> pure Prelude.List.Nil) <|> do
