@@ -27,27 +27,53 @@ justParse = satisfy (const True) <?> "Whatever"
 bParser : Parser BValue
 bParser =  (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
        <|> (map JustParse justParse)
+       
+splitLines : String -> List String
+splitLines s = map pack $ splitOn '\n' $ unpack s
 
 complete : String -> String -> String
 complete a b = do
-    let ua = unpack a
-    let len = length ua
-    let la = length $ takeWhile (== ' ') ua
-    let lb = length $ takeWhile (== ' ') $ unpack b
-    let fa = length $ takeWhile (== '#') ua
+    let ua  = unpack a
+    let la  = length $ takeWhile (== ' ') ua
+    let lb  = length $ takeWhile (== ' ') $ unpack b
+    let fa  = length $ takeWhile (== '#') ua
+    let len = length $ drop la ua
     if len == 0 || fa > 0
         then (a ++ "\n" ++ b)
         else if la == lb
                 then (a ++ ";\n" ++ b)
-                else if la > lb then let rpl = pack $ with List replicate lb ' '
+                else if la > lb then let rpl     = pack $ with List replicate lb ' '
                                      in (a ++ ";\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
-       
+
+copenclose : String -> (Nat, Nat, String)
+copenclose a = do
+    let ua  = unpack a
+    let op : List Char = ['{']
+    if isSuffixOf op ua
+        then let sz = length $ takeWhile (== ' ') ua
+             in (sz, 2, a)
+        else let cl : List Char = ['}']
+             in if isSuffixOf cl ua
+                    then let sz = length $ takeWhile (== ' ') ua
+                         in (sz, 1, a)
+                    else (0, 0, a)
+
+complete2 : (Nat, Nat, String) -> (Nat, Nat, String) -> (Nat, Nat, String)
+complete2 (oa, ca, a) (ob, cb, b) = do
+    if ca == 2
+        then if cb == 1 && oa == ob
+                then (ob, 0, (a ++ "\n!!!" ++ b))
+                else (ob, 2, (a ++ "\n???" ++ b))
+        else (ob, cb, (a ++ "\n" ++ b))
+
 bracketBuilder : String -> String
 bracketBuilder noBra = do
-    let lines   = splitOn '\n' $ unpack noBra
-    let slines  = map pack lines
-    foldr1 complete slines
+    let slines  = splitLines noBra
+    let foldred = foldr1 complete slines
+    let mapopen = map copenclose (splitLines foldred)
+    let (_, _, brC) = foldl1 complete2 mapopen
+    "#pragma once\n#include \"lib/Bikini.h\"\n" ++ brC
 
 finalize : (List BValue) -> Bool -> String
 finalize v bra = do
