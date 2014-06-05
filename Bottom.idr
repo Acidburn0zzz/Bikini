@@ -10,58 +10,60 @@ import Lightyear.Core
 import Lightyear.Combinators
 import Lightyear.Strings
 
-import Data.SortedMap
-
-data BValue = BIndent String
+data BValue = BLet String
+            | BIndent String
             | JustParse Char
-            | BArray (List BValue)
                
 instance Show BValue where
-  show (BIndent s)      = show s
-  show (JustParse c)    = show c
-  show (BArray  xs)     = show xs
-
-specialChar : Parser Char
-specialChar = do
-  c <- satisfy (const True)
-  case c of
-    '"'  => pure '"'
-    '\\' => pure '\\'
-    '/'  => pure '/'
-    'b'  => pure '\b'
-    'f'  => pure '\f'
-    'n'  => pure '\n'
-    'r'  => pure '\r'
-    't'  => pure '\t'
-    _    => satisfy (const False) <?> "expected special char"
+  show (BLet s)         = "auto "
+  show (BIndent s)      = s
+  show (JustParse c)    = let cc : List Char = [c]
+                          in pack cc
 
 bIndent' : Parser (List Char)
 bIndent' = (char ' ' $!> pure Prelude.List.Nil) <|> do
-  c <- satisfy (/= ' ')
-  if (c == '\\') then map (::) specialChar <$> bIndent'
-                 else map (c ::) bIndent'
+  c <- satisfy (/= ' '); map (c ::) bIndent'
 
 bIndent : Parser String
-bIndent = char ' ' $> map pack bIndent' <?> "BIndent"
+bIndent = string "    " $> map pack bIndent' <?> "BIndent"
+
+parseWord' : Parser (List Char)
+parseWord' = (char ' ' $!> pure Prelude.List.Nil) <|> do
+  c <- satisfy (/= ' '); map (c ::) parseWord'
 
 justParse : Parser Char
 justParse = satisfy (const True) <?> "Whatever"
 
 bParser : Parser BValue
-bParser =  (map BIndent bIndent)
+bParser =  (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
        <|> (map JustParse justParse)
-       
-bArray : Parser (List BValue)
-bArray = some bParser
 
-quest : (List String) -> { [STDIO] } Eff IO ()
-quest file = do
+bracketBuilder : String -> String
+bracketBuilder noBra = do
+    let lines   = splitOn '\n' $ unpack noBra
+    let slines  = map pack lines
+    let fld     = foldr1 (\a, b => do let la = length $ takeWhile (== ' ') $ unpack a
+                                      let lb = length $ takeWhile (== ' ') $ unpack b
+                                      if la == lb then (a ++ ";\n" ++ b)
+                                                  else if la > lb then (a ++ ";\n}" ++ b)
+                                                                  else (a ++ " {\n" ++ b)
+                                      ) slines
+    fld
+
+finalize : (List BValue) -> Bool -> String
+finalize v bra = do
+    let noBra = concat $ map show v
+    if bra then bracketBuilder noBra
+           else noBra
+
+quest : (List String) -> Bool -> { [STDIO] } Eff IO ()
+quest file bra = do
     let onestring = concat file
     putStrLn onestring
     putStrLn " >>> \n"
-    case parse bArray onestring of
+    case parse (some bParser) onestring of
       Left err => putStrLn $ "error: " ++ err
-      Right v  => putStrLn $ show v
+      Right v  => putStrLn $ finalize v bra
 
 FileIO : Type -> Type -> Type
 FileIO st t = { [FILE_IO st, STDIO] } Eff IO t 
@@ -74,6 +76,6 @@ readFile = readAcc [] where
 
 compile : String -> FileIO () ()
 compile f = do case !(open f Read) of
-                True => do quest !readFile
+                True => do quest !readFile True
                            close {- =<< -}
                 False => putStrLn ("Error!")
