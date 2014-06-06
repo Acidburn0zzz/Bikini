@@ -83,7 +83,7 @@ bracketBuilder noBra = do
     let foldred = foldr1 complete slines
     let mapopen = map copenclose (splitLines foldred)
     let (_, _, brC) = foldl1 complete2 mapopen
-    "#pragma once\n#include \"lib/Bikini.h\"\n" ++ brC
+    "#include \"lib/Bikini.h\"\n" ++ brC
 
 finalize : (List BValue) -> Bool -> String
 finalize v bra = do
