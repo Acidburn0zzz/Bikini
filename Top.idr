@@ -51,17 +51,17 @@ complete a b = do
                                      in (a ++ ";\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
 
-copenclose : String -> (Nat, Nat, String)
+copenclose : String -> (Nat, Nat, Nat, String)
 copenclose a = do
     let ua  = unpack a
     let op : List Char = ['{']
     let sz = length $ takeWhile (== ' ') ua
     if isSuffixOf op ua
-        then (sz, 2, a)
+        then (0, sz, 2, a)
         else let cl : List Char = ['}']
              in if isSuffixOf cl ua
-                    then (sz, 1, a)
-                    else (sz, 0, a)
+                    then (0, sz, 1, a)
+                    else (0, sz, 0, a)
 
 replicateX : Nat -> Nat -> Nat -> Nat -> String -> String -> String
 replicateX x st s r a b =
@@ -69,28 +69,28 @@ replicateX x st s r a b =
              else let rpl = pack $ with List replicate (st + (s * x)) ' '
                   in replicateX (x + 1) st s r a (rpl ++ "}\n" ++ b)
 
-complete2 : (Nat, Nat, String) -> (Nat, Nat, String) -> (Nat, Nat, String)
-complete2 (oa, ca, a) (ob, cb, b) = do
+complete2 : (Nat, Nat, Nat, String) -> (Nat, Nat, Nat, String) -> (Nat, Nat, Nat, String)
+complete2 (sc, oa, ca, a) (sb, ob, cb, b) = do
     if ca > 1
-        then do --let step = if ca == 3 then ob - oa
-                --                      else 0
+        then do let step = if ca == 3 then ob - oa
+                                      else if sc == 0 then 4
+                                                      else sc
                 if cb == 1
                     then if ca == 3
-                            then (ob, 0, (a ++ "\n" ++ b))
-                            else do let step = 4 -- TODO
-                                    let diff = ((oa - ob) `div` step) - 1
+                            then (step, ob, 0, (a ++ "\n" ++ b))
+                            else do let diff = ((oa - ob) `div` step) - 1
                                     let str = replicateX 1 ob step diff a b
-                                    (ob, 0, str)
-                    else if cb == 2 then (ob, ca + 1, (a ++ "\n" ++ b))
-                                    else (ob, ca, (a ++ "\n" ++ b))
-        else (ob, cb, (a ++ "\n" ++ b))
+                                    (step, ob, 0, str)
+                    else if cb == 2 then (step, ob, ca + 1, (a ++ "\n" ++ b))
+                                    else (step, ob, ca, (a ++ "\n" ++ b))
+        else (0, ob, cb, (a ++ "\n" ++ b))
 
 bracketBuilder : String -> String
 bracketBuilder noBra = do
     let slines  = splitLines noBra
     let foldred = foldr1 complete slines
     let mapopen = map copenclose (splitLines foldred)
-    let (_, _, brC) = foldl1 complete2 mapopen
+    let (_, _, _, brC) = foldl1 complete2 mapopen
     "#include \"lib/Bikini.h\"\n" ++ brC
 
 finalize : (List BValue) -> Bool -> String
