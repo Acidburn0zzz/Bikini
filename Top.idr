@@ -36,6 +36,13 @@ complete a b = do
     let lb  = length $ takeWhile (== ' ') $ unpack b
     let fa  = length $ takeWhile (== '#') ua
     let len = length $ drop la ua
+    {-
+    let semi = if len == 0 || fa > 0
+        then ""
+        else if la == lb then ";"
+                         else if la > lb then ";"
+                         else ""
+    -}
     if len == 0 || fa > 0
         then (a ++ "\n" ++ b)
         else if la == lb
