@@ -18,7 +18,7 @@ int main()
             for (let i = 0; i < n; i++)
                 printf("%02X", buff[i])
         printf("\n")
-    ;
+    
     let buff = "there is let in the string"
     
     /* TAB LEN IS 2 HERE, SO IT COULD BE DYNAMIC */

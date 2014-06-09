@@ -27,14 +27,15 @@ int main()
             for (let i = 0; i < n; i++)
                 printf("%02X", buff[i])
         printf("\n")
-    ;
-    let buff = "text"
     
+    let buff = "there is let in the string"
+    
+    /* TAB LEN IS 2 HERE, SO IT COULD BE DYNAMIC */
     unless(false)
-        repeat(2)
-            until(x > 2)
-                x++
-                cout << "x: " << x << endl
+      repeat(2)
+        until(x > 2)
+          x++
+          cout << "x: " << x << endl
     
     let sum = [](int a, int b) { return a + b; }
     let memoized_sum = memoize(function<int (int, int)>(sum))
@@ -42,9 +43,8 @@ int main()
     cout << memoized_sum(2, 2) << endl
     cout << memoized_sum(2, 2) << endl
     
+    cout << buff << endl
     go (buff, 4)
     
     return 0
-
-
 ```

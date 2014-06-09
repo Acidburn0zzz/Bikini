@@ -36,13 +36,7 @@ complete a b = do
     let lb  = length $ takeWhile (== ' ') $ unpack b
     let fa  = length $ takeWhile (== '#') ua
     let len = length $ drop la ua
-    {-
-    let semi = if len == 0 || fa > 0
-        then ""
-        else if la == lb then ";"
-                         else if la > lb then ";"
-                         else ""
-    -}
+
     if len == 0 || fa > 0
         then (a ++ "\n" ++ b)
         else if la == lb
@@ -50,6 +44,28 @@ complete a b = do
                 else if la > lb then let rpl = pack $ with List replicate lb ' '
                                      in (a ++ ";\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
+                                     
+completeAuto : (Nat, String) -> (Nat, String) -> (Nat, String)
+completeAuto (au, a) (bu, b) = do
+    let ua  = unpack b
+    let op : List Char = ['{']
+    if isSuffixOf op ua
+        then do
+             let la  = length $ takeWhile (== ' ') ua
+             let auto = if au == 0
+                           then let rl = drop la ua
+                                in if isPrefixOf (unpack "auto") rl then la
+                                                                    else 0
+                           else au
+             (auto, (a ++ "\n" ++ b))
+        else do let cl : List Char = ['}']
+                if isSuffixOf cl ua
+                    then do let lb  = length $ takeWhile (== ' ') $ unpack b
+                            let (n, semi) = if au > 0 && lb == au then let rpl = pack $ with List replicate lb ' '
+                                                                       in (0, ("\n" ++ rpl ++ ";"))
+                                                                  else (au, "")
+                            (n, (a ++ "\n" ++ b ++ semi))
+                    else (au, (a ++ "\n" ++ b))
 
 copenclose : String -> (Nat, Nat, Nat, String)
 copenclose a = do
@@ -87,9 +103,10 @@ complete2 (sc, oa, ca, a) (sb, ob, cb, b) = do
 
 bracketBuilder : String -> String
 bracketBuilder noBra = do
-    let slines  = splitLines noBra
-    let foldred = foldr1 complete slines
-    let mapopen = map copenclose (splitLines foldred)
+    let strlines  = splitLines noBra
+    let cauto = foldr1 complete strlines
+    let (_, cA) = foldl1 completeAuto $ map (\l => (0, l)) (splitLines cauto)
+    let mapopen = map copenclose (splitLines cA)
     let (_, _, _, brC) = foldl1 complete2 mapopen
     "#include \"lib/Bikini.h\"\n" ++ brC
 
