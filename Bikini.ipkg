@@ -1,6 +1,6 @@
 package Bikini
 
-modules = Top, Bottom, Bikini
+modules = Helper, Top, Bottom, Bikini
 opts = "-p effects -p Control.Eternal -p lightyear" 
 
 executable = Bikini

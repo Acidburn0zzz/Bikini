@@ -7,22 +7,26 @@ import Lightyear.Core
 import Lightyear.Combinators
 import Lightyear.Strings
 
-data BValue = BLet String
+import Helper
+
+data BValue = BString String
+            | BLet String
             | JustParse Char
                
 instance Show BValue where
-  show (BLet s)         = "auto "
-  show (JustParse c)    = pack $ with List [c]
+    show (BString s)    = show s
+    show (BLet s)       = "auto "
+    show (JustParse c)  = pack $ with List [c]
 
-parseWord' : Parser (List Char)
-parseWord' = (char ' ' $!> pure Prelude.List.Nil) <|> do
-  c <- satisfy (/= ' '); map (c ::) parseWord'
+bString : Parser String
+bString = char '"' $> map pack bString' <?> "Simple string"
 
 justParse : Parser Char
 justParse = satisfy (const True) <?> "Whatever"
 
 bParser : Parser BValue
-bParser =  (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
+bParser =  (map BString bString)
+       <|> (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
        <|> (map JustParse justParse)
 
 complete : String -> String -> String

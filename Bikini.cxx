@@ -19,7 +19,7 @@ int main()
                 printf("%02X", buff[i])
         printf("\n")
     ;
-    let buff = "text"
+    let buff = "there is let in the string"
     
     unless(false)
         repeat(2)
@@ -33,6 +33,7 @@ int main()
     cout << memoized_sum(2, 2) << endl
     cout << memoized_sum(2, 2) << endl
     
+    cout << buff << endl
     go (buff, 4)
     
     return 0
