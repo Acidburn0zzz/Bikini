@@ -1,5 +1,4 @@
 module Main
-import Top
 import Bottom
 
 import Control.Eternal
@@ -17,5 +16,4 @@ main = System.getArgs >>= \args =>
                       "--help"      => putStrLn "No way I can help"
                       file          => run $ compile file
         _        => putStrLn "What?"
-   else do putStrLn "REPL"
-           run load
+   else do putStrLn "Hi"
