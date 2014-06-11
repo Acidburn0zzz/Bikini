@@ -11,22 +11,43 @@ import Helper
 
 data BValue = BString String
             | BLet String
+            | BMatch String
+            | BMatchc String
+            | BMatchd String
             | JustParse Char
-               
+
+caseProcess : Bool -> String -> String
+caseProcess d s = do
+    let sa   = unpack s
+    let skp1 = 1 + (length $ takeWhile (== '[') sa)
+    let cwd  = if d then "default "
+                    else "case "
+    let val1 = (unpack cwd) ++ (drop skp1 sa)
+    let skp2 = length $ takeWhile (/= '=') val1
+    let val2 = (take skp2 val1) ++ (unpack ": return ") ++ (drop (skp2 + 2) val1)
+    (pack val2) ++ "\n"
+
 instance Show BValue where
     show (BString s)    = show s
     show (BLet s)       = "auto "
+
+    show (BMatch s)     = "[&]() { switch /* match */ "
+    show (BMatchc s)    = caseProcess False s
+    show (BMatchd s)    = caseProcess True s
+
     show (JustParse c)  = pack $ with List [c]
 
 bString : Parser String
 bString = char '"' $> map pack bString' <?> "Simple string"
 
-justParse : Parser Char
-justParse = satisfy (const True) <?> "Whatever"
-
 bParser : Parser BValue
 bParser =  (map BString bString)
        <|> (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
+       
+       <|> (map BMatch  $ string "match"    $> map pack parseWord' <?> "bMatch")
+       <|> (map BMatchc $ string "[="       $> map pack parseUntilLine <?> "bMatchc")
+       <|> (map BMatchd $ string "[~"       $> map pack parseUntilLine <?> "bMatchd")
+       
        <|> (map JustParse justParse)
 
 complete : String -> String -> String
@@ -45,27 +66,33 @@ complete a b = do
                                      in (a ++ ";\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
                                      
-completeAuto : (Nat, String) -> (Nat, String) -> (Nat, String)
-completeAuto (au, a) (bu, b) = do
+completeAuto : (Nat, Nat, String) -> (Nat, Nat, String) -> (Nat, Nat, String)
+completeAuto (au, mu, a) (bu, mmu, b) = do
     let ua  = unpack b
     let op : List Char = ['{']
     if isSuffixOf op ua
         then do
              let la  = length $ takeWhile (== ' ') ua
+             let rl = drop la ua
+             let match = if mu == 0
+                           then if isInfixOf (unpack "[&]() { switch /* match */") rl then la
+                                                                                      else 0
+                           else mu
              let auto = if au == 0
-                           then let rl = drop la ua
-                                in if isPrefixOf (unpack "auto") rl then la
-                                                                    else 0
+                           then if isPrefixOf (unpack "auto") rl then la
+                                                                 else 0
                            else au
-             (auto, (a ++ "\n" ++ b))
+             (auto, match, (a ++ "\n" ++ b))
         else do let cl : List Char = ['}']
                 if isSuffixOf cl ua
                     then do let lb  = length $ takeWhile (== ' ') $ unpack b
-                            let (n, semi) = if au > 0 && lb == au then let rpl = pack $ with List replicate lb ' '
-                                                                       in (0, ("\n" ++ rpl ++ ";"))
+                            let rpl = pack $ with List replicate lb ' '
+                            let (n, semi) = if au > 0 && lb == au then  (0, ("\n" ++ rpl ++ ";"))
                                                                   else (au, "")
-                            (n, (a ++ "\n" ++ b ++ semi))
-                    else (au, (a ++ "\n" ++ b))
+                            let (mn, semim) = if mu > 0 && lb == au then (0, ("\n" ++ rpl ++ "} ()"))
+                                                                    else (mu, "")
+                            (n, mn, (a ++ "\n" ++ b ++ semim ++ semi))
+                    else (au, mu, (a ++ "\n" ++ b))
 
 copenclose : String -> (Nat, Nat, Nat, String)
 copenclose a = do
@@ -105,7 +132,7 @@ bracketBuilder : String -> String
 bracketBuilder noBra = do
     let strlines  = splitLines noBra
     let cauto = foldr1 complete strlines
-    let (_, cA) = foldl1 completeAuto $ map (\l => (0, l)) (splitLines cauto)
+    let (_, _, cA) = foldl1 completeAuto $ map (\l => (0, 0, l)) (splitLines cauto)
     let mapopen = map copenclose (splitLines cA)
     let (_, _, _, brC) = foldl1 complete2 mapopen
     "#include \"lib/Bikini.h\"\n" ++ brC

@@ -32,6 +32,9 @@ specialChar = do
     't'  => pure '\t'
     'u'  => map chr hexQuad
     _    => satisfy (const False) <?> "expected special char"
+    
+justParse : Parser Char
+justParse = satisfy (const True) <?> "Whatever"
 
 bString' : Parser (List Char)
 bString' = (char '"' $!> pure Prelude.List.Nil) <|> do
@@ -42,3 +45,7 @@ bString' = (char '"' $!> pure Prelude.List.Nil) <|> do
 parseWord' : Parser (List Char)
 parseWord' = (char ' ' $!> pure Prelude.List.Nil) <|> do
   c <- satisfy (/= ' '); map (c ::) parseWord'
+  
+parseUntilLine : Parser (List Char)
+parseUntilLine = (char '\n' $!> pure Prelude.List.Nil) <|> do
+  c <- satisfy (/= '\n'); map (c ::) parseUntilLine

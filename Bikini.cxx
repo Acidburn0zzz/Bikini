@@ -5,7 +5,12 @@ using namespace std
 
 int main()
     
-    let x = 0
+    let x = 666
+    let pm = match (x)
+              [= 666 => 0
+              [= 111 => 1
+              [~     => 666
+    
     array <int, 3> arr = {1, 2, 3}
     
     foreach(arr, [&](int a)
@@ -24,9 +29,9 @@ int main()
     /* TAB LEN IS 2 HERE, SO IT COULD BE DYNAMIC */
     unless(false)
       repeat(2)
-        until(x > 2)
-          x++
-          cout << "x: " << x << endl
+        until(pm > 2)
+          pm++
+          cout << "pm: " << pm << endl
     
     let sum = [](int a, int b) { return a + b; }
     let memoized_sum = memoize(function<int (int, int)>(sum))
