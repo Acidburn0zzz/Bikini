@@ -6,10 +6,12 @@ using namespace std
 int main()
     
     let x = 666
+    
+    /* Experimental syntax, Don't use it ! */
     let pm = match (x)
-              [= 666 => 0
-              [= 111 => 1
-              [~     => 666
+             [= 666 => 0
+             [= 111 => 1
+             [~     => 666
     
     array <int, 3> arr = {1, 2, 3}
     

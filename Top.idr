@@ -65,7 +65,19 @@ complete a b = do
                 else if la > lb then let rpl = pack $ with List replicate lb ' '
                                      in (a ++ ";\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
-                                     
+
+blockRule : Nat -> Nat -> String -> List Char -> Nat
+blockRule n l s w =
+    if n == 0
+       then if isInfixOf (unpack s) w then l
+                                      else 0
+       else n
+       
+blockRule' : Nat -> Nat -> String -> (Nat, String)
+blockRule' n l s =
+    if n > 0 && l == n then (0, s)
+                       else (n, "")
+
 completeAuto : (Nat, Nat, String) -> (Nat, Nat, String) -> (Nat, Nat, String)
 completeAuto (au, mu, a) (bu, mmu, b) = do
     let ua  = unpack b
@@ -74,23 +86,15 @@ completeAuto (au, mu, a) (bu, mmu, b) = do
         then do
              let la  = length $ takeWhile (== ' ') ua
              let rl = drop la ua
-             let match = if mu == 0
-                           then if isInfixOf (unpack "[&]() { switch /* match */") rl then la
-                                                                                      else 0
-                           else mu
-             let auto = if au == 0
-                           then if isPrefixOf (unpack "auto") rl then la
-                                                                 else 0
-                           else au
+             let match = blockRule mu la "[&]() { switch /* match */" rl
+             let auto  = blockRule au la "auto" rl
              (auto, match, (a ++ "\n" ++ b))
         else do let cl : List Char = ['}']
                 if isSuffixOf cl ua
                     then do let lb  = length $ takeWhile (== ' ') $ unpack b
                             let rpl = pack $ with List replicate lb ' '
-                            let (n, semi) = if au > 0 && lb == au then  (0, ("\n" ++ rpl ++ ";"))
-                                                                  else (au, "")
-                            let (mn, semim) = if mu > 0 && lb == au then (0, ("\n" ++ rpl ++ "} ()"))
-                                                                    else (mu, "")
+                            let (n, semi)   = blockRule' au lb ("\n" ++ rpl ++ ";")
+                            let (mn, semim) = blockRule' mu lb ("\n" ++ rpl ++ "} ()")
                             (n, mn, (a ++ "\n" ++ b ++ semim ++ semi))
                     else (au, mu, (a ++ "\n" ++ b))
 
