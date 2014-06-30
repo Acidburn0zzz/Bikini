@@ -9,3 +9,6 @@
 *~
 *.sublime-project
 *.sublime-workspace
+
+*.cpp
+*.hpp

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Control/Bikini.h"
-#include "Control/Memo.h"
-
-#include "Control/Test.h"
+#include "Prelude/Bikini.hpp"
+#include "Prelude/Memo.hpp"
+#include "Prelude/Test.hpp"
