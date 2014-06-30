@@ -7,6 +7,8 @@ Current state
 =============
 
 ``` cpp
+#include "lib/Bikini.h"
+
 #include <iostream>
 #include <array>
 
@@ -15,10 +17,12 @@ using namespace std
 int main()
     
     let x = 666
+    
+    /* Experimental syntax, Don't use it ! */
     let pm = match (x)
-              [= 666 => 0
-              [= 111 => 1
-              [~     => 666
+             [=> 666 => 0
+             [=> 111 => 1
+             [~>     => 666
     
     array <int, 3> arr = {1, 2, 3}
     
@@ -53,3 +57,49 @@ int main()
     
     return 0
 ```
+
+Tests
+-----
+
+``` shell
+Bikini>test.cmd
+building Prelude...
+Running Prelude tests...
+Running test set 'Basics'...
+x: 1
+x: 2
+x: 3
+a: 0
+a: 1
+a: 2
+1/1 passed
+Running test set 'Memoization'...
+4
+4
+4
+5
+1/1 passed
+building Test application...
+
+Compiling...
+Tests:
+a: 1
+a: 2
+a: 3
+pm: 1
+pm: 2
+pm: 3
+4
+4
+there is let in the string
+0x74686572
+Cleaning...
+```
+
+
+
+
+
+
+
+
