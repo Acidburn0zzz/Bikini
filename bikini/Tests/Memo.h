@@ -11,9 +11,9 @@ test_set memo_tests
         std::function<bool()>([]() -> bool
             
             // memoization
-            auto sum = [](int a, int b) { return a + b; }
-            auto memoized_sum = memoize(std::function<int (int, int)>(sum));
-
+            let sum = [](int a, int b) { return a + b; }
+            let memoized_sum = memoize(std::function<int (int, int)>(sum));
+            
             std::cout << memoized_sum(2, 2) << std::endl
             std::cout << memoized_sum(2, 2) << std::endl
             std::cout << memoized_sum(2, 2) << std::endl
