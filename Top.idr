@@ -9,6 +9,9 @@ import Lightyear.Strings
 
 import Helper
 
+debug : Bool
+debug = True
+
 data BValue = BString String
             | BLet String
             | BMatch String
@@ -60,9 +63,9 @@ complete a b = do
     let sys      = isPrefixOf ['#'] ua
     let template = isPrefixOf (unpack "template") ua
     
-    let gogo = isSuffixOf ['\\'] ua || isSuffixOf [';'] ua
-            || isSuffixOf [','] ua  || isSuffixOf ['&'] ua
-            || isSuffixOf ['='] ua  || isSuffixOf [':'] ua
+    let gogo = isSuffixOf ['\\'] ua || isSuffixOf [','] ua  
+            || isSuffixOf ['&'] ua  || isSuffixOf [':'] ua
+            || isSuffixOf ['='] ua
     
     let len = length $ drop la ua
 
@@ -122,17 +125,19 @@ replicateX : Nat -> Nat -> Nat -> Nat -> String -> String -> String
 replicateX x st s r a b =
     if x > r then (a ++ "\n" ++ b)
              else let rpl = pack $ with List replicate (st + (s * x)) ' '
-                  in replicateX (x + 1) st s r a (rpl ++ "}\n" ++ b)
+                  in replicateX (x + 1) st s r a $ if debug then (rpl ++ "} /* +++ */\n" ++ b)
+                                                            else (rpl ++ "}\n" ++ b)
 
 complete2 : (Nat, Nat, Nat, String) -> (Nat, Nat, Nat, String) -> (Nat, Nat, Nat, String)
 complete2 (sc, oa, ca, a) (sb, ob, cb, b) = do
     if ca > 1
-        then do let step = if ca == 3 then ob - oa
-                                      else if sc == 0 then 4
-                                                      else sc
-                if cb == 1
+        then let step = if ca == 3 then ob - oa
+                                   else if sc == 0 then 4
+                                                   else sc
+             in if cb == 1
                     then if ca == 3
-                            then (step, ob, 0, (a ++ "\n" ++ b))
+                            then (step, ob, 0, if debug then (a ++ "\n" ++ b) -- (a ++ "/* " ++ (show step) ++ " */\n" ++ b)
+                                                        else (a ++ "\n" ++ b) )
                             else do let diff = ((oa - ob) `div` step) - 1
                                     let str = replicateX 1 ob step diff a b
                                     (step, ob, 0, str)
