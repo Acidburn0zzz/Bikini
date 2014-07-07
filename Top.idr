@@ -9,9 +9,6 @@ import Lightyear.Strings
 
 import Helper
 
-debug : Bool
-debug = True
-
 data BValue = BString String
             | BLet String
             | BMatch String
@@ -65,16 +62,22 @@ complete a b = do
     
     let gogo = isSuffixOf ['\\'] ua || isSuffixOf [','] ua  
             || isSuffixOf ['&'] ua  || isSuffixOf [':'] ua
-            || isSuffixOf ['='] ua
+            || isSuffixOf ['='] ua  || isSuffixOf ['{'] ua
+            || isSuffixOf ['('] ua
     
     let len = length $ drop la ua
+
+    let scl = -- Temporary Hack to avoid ';'
+        if isSuffixOf (unpack "/*;*/") ua
+            then ""
+            else ";"
 
     if len == 0 || sys || template || gogo
         then (a ++ "\n" ++ b)
         else if la == lb
-                then (a ++ ";\n" ++ b)
+                then (a ++ scl ++ "\n" ++ b)
                 else if la > lb then let rpl = pack $ with List replicate lb ' '
-                                     in (a ++ ";\n" ++ rpl ++ "}\n" ++ b)
+                                     in (a ++ scl ++ "\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
 
 blockRule : Nat -> Nat -> String -> List Char -> Nat
@@ -89,25 +92,23 @@ blockRule' n l s =
     if n > 0 && l == n then (0, s)
                        else (n, "")
 
-completeAuto : (Nat, Nat, String) -> (Nat, Nat, String) -> (Nat, Nat, String)
-completeAuto (au, mu, a) (bu, mmu, b) = do
+completeAuto : (Nat, String) -> (Nat, String) -> (Nat, String)
+completeAuto (mu, a) (mmu, b) = do
     let ua  = unpack b
     let op : List Char = ['{']
     if isSuffixOf op ua
         then do
              let la  = length $ takeWhile (== ' ') ua
              let rl = drop la ua
-             let auto  = blockRule au la "auto" rl
              let match = blockRule mu la "[&]() { switch /* match */" rl
-             (auto, match, (a ++ "\n" ++ b))
+             (match, (a ++ "\n" ++ b))
         else do let cl : List Char = ['}']
                 if isSuffixOf cl ua
                     then do let lb  = length $ takeWhile (== ' ') $ unpack b
                             let rpl = pack $ with List replicate lb ' '
-                            let (n, semi)   = blockRule' au lb ("\n" ++ rpl ++ ";")
-                            let (mn, semim) = blockRule' mu lb ("\n" ++ rpl ++ "} ()")
-                            (n, mn, (a ++ "\n" ++ b ++ semim ++ semi))
-                    else (au, mu, (a ++ "\n" ++ b))
+                            let (mn, semim) = blockRule' mu lb ("\n" ++ rpl ++ "} ();")
+                            (mn, (a ++ "\n" ++ b ++ semim))
+                    else (mu, (a ++ "\n" ++ b))
 
 copenclose : String -> (Nat, Nat, Nat, String)
 copenclose a = do
@@ -125,31 +126,31 @@ replicateX : Nat -> Nat -> Nat -> Nat -> String -> String -> String
 replicateX x st s r a b =
     if x > r then (a ++ "\n" ++ b)
              else let rpl = pack $ with List replicate (st + (s * x)) ' '
-                  in replicateX (x + 1) st s r a $ if debug then (rpl ++ "} /* +++ */\n" ++ b)
-                                                            else (rpl ++ "}\n" ++ b)
+                  in replicateX (x + 1) st s r a (rpl ++ "}\n" ++ b)
 
 endComplete : (Nat, Nat, Nat, String) -> (Nat, Nat, Nat, String) -> (Nat, Nat, Nat, String)
 endComplete (sc, oa, ca, a) (sb, ob, cb, b) = do
     if ca > 1
-        then let step = if ca == 3 then ob - oa
-                                   else if sc == 0 then 4
-                                                   else sc
-             in if cb == 1
-                    then if ca == 3
-                            then (step, ob, 0, if debug then (a ++ "/* " ++ (show step) ++ " */\n" ++ b)
-                                                        else (a ++ "\n" ++ b) )
-                            else do let diff = ((oa - ob) `div` step) - 1
-                                    let str = replicateX 1 ob step diff a b
-                                    (step, ob, 0, str)
-                    else if cb == 2 then (step, ob, ca + 1, (a ++ "\n" ++ b))
-                                    else (step, ob, ca, (a ++ "\n" ++ b))
-        else (0, ob, cb, (a ++ "\n" ++ b))
+        then do -- Recalculate indent
+                let stex = if ca == 3 then ob - oa
+                                      else 0
+                let step = if stex == 0 then sc
+                                        else stex
+                -- DEBUG: Display recognized indent length
+                let s = " /* |" ++ (show step) ++ "| */ \n"
+                if cb == 1
+                    then do let diff = ((oa - ob) `div` step) - 1
+                            let str = replicateX 1 ob step diff a b
+                            (step, ob, 2, str) -- and now we check for it until the end
+                    else if cb == 2 then (step, ob, ca + 1, (a ++ s ++ b))
+                                    else (step, ob, ca, (a ++ s ++ b))
+        else (4, ob, cb, (a ++ "\n" ++ b))
 
 bracketBuilder : String -> String
 bracketBuilder noBra = do
     let strlines  = splitLines noBra
     let cauto = foldr1 complete strlines
-    let (_, _, cA) = foldl1 completeAuto $ map (\l => (0, 0, l)) (splitLines cauto)
+    let (_, cA) = foldl1 completeAuto $ map (\l => (0, l)) (splitLines cauto)
     let mapopen = map copenclose (splitLines cA)
     let (_, _, _, brC) = foldl1 endComplete mapopen
     "/* Generated by Bikini compiler */\n" ++ brC

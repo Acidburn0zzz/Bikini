@@ -30,6 +30,13 @@ int main()
         cout << "a: " << a << endl
     )
     
+    /* TAB LEN IS 2 HERE, SO IT COULD BE DYNAMIC */
+    unless(false)
+      repeat(2)
+        until(pm > 2)
+          pm++
+          cout << "pm: " << pm << endl
+    
     let go = [](const char* buff, int n)
         if (n > 0)
             printf("0x")
@@ -38,13 +45,6 @@ int main()
         printf("\n")
     
     let buff = "there is let in the string"
-    
-    /* TAB LEN IS 2 HERE, SO IT COULD BE DYNAMIC */
-    unless(false)
-      repeat(2)
-        until(pm > 2)
-          pm++
-          cout << "pm: " << pm << endl
     
     let sum = [](int a, int b) { return a + b; }
     let memoized_sum = memoize(function<int (int, int)>(sum))
@@ -56,6 +56,7 @@ int main()
     go (buff, 4)
     
     return 0
+
 ```
 
 Tests

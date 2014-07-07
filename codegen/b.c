@@ -41,7 +41,6 @@ void _idris_Lightyear_46_Core_46_commitTo(VM*, VAL*);
 void _idris_Prelude_46_Classes_46_compare(VM*, VAL*);
 void _idris_Bottom_46_compile(VM*, VAL*);
 void _idris_Top_46_complete(VM*, VAL*);
-void _idris_Top_46_complete2(VM*, VAL*);
 void _idris_Top_46_completeAuto(VM*, VAL*);
 void _idris_Prelude_46_Foldable_46_concat(VM*, VAL*);
 void _idris_Prelude_46_Basics_46_const(VM*, VAL*);
@@ -57,6 +56,7 @@ void _idris_Effects_46_dropEnv(VM*, VAL*);
 void _idris_Prelude_46_List_46_dropWhile(VM*, VAL*);
 void _idris_Effects_46_eff(VM*, VAL*);
 void _idris_Prelude_46_List_46_elemBy(VM*, VAL*);
+void _idris_Top_46_endComplete(VM*, VAL*);
 void _idris_Effect_46_File_46_eof(VM*, VAL*);
 void _idris_Effects_46_execEff(VM*, VAL*);
 void _idris_Lightyear_46_Core_46_execParserT(VM*, VAL*);
@@ -136,6 +136,7 @@ void _idris_prim_95__95_strCons(VM*, VAL*);
 void _idris_prim_95__95_strHead(VM*, VAL*);
 void _idris_prim_95__95_strTail(VM*, VAL*);
 void _idris_prim_95__95_subInt(VM*, VAL*);
+void _idris_prim_95__95_toStrBigInt(VM*, VAL*);
 void _idris_prim_95__95_toStrInt(VM*, VAL*);
 void _idris_prim_95__95_zextInt_95_BigInt(VM*, VAL*);
 void _idris_prim_95_io_95_bind(VM*, VAL*);
@@ -222,10 +223,10 @@ void _idris_Lightyear_46_Strings_46__123_char0_125_(VM*, VAL*);
 void _idris_Lightyear_46_Core_46__123_commitTo0_125_(VM*, VAL*);
 void _idris_Bottom_46__123_compile0_125_(VM*, VAL*);
 void _idris_Top_46__123_complete0_125_(VM*, VAL*);
-void _idris_Top_46__123_complete20_125_(VM*, VAL*);
 void _idris_Top_46__123_completeAuto0_125_(VM*, VAL*);
 void _idris_Top_46__123_copenclose0_125_(VM*, VAL*);
 void _idris_Effects_46__123_eff0_125_(VM*, VAL*);
+void _idris_Top_46__123_endComplete0_125_(VM*, VAL*);
 void _idris_Effects_46__123_execEff0_125_(VM*, VAL*);
 void _idris_Prelude_46__123_feof0_125_(VM*, VAL*);
 void _idris_Top_46__123_finalize0_125_(VM*, VAL*);
@@ -763,6 +764,7 @@ void _idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Ord_36_Integer_58__3
 void _idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Ord_36_Integer_58__33_compare_58_0(VM*, VAL*);
 void _idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Ord_36_Nat_58__33_compare_58_0(VM*, VAL*);
 void _idris_Prelude_46__64_Prelude_46_Show_36_BValue_58__33_show_58_0(VM*, VAL*);
+void _idris_Prelude_46__64_Prelude_46_Show_36_Nat_58__33_show_58_0(VM*, VAL*);
 void _idris_Prelude_46__64_Prelude_46_Show_36_String_58__33_show_58_0(VM*, VAL*);
 void _idris_Prelude_46_Nat_46_divNat_58_div_39__58_1(VM*, VAL*);
 void _idris__64_Prelude_46_Classes_46_Eq_36_Char(VM*, VAL*);
@@ -2315,7 +2317,7 @@ void _idris_Top_46_bracketBuilder(VM* vm, VAL* oldbase) {
     LOC(2) = NULL;
     LOC(3) = NULL;
     LOC(4) = NULL;
-    allocCon(REG1, vm, 66226,0, 0);
+    allocCon(REG1, vm, 66225,0, 0);
     
     LOC(5) = REG1;
     LOC(6) = NULL;
@@ -4066,477 +4068,6 @@ void _idris_Top_46_complete(VM* vm, VAL* oldbase) {
     }
 }
 
-void _idris_Top_46_complete2(VM* vm, VAL* oldbase) {
-    INITFRAME;
-    RESERVE(22);
-    ADDTOP(22);
-{
-        PROJECT(vm, LOC(1), 2, 2);
-{
-            PROJECT(vm, LOC(3), 4, 2);
-{
-                PROJECT(vm, LOC(5), 6, 2);
-{
-                    PROJECT(vm, LOC(0), 8, 2);
-{
-                        PROJECT(vm, LOC(9), 10, 2);
-{
-                            PROJECT(vm, LOC(11), 12, 2);
-                            LOC(14) = NULL;
-                            STOREOLD;
-                            BASETOP(0);
-                            CALL(_idris__64_Prelude_46_Classes_46_Ord_36_Nat);
-                            LOC(15) = RVAL;
-                            RESERVE(2);
-                            TOP(0) = LOC(14);
-                            TOP(1) = LOC(15);
-                            STOREOLD;
-                            BASETOP(0);
-                            ADDTOP(2);
-                            CALL(_idris_Prelude_46_Classes_46_compare);
-                            LOC(14) = RVAL;
-                            RESERVE(2);
-                            TOP(0) = LOC(14);
-                            TOP(1) = LOC(12);
-                            STOREOLD;
-                            BASETOP(0);
-                            ADDTOP(2);
-                            CALL(_idris__123_APPLY0_125_);
-                            LOC(14) = RVAL;
-                            LOC(15) = MKINT(1);
-                            RESERVE(2);
-                            TOP(0) = LOC(14);
-                            TOP(1) = LOC(15);
-                            STOREOLD;
-                            BASETOP(0);
-                            ADDTOP(2);
-                            CALL(_idris__123_APPLY0_125_);
-                            LOC(14) = RVAL;
-                            LOC(15) = NULL;
-                            LOC(16) = NULL;
-                            RESERVE(3);
-                            TOP(0) = LOC(14);
-                            TOP(1) = LOC(15);
-                            TOP(2) = LOC(16);
-                            STOREOLD;
-                            BASETOP(0);
-                            ADDTOP(3);
-                            CALL(_idris__123_Prelude_46_Classes_46_Nat_32_instance_32_of_32_Prelude_46_Classes_46_Ord_44__32_method_32__62_78_125_);
-                            LOC(14) = RVAL;
-                            if (CTAG(LOC(14)) == 0) {
-                                PROJECT(vm, LOC(14), 15, 0);
-                                LOC(15) = MKINT(0);
-                                LOC(16) = MKSTR(vm, """\x0a""");
-                                LOC(16) = idris_concat(vm, LOC(16), LOC(7));
-                                LOC(16) = idris_concat(vm, LOC(13), LOC(16));
-                                allocCon(REG1, vm, 0,2, 0);
-                                SETARG(REG1, 0, LOC(6)); SETARG(REG1, 1, LOC(16)); 
-                                LOC(16) = REG1;
-                                allocCon(REG1, vm, 0,2, 0);
-                                SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(16)); 
-                                LOC(16) = REG1;
-                                allocCon(REG1, vm, 0,2, 0);
-                                SETARG(REG1, 0, LOC(15)); SETARG(REG1, 1, LOC(16)); 
-                                RVAL = REG1;
-                                TOPBASE(0);
-                                REBASE;
-                            }
-                            else {
-                                PROJECT(vm, LOC(14), 15, 0);
-                                LOC(15) = MKINT(1);
-                                RESERVE(2);
-                                TOP(0) = LOC(6);
-                                TOP(1) = LOC(15);
-                                STOREOLD;
-                                BASETOP(0);
-                                ADDTOP(2);
-                                CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                LOC(15) = RVAL;
-                                if (CTAG(LOC(15)) == 0) {
-                                    PROJECT(vm, LOC(15), 16, 0);
-                                    LOC(16) = MKINT(2);
-                                    RESERVE(2);
-                                    TOP(0) = LOC(6);
-                                    TOP(1) = LOC(16);
-                                    STOREOLD;
-                                    BASETOP(0);
-                                    ADDTOP(2);
-                                    CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                    LOC(16) = RVAL;
-                                    if (CTAG(LOC(16)) == 0) {
-                                        PROJECT(vm, LOC(16), 17, 0);
-                                        LOC(17) = MKINT(3);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(12);
-                                        TOP(1) = LOC(17);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                        LOC(17) = RVAL;
-                                        if (CTAG(LOC(17)) == 0) {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            LOC(18) = MKINT(0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(8);
-                                            TOP(1) = LOC(18);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                            LOC(18) = RVAL;
-                                            if (CTAG(LOC(18)) == 0) {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = LOC(8);
-                                            }
-                                            else {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = MKINT(4);
-                                            }
-                                        }
-                                        else {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(4);
-                                            TOP(1) = LOC(10);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Nat_46_minus);
-                                            LOC(17) = RVAL;
-                                        }
-                                        LOC(18) = MKSTR(vm, """\x0a""");
-                                        LOC(18) = idris_concat(vm, LOC(18), LOC(7));
-                                        LOC(18) = idris_concat(vm, LOC(13), LOC(18));
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(12)); SETARG(REG1, 1, LOC(18)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
-                                        RVAL = REG1;
-                                        TOPBASE(0);
-                                        REBASE;
-                                    }
-                                    else {
-                                        PROJECT(vm, LOC(16), 17, 0);
-                                        LOC(17) = MKINT(3);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(12);
-                                        TOP(1) = LOC(17);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                        LOC(17) = RVAL;
-                                        if (CTAG(LOC(17)) == 0) {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            LOC(18) = MKINT(0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(8);
-                                            TOP(1) = LOC(18);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                            LOC(18) = RVAL;
-                                            if (CTAG(LOC(18)) == 0) {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = LOC(8);
-                                            }
-                                            else {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = MKINT(4);
-                                            }
-                                        }
-                                        else {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(4);
-                                            TOP(1) = LOC(10);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Nat_46_minus);
-                                            LOC(17) = RVAL;
-                                        }
-                                        LOC(18) = MKINT(1);
-                                        LOC(18) = idris_bigPlus(vm, LOC(12), LOC(18));
-                                        LOC(19) = MKSTR(vm, """\x0a""");
-                                        LOC(19) = idris_concat(vm, LOC(19), LOC(7));
-                                        LOC(19) = idris_concat(vm, LOC(13), LOC(19));
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(18)); SETARG(REG1, 1, LOC(19)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
-                                        RVAL = REG1;
-                                        TOPBASE(0);
-                                        REBASE;
-                                    }
-                                }
-                                else {
-                                    PROJECT(vm, LOC(15), 16, 0);
-                                    LOC(16) = MKINT(3);
-                                    RESERVE(2);
-                                    TOP(0) = LOC(12);
-                                    TOP(1) = LOC(16);
-                                    STOREOLD;
-                                    BASETOP(0);
-                                    ADDTOP(2);
-                                    CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                    LOC(16) = RVAL;
-                                    if (CTAG(LOC(16)) == 0) {
-                                        PROJECT(vm, LOC(16), 17, 0);
-                                        LOC(17) = MKINT(3);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(12);
-                                        TOP(1) = LOC(17);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                        LOC(17) = RVAL;
-                                        if (CTAG(LOC(17)) == 0) {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            LOC(18) = MKINT(0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(8);
-                                            TOP(1) = LOC(18);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                            LOC(18) = RVAL;
-                                            if (CTAG(LOC(18)) == 0) {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = LOC(8);
-                                            }
-                                            else {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = MKINT(4);
-                                            }
-                                        }
-                                        else {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(4);
-                                            TOP(1) = LOC(10);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Nat_46_minus);
-                                            LOC(17) = RVAL;
-                                        }
-                                        LOC(18) = MKINT(0);
-                                        LOC(19) = MKINT(1);
-                                        LOC(20) = MKINT(3);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(12);
-                                        TOP(1) = LOC(20);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                        LOC(20) = RVAL;
-                                        if (CTAG(LOC(20)) == 0) {
-                                            PROJECT(vm, LOC(20), 21, 0);
-                                            LOC(21) = MKINT(0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(8);
-                                            TOP(1) = LOC(21);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                            LOC(21) = RVAL;
-                                            if (CTAG(LOC(21)) == 0) {
-                                                PROJECT(vm, LOC(21), 22, 0);
-                                                LOC(20) = LOC(8);
-                                            }
-                                            else {
-                                                PROJECT(vm, LOC(21), 22, 0);
-                                                LOC(20) = MKINT(4);
-                                            }
-                                        }
-                                        else {
-                                            PROJECT(vm, LOC(20), 21, 0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(4);
-                                            TOP(1) = LOC(10);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Nat_46_minus);
-                                            LOC(20) = RVAL;
-                                        }
-                                        RESERVE(2);
-                                        TOP(0) = LOC(10);
-                                        TOP(1) = LOC(4);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Nat_46_minus);
-                                        LOC(21) = RVAL;
-                                        LOC(22) = MKINT(3);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(12);
-                                        TOP(1) = LOC(22);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                        LOC(22) = RVAL;
-                                        if (CTAG(LOC(22)) == 0) {
-                                            PROJECT(vm, LOC(22), 23, 0);
-                                            LOC(23) = MKINT(0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(8);
-                                            TOP(1) = LOC(23);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                            LOC(23) = RVAL;
-                                            if (CTAG(LOC(23)) == 0) {
-                                                PROJECT(vm, LOC(23), 24, 0);
-                                                LOC(22) = LOC(8);
-                                            }
-                                            else {
-                                                PROJECT(vm, LOC(23), 24, 0);
-                                                LOC(22) = MKINT(4);
-                                            }
-                                        }
-                                        else {
-                                            PROJECT(vm, LOC(22), 23, 0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(4);
-                                            TOP(1) = LOC(10);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Nat_46_minus);
-                                            LOC(22) = RVAL;
-                                        }
-                                        RESERVE(2);
-                                        TOP(0) = LOC(21);
-                                        TOP(1) = LOC(22);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Nat_46_divNat);
-                                        LOC(21) = RVAL;
-                                        LOC(22) = MKINT(1);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(21);
-                                        TOP(1) = LOC(22);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Nat_46_minus);
-                                        LOC(21) = RVAL;
-                                        RESERVE(6);
-                                        TOP(0) = LOC(19);
-                                        TOP(1) = LOC(4);
-                                        TOP(2) = LOC(20);
-                                        TOP(3) = LOC(21);
-                                        TOP(4) = LOC(13);
-                                        TOP(5) = LOC(7);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(6);
-                                        CALL(_idris_Top_46_replicateX);
-                                        LOC(19) = RVAL;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(18)); SETARG(REG1, 1, LOC(19)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
-                                        RVAL = REG1;
-                                        TOPBASE(0);
-                                        REBASE;
-                                    }
-                                    else {
-                                        PROJECT(vm, LOC(16), 17, 0);
-                                        LOC(17) = MKINT(3);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(12);
-                                        TOP(1) = LOC(17);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                        LOC(17) = RVAL;
-                                        if (CTAG(LOC(17)) == 0) {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            LOC(18) = MKINT(0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(8);
-                                            TOP(1) = LOC(18);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
-                                            LOC(18) = RVAL;
-                                            if (CTAG(LOC(18)) == 0) {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = LOC(8);
-                                            }
-                                            else {
-                                                PROJECT(vm, LOC(18), 19, 0);
-                                                LOC(17) = MKINT(4);
-                                            }
-                                        }
-                                        else {
-                                            PROJECT(vm, LOC(17), 18, 0);
-                                            RESERVE(2);
-                                            TOP(0) = LOC(4);
-                                            TOP(1) = LOC(10);
-                                            STOREOLD;
-                                            BASETOP(0);
-                                            ADDTOP(2);
-                                            CALL(_idris_Prelude_46_Nat_46_minus);
-                                            LOC(17) = RVAL;
-                                        }
-                                        LOC(18) = MKINT(0);
-                                        RESERVE(2);
-                                        TOP(0) = LOC(13);
-                                        TOP(1) = LOC(7);
-                                        STOREOLD;
-                                        BASETOP(0);
-                                        ADDTOP(2);
-                                        CALL(_idris_Top_46__123_complete20_125_);
-                                        LOC(19) = RVAL;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(18)); SETARG(REG1, 1, LOC(19)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
-                                        LOC(18) = REG1;
-                                        allocCon(REG1, vm, 0,2, 0);
-                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
-                                        RVAL = REG1;
-                                        TOPBASE(0);
-                                        REBASE;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 void _idris_Top_46_completeAuto(VM* vm, VAL* oldbase) {
     INITFRAME;
     RESERVE(33);
@@ -6069,7 +5600,9 @@ void _idris_Prelude_46_List_46_drop(VM* vm, VAL* oldbase) {
         }
         else {
             PROJECT(vm, LOC(2), 3, 0);
-            RVAL = LOC(2);
+            allocCon(REG1, vm, 0,0, 0);
+            
+            RVAL = REG1;
             TOPBASE(0);
             REBASE;
         }
@@ -6147,7 +5680,9 @@ void _idris_Prelude_46_List_46_dropWhile(VM* vm, VAL* oldbase) {
         LOC(5) = RVAL;
         if (CTAG(LOC(5)) == 0) {
             PROJECT(vm, LOC(5), 6, 0);
-            RVAL = LOC(2);
+            allocCon(REG1, vm, 1,2, 0);
+            SETARG(REG1, 0, LOC(3)); SETARG(REG1, 1, LOC(4)); 
+            RVAL = REG1;
             TOPBASE(0);
             REBASE;
         }
@@ -6165,7 +5700,9 @@ void _idris_Prelude_46_List_46_dropWhile(VM* vm, VAL* oldbase) {
     }
     else {
         PROJECT(vm, LOC(2), 3, 0);
-        RVAL = LOC(2);
+        allocCon(REG1, vm, 0,0, 0);
+        
+        RVAL = REG1;
         TOPBASE(0);
         REBASE;
     }
@@ -6450,6 +5987,481 @@ void _idris_Prelude_46_List_46_elemBy(VM* vm, VAL* oldbase) {
         RVAL = REG1;
         TOPBASE(0);
         REBASE;
+    }
+}
+
+void _idris_Top_46_endComplete(VM* vm, VAL* oldbase) {
+    INITFRAME;
+    RESERVE(22);
+    ADDTOP(22);
+{
+        PROJECT(vm, LOC(1), 2, 2);
+{
+            PROJECT(vm, LOC(3), 4, 2);
+{
+                PROJECT(vm, LOC(5), 6, 2);
+{
+                    PROJECT(vm, LOC(0), 8, 2);
+{
+                        PROJECT(vm, LOC(9), 10, 2);
+{
+                            PROJECT(vm, LOC(11), 12, 2);
+                            LOC(14) = NULL;
+                            STOREOLD;
+                            BASETOP(0);
+                            CALL(_idris__64_Prelude_46_Classes_46_Ord_36_Nat);
+                            LOC(15) = RVAL;
+                            RESERVE(2);
+                            TOP(0) = LOC(14);
+                            TOP(1) = LOC(15);
+                            STOREOLD;
+                            BASETOP(0);
+                            ADDTOP(2);
+                            CALL(_idris_Prelude_46_Classes_46_compare);
+                            LOC(14) = RVAL;
+                            RESERVE(2);
+                            TOP(0) = LOC(14);
+                            TOP(1) = LOC(12);
+                            STOREOLD;
+                            BASETOP(0);
+                            ADDTOP(2);
+                            CALL(_idris__123_APPLY0_125_);
+                            LOC(14) = RVAL;
+                            LOC(15) = MKINT(1);
+                            RESERVE(2);
+                            TOP(0) = LOC(14);
+                            TOP(1) = LOC(15);
+                            STOREOLD;
+                            BASETOP(0);
+                            ADDTOP(2);
+                            CALL(_idris__123_APPLY0_125_);
+                            LOC(14) = RVAL;
+                            LOC(15) = NULL;
+                            LOC(16) = NULL;
+                            RESERVE(3);
+                            TOP(0) = LOC(14);
+                            TOP(1) = LOC(15);
+                            TOP(2) = LOC(16);
+                            STOREOLD;
+                            BASETOP(0);
+                            ADDTOP(3);
+                            CALL(_idris__123_Prelude_46_Classes_46_Nat_32_instance_32_of_32_Prelude_46_Classes_46_Ord_44__32_method_32__62_78_125_);
+                            LOC(14) = RVAL;
+                            if (CTAG(LOC(14)) == 0) {
+                                PROJECT(vm, LOC(14), 15, 0);
+                                LOC(15) = MKINT(0);
+                                LOC(16) = MKSTR(vm, """\x0a""");
+                                LOC(16) = idris_concat(vm, LOC(16), LOC(7));
+                                LOC(16) = idris_concat(vm, LOC(13), LOC(16));
+                                allocCon(REG1, vm, 0,2, 0);
+                                SETARG(REG1, 0, LOC(6)); SETARG(REG1, 1, LOC(16)); 
+                                LOC(16) = REG1;
+                                allocCon(REG1, vm, 0,2, 0);
+                                SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(16)); 
+                                LOC(16) = REG1;
+                                allocCon(REG1, vm, 0,2, 0);
+                                SETARG(REG1, 0, LOC(15)); SETARG(REG1, 1, LOC(16)); 
+                                RVAL = REG1;
+                                TOPBASE(0);
+                                REBASE;
+                            }
+                            else {
+                                PROJECT(vm, LOC(14), 15, 0);
+                                LOC(15) = MKINT(1);
+                                RESERVE(2);
+                                TOP(0) = LOC(6);
+                                TOP(1) = LOC(15);
+                                STOREOLD;
+                                BASETOP(0);
+                                ADDTOP(2);
+                                CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                LOC(15) = RVAL;
+                                if (CTAG(LOC(15)) == 0) {
+                                    PROJECT(vm, LOC(15), 16, 0);
+                                    LOC(16) = MKINT(2);
+                                    RESERVE(2);
+                                    TOP(0) = LOC(6);
+                                    TOP(1) = LOC(16);
+                                    STOREOLD;
+                                    BASETOP(0);
+                                    ADDTOP(2);
+                                    CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                    LOC(16) = RVAL;
+                                    if (CTAG(LOC(16)) == 0) {
+                                        PROJECT(vm, LOC(16), 17, 0);
+                                        LOC(17) = MKINT(3);
+                                        RESERVE(2);
+                                        TOP(0) = LOC(12);
+                                        TOP(1) = LOC(17);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                        LOC(17) = RVAL;
+                                        if (CTAG(LOC(17)) == 0) {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            LOC(18) = MKINT(0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(8);
+                                            TOP(1) = LOC(18);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                            LOC(18) = RVAL;
+                                            if (CTAG(LOC(18)) == 0) {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = LOC(8);
+                                            }
+                                            else {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = MKINT(4);
+                                            }
+                                        }
+                                        else {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(4);
+                                            TOP(1) = LOC(10);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Nat_46_minus);
+                                            LOC(17) = RVAL;
+                                        }
+                                        LOC(18) = MKSTR(vm, """\x0a""");
+                                        LOC(18) = idris_concat(vm, LOC(18), LOC(7));
+                                        LOC(18) = idris_concat(vm, LOC(13), LOC(18));
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(12)); SETARG(REG1, 1, LOC(18)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
+                                        RVAL = REG1;
+                                        TOPBASE(0);
+                                        REBASE;
+                                    }
+                                    else {
+                                        PROJECT(vm, LOC(16), 17, 0);
+                                        LOC(17) = MKINT(3);
+                                        RESERVE(2);
+                                        TOP(0) = LOC(12);
+                                        TOP(1) = LOC(17);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                        LOC(17) = RVAL;
+                                        if (CTAG(LOC(17)) == 0) {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            LOC(18) = MKINT(0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(8);
+                                            TOP(1) = LOC(18);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                            LOC(18) = RVAL;
+                                            if (CTAG(LOC(18)) == 0) {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = LOC(8);
+                                            }
+                                            else {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = MKINT(4);
+                                            }
+                                        }
+                                        else {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(4);
+                                            TOP(1) = LOC(10);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Nat_46_minus);
+                                            LOC(17) = RVAL;
+                                        }
+                                        LOC(18) = MKINT(1);
+                                        LOC(18) = idris_bigPlus(vm, LOC(12), LOC(18));
+                                        LOC(19) = MKSTR(vm, """\x0a""");
+                                        LOC(19) = idris_concat(vm, LOC(19), LOC(7));
+                                        LOC(19) = idris_concat(vm, LOC(13), LOC(19));
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(18)); SETARG(REG1, 1, LOC(19)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
+                                        RVAL = REG1;
+                                        TOPBASE(0);
+                                        REBASE;
+                                    }
+                                }
+                                else {
+                                    PROJECT(vm, LOC(15), 16, 0);
+                                    LOC(16) = MKINT(3);
+                                    RESERVE(2);
+                                    TOP(0) = LOC(12);
+                                    TOP(1) = LOC(16);
+                                    STOREOLD;
+                                    BASETOP(0);
+                                    ADDTOP(2);
+                                    CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                    LOC(16) = RVAL;
+                                    if (CTAG(LOC(16)) == 0) {
+                                        PROJECT(vm, LOC(16), 17, 0);
+                                        LOC(17) = MKINT(3);
+                                        RESERVE(2);
+                                        TOP(0) = LOC(12);
+                                        TOP(1) = LOC(17);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                        LOC(17) = RVAL;
+                                        if (CTAG(LOC(17)) == 0) {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            LOC(18) = MKINT(0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(8);
+                                            TOP(1) = LOC(18);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                            LOC(18) = RVAL;
+                                            if (CTAG(LOC(18)) == 0) {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = LOC(8);
+                                            }
+                                            else {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = MKINT(4);
+                                            }
+                                        }
+                                        else {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(4);
+                                            TOP(1) = LOC(10);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Nat_46_minus);
+                                            LOC(17) = RVAL;
+                                        }
+                                        LOC(18) = MKINT(0);
+                                        LOC(19) = MKINT(1);
+                                        LOC(20) = MKINT(3);
+                                        RESERVE(2);
+                                        TOP(0) = LOC(12);
+                                        TOP(1) = LOC(20);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                        LOC(20) = RVAL;
+                                        if (CTAG(LOC(20)) == 0) {
+                                            PROJECT(vm, LOC(20), 21, 0);
+                                            LOC(21) = MKINT(0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(8);
+                                            TOP(1) = LOC(21);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                            LOC(21) = RVAL;
+                                            if (CTAG(LOC(21)) == 0) {
+                                                PROJECT(vm, LOC(21), 22, 0);
+                                                LOC(20) = LOC(8);
+                                            }
+                                            else {
+                                                PROJECT(vm, LOC(21), 22, 0);
+                                                LOC(20) = MKINT(4);
+                                            }
+                                        }
+                                        else {
+                                            PROJECT(vm, LOC(20), 21, 0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(4);
+                                            TOP(1) = LOC(10);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Nat_46_minus);
+                                            LOC(20) = RVAL;
+                                        }
+                                        RESERVE(2);
+                                        TOP(0) = LOC(10);
+                                        TOP(1) = LOC(4);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Nat_46_minus);
+                                        LOC(21) = RVAL;
+                                        LOC(22) = MKINT(3);
+                                        RESERVE(2);
+                                        TOP(0) = LOC(12);
+                                        TOP(1) = LOC(22);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                        LOC(22) = RVAL;
+                                        if (CTAG(LOC(22)) == 0) {
+                                            PROJECT(vm, LOC(22), 23, 0);
+                                            LOC(23) = MKINT(0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(8);
+                                            TOP(1) = LOC(23);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                            LOC(23) = RVAL;
+                                            if (CTAG(LOC(23)) == 0) {
+                                                PROJECT(vm, LOC(23), 24, 0);
+                                                LOC(22) = LOC(8);
+                                            }
+                                            else {
+                                                PROJECT(vm, LOC(23), 24, 0);
+                                                LOC(22) = MKINT(4);
+                                            }
+                                        }
+                                        else {
+                                            PROJECT(vm, LOC(22), 23, 0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(4);
+                                            TOP(1) = LOC(10);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Nat_46_minus);
+                                            LOC(22) = RVAL;
+                                        }
+                                        RESERVE(2);
+                                        TOP(0) = LOC(21);
+                                        TOP(1) = LOC(22);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Nat_46_divNat);
+                                        LOC(21) = RVAL;
+                                        LOC(22) = MKINT(1);
+                                        RESERVE(2);
+                                        TOP(0) = LOC(21);
+                                        TOP(1) = LOC(22);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Nat_46_minus);
+                                        LOC(21) = RVAL;
+                                        RESERVE(6);
+                                        TOP(0) = LOC(19);
+                                        TOP(1) = LOC(4);
+                                        TOP(2) = LOC(20);
+                                        TOP(3) = LOC(21);
+                                        TOP(4) = LOC(13);
+                                        TOP(5) = LOC(7);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(6);
+                                        CALL(_idris_Top_46_replicateX);
+                                        LOC(19) = RVAL;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(18)); SETARG(REG1, 1, LOC(19)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
+                                        RVAL = REG1;
+                                        TOPBASE(0);
+                                        REBASE;
+                                    }
+                                    else {
+                                        PROJECT(vm, LOC(16), 17, 0);
+                                        LOC(17) = MKINT(3);
+                                        RESERVE(2);
+                                        TOP(0) = LOC(12);
+                                        TOP(1) = LOC(17);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(2);
+                                        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                        LOC(17) = RVAL;
+                                        if (CTAG(LOC(17)) == 0) {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            LOC(18) = MKINT(0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(8);
+                                            TOP(1) = LOC(18);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+                                            LOC(18) = RVAL;
+                                            if (CTAG(LOC(18)) == 0) {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = LOC(8);
+                                            }
+                                            else {
+                                                PROJECT(vm, LOC(18), 19, 0);
+                                                LOC(17) = MKINT(4);
+                                            }
+                                        }
+                                        else {
+                                            PROJECT(vm, LOC(17), 18, 0);
+                                            RESERVE(2);
+                                            TOP(0) = LOC(4);
+                                            TOP(1) = LOC(10);
+                                            STOREOLD;
+                                            BASETOP(0);
+                                            ADDTOP(2);
+                                            CALL(_idris_Prelude_46_Nat_46_minus);
+                                            LOC(17) = RVAL;
+                                        }
+                                        LOC(18) = MKINT(0);
+                                        RESERVE(6);
+                                        TOP(0) = LOC(13);
+                                        TOP(1) = LOC(12);
+                                        TOP(2) = LOC(8);
+                                        TOP(3) = LOC(4);
+                                        TOP(4) = LOC(10);
+                                        TOP(5) = LOC(7);
+                                        STOREOLD;
+                                        BASETOP(0);
+                                        ADDTOP(6);
+                                        CALL(_idris_Top_46__123_endComplete0_125_);
+                                        LOC(19) = RVAL;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(18)); SETARG(REG1, 1, LOC(19)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(4)); SETARG(REG1, 1, LOC(18)); 
+                                        LOC(18) = REG1;
+                                        allocCon(REG1, vm, 0,2, 0);
+                                        SETARG(REG1, 0, LOC(17)); SETARG(REG1, 1, LOC(18)); 
+                                        RVAL = REG1;
+                                        TOPBASE(0);
+                                        REBASE;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -8785,6 +8797,15 @@ void _idris_prim_95__95_subInt(VM* vm, VAL* oldbase) {
     REBASE;
 }
 
+void _idris_prim_95__95_toStrBigInt(VM* vm, VAL* oldbase) {
+    INITFRAME;
+    RESERVE(1);
+    ADDTOP(1);
+    RVAL = idris_castBigStr(vm, LOC(0));
+    TOPBASE(0);
+    REBASE;
+}
+
 void _idris_prim_95__95_toStrInt(VM* vm, VAL* oldbase) {
     INITFRAME;
     RESERVE(1);
@@ -9751,8 +9772,11 @@ void _idris_Prelude_46_List_46_span(VM* vm, VAL* oldbase) {
             allocCon(REG1, vm, 0,0, 0);
             
             LOC(6) = REG1;
+            allocCon(REG1, vm, 1,2, 0);
+            SETARG(REG1, 0, LOC(3)); SETARG(REG1, 1, LOC(4)); 
+            LOC(7) = REG1;
             allocCon(REG1, vm, 0,2, 0);
-            SETARG(REG1, 0, LOC(6)); SETARG(REG1, 1, LOC(2)); 
+            SETARG(REG1, 0, LOC(6)); SETARG(REG1, 1, LOC(7)); 
             RVAL = REG1;
             TOPBASE(0);
             REBASE;
@@ -9785,8 +9809,14 @@ void _idris_Prelude_46_List_46_span(VM* vm, VAL* oldbase) {
     }
     else {
         PROJECT(vm, LOC(2), 3, 0);
+        allocCon(REG1, vm, 0,0, 0);
+        
+        LOC(3) = REG1;
+        allocCon(REG1, vm, 0,0, 0);
+        
+        LOC(4) = REG1;
         allocCon(REG1, vm, 0,2, 0);
-        SETARG(REG1, 0, LOC(2)); SETARG(REG1, 1, LOC(2)); 
+        SETARG(REG1, 0, LOC(3)); SETARG(REG1, 1, LOC(4)); 
         RVAL = REG1;
         TOPBASE(0);
         REBASE;
@@ -10152,7 +10182,9 @@ void _idris_Prelude_46_List_46_take(VM* vm, VAL* oldbase) {
         }
         else {
             PROJECT(vm, LOC(2), 3, 0);
-            RVAL = LOC(2);
+            allocCon(REG1, vm, 0,0, 0);
+            
+            RVAL = REG1;
             TOPBASE(0);
             REBASE;
         }
@@ -10202,7 +10234,9 @@ void _idris_Prelude_46_List_46_takeWhile(VM* vm, VAL* oldbase) {
     }
     else {
         PROJECT(vm, LOC(2), 3, 0);
-        RVAL = LOC(2);
+        allocCon(REG1, vm, 0,0, 0);
+        
+        RVAL = REG1;
         TOPBASE(0);
         REBASE;
     }
@@ -13871,24 +13905,24 @@ void _idris__123_APPLY0_125_(VM* vm, VAL* oldbase) {
         TOP(1) = LOC(1);
         SLIDE(vm, 2);
         TOPBASE(2);
-        TAILCALL(_idris_Top_46_complete2);
-        break;
-    case 66012:
-        PROJECT(vm, LOC(0), 2, 1);
-        RESERVE(2);
-        TOP(0) = LOC(2);
-        TOP(1) = LOC(1);
-        SLIDE(vm, 2);
-        TOPBASE(2);
         TAILCALL(_idris_Top_46_completeAuto);
         break;
-    case 66013:
+    case 66012:
         PROJECT(vm, LOC(0), 2, 0);
         RESERVE(1);
         TOP(0) = LOC(1);
         SLIDE(vm, 1);
         TOPBASE(1);
         TAILCALL(_idris_Top_46_copenclose);
+        break;
+    case 66013:
+        PROJECT(vm, LOC(0), 2, 1);
+        RESERVE(2);
+        TOP(0) = LOC(2);
+        TOP(1) = LOC(1);
+        SLIDE(vm, 2);
+        TOPBASE(2);
+        TAILCALL(_idris_Top_46_endComplete);
         break;
     case 66014:
         PROJECT(vm, LOC(0), 2, 0);
@@ -15722,7 +15756,7 @@ void _idris__123_APPLY0_125_(VM* vm, VAL* oldbase) {
         break;
     case 66226:
         PROJECT(vm, LOC(0), 2, 0);
-        allocCon(REG1, vm, 66012,1, 0);
+        allocCon(REG1, vm, 66013,1, 0);
         SETARG(REG1, 0, LOC(1)); 
         RVAL = REG1;
         TOPBASE(0);
@@ -16884,17 +16918,6 @@ void _idris_Top_46__123_complete0_125_(VM* vm, VAL* oldbase) {
     TAILCALL(_idris_Prelude_46_Classes_46_intToBool);
 }
 
-void _idris_Top_46__123_complete20_125_(VM* vm, VAL* oldbase) {
-    INITFRAME;
-    RESERVE(1);
-    ADDTOP(1);
-    LOC(2) = MKSTR(vm, """\x0a""");
-    LOC(2) = idris_concat(vm, LOC(2), LOC(1));
-    RVAL = idris_concat(vm, LOC(0), LOC(2));
-    TOPBASE(0);
-    REBASE;
-}
-
 void _idris_Top_46__123_completeAuto0_125_(VM* vm, VAL* oldbase) {
     INITFRAME;
     RESERVE(1);
@@ -16954,6 +16977,67 @@ void _idris_Effects_46__123_eff0_125_(VM* vm, VAL* oldbase) {
     SLIDE(vm, 2);
     TOPBASE(2);
     TAILCALL(_idris__123_APPLY0_125_);
+}
+
+void _idris_Top_46__123_endComplete0_125_(VM* vm, VAL* oldbase) {
+    INITFRAME;
+    RESERVE(3);
+    ADDTOP(3);
+    LOC(6) = MKSTR(vm, "/* ");
+    LOC(7) = MKINT(3);
+    RESERVE(2);
+    TOP(0) = LOC(1);
+    TOP(1) = LOC(7);
+    STOREOLD;
+    BASETOP(0);
+    ADDTOP(2);
+    CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+    LOC(7) = RVAL;
+    if (CTAG(LOC(7)) == 0) {
+        PROJECT(vm, LOC(7), 8, 0);
+        LOC(8) = MKINT(0);
+        RESERVE(2);
+        TOP(0) = LOC(2);
+        TOP(1) = LOC(8);
+        STOREOLD;
+        BASETOP(0);
+        ADDTOP(2);
+        CALL(_idris_Prelude_46_Classes_46__64_Prelude_46_Classes_46_Eq_36_Nat_58__33__61__61__58_0);
+        LOC(8) = RVAL;
+        if (CTAG(LOC(8)) == 0) {
+            PROJECT(vm, LOC(8), 9, 0);
+            LOC(7) = LOC(2);
+        }
+        else {
+            PROJECT(vm, LOC(8), 9, 0);
+            LOC(7) = MKINT(4);
+        }
+    }
+    else {
+        PROJECT(vm, LOC(7), 8, 0);
+        RESERVE(2);
+        TOP(0) = LOC(3);
+        TOP(1) = LOC(4);
+        STOREOLD;
+        BASETOP(0);
+        ADDTOP(2);
+        CALL(_idris_Prelude_46_Nat_46_minus);
+        LOC(7) = RVAL;
+    }
+    RESERVE(1);
+    TOP(0) = LOC(7);
+    STOREOLD;
+    BASETOP(0);
+    ADDTOP(1);
+    CALL(_idris_Prelude_46__64_Prelude_46_Show_36_Nat_58__33_show_58_0);
+    LOC(7) = RVAL;
+    LOC(8) = MKSTR(vm, " */""\x0a""");
+    LOC(8) = idris_concat(vm, LOC(8), LOC(5));
+    LOC(7) = idris_concat(vm, LOC(7), LOC(8));
+    LOC(6) = idris_concat(vm, LOC(6), LOC(7));
+    RVAL = idris_concat(vm, LOC(0), LOC(6));
+    TOPBASE(0);
+    REBASE;
 }
 
 void _idris_Effects_46__123_execEff0_125_(VM* vm, VAL* oldbase) {
@@ -26658,6 +26742,15 @@ void _idris_Prelude_46__64_Prelude_46_Show_36_BValue_58__33_show_58_0(VM* vm, VA
     }
 }
 
+void _idris_Prelude_46__64_Prelude_46_Show_36_Nat_58__33_show_58_0(VM* vm, VAL* oldbase) {
+    INITFRAME;
+    RESERVE(1);
+    ADDTOP(1);
+    RVAL = idris_castBigStr(vm, LOC(0));
+    TOPBASE(0);
+    REBASE;
+}
+
 void _idris_Prelude_46__64_Prelude_46_Show_36_String_58__33_show_58_0(VM* vm, VAL* oldbase) {
     INITFRAME;
     RESERVE(3);
@@ -27105,12 +27198,12 @@ void _idris_Top_46_bracketBuilder_95_case(VM* vm, VAL* oldbase) {
             LOC(13) = NULL;
             LOC(14) = NULL;
             LOC(15) = NULL;
-            allocCon(REG1, vm, 66225,0, 0);
+            allocCon(REG1, vm, 66226,0, 0);
             
             LOC(16) = REG1;
             LOC(17) = NULL;
             LOC(18) = NULL;
-            allocCon(REG1, vm, 66013,0, 0);
+            allocCon(REG1, vm, 66012,0, 0);
             
             LOC(19) = REG1;
             allocCon(REG1, vm, 66105,0, 0);

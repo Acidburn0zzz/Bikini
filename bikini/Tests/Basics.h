@@ -6,8 +6,8 @@
 #include <array>
 
 test_set basics_tests
-    std::string("Basics"),
-      { std::make_tuple( \
+    std::string("Basics"), {
+        std::make_tuple(
         std::string("Basics test"),
         std::function<bool()>([]() -> bool
             let a = 0
@@ -23,4 +23,5 @@ test_set basics_tests
                         a++
             
             return a == 3
-        ))}};
+        )) /*;*/
+;

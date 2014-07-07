@@ -5,8 +5,8 @@
 #include <iostream>
 
 test_set memo_tests
-    std::string("Memoization"),
-    {   std::make_tuple( \
+    std::string("Memoization"), {
+        std::make_tuple(
         std::string("Memoization test"),
         std::function<bool()>([]() -> bool
             
@@ -19,4 +19,5 @@ test_set memo_tests
             std::cout << memoized_sum(2, 2) << std::endl
             std::cout << memoized_sum(2, 3) << std::endl
             return memoized_sum(2, 2) == 4
-        ))}};
+        )) /*;*/
+;
