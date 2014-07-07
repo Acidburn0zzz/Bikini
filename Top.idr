@@ -137,7 +137,8 @@ endComplete (sc, oa, ca, a) (sb, ob, cb, b) = do
                 let step = if stex == 0 then sc
                                         else stex
                 -- DEBUG: Display recognized indent length
-                let s = " /* |" ++ (show step) ++ "| */ \n"
+                -- let s = " /* |" ++ (show step) ++ "| */ \n"
+                let s = "\n"
                 if cb == 1
                     then do let diff = ((oa - ob) `div` step) - 1
                             let str = replicateX 1 ob step diff a b
