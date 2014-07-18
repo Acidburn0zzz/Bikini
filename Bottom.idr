@@ -8,7 +8,7 @@ import Top
 import Control.IOExcept
 import Control.Eternal
 
-quest : (List String) -> Bool -> { [STDIO] } Eff IO ()
+quest : (List String) -> Bool -> { [STDIO] } Eff ()
 quest file bra = do
     let onestring = concat file
     case parse (some bParser) onestring of
@@ -16,7 +16,7 @@ quest file bra = do
       Right v  => putStrLn $ finalize v bra
 
 FileIO : Type -> Type -> Type
-FileIO st t = { [FILE_IO st, STDIO] } Eff IO t 
+FileIO st t = { [FILE_IO st, STDIO] } Eff t 
 
 readFile : FileIO (OpenFile Read) (List String)
 readFile = readAcc [] where
