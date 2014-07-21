@@ -40,5 +40,6 @@ env:
   - CPP14=1
 
 script:
-  - echo "I need idris here..."
+  - g++ -Ilib -O3 -Wall -std=c++1y -o tests lib/Tests/Run.cpp
+  - tests
 
