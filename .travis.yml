@@ -41,5 +41,5 @@ env:
 
 script:
   - g++ -Ilib -O3 -Wall -std=c++1y -o tests lib/Tests/Run.cpp
-  - tests
+  - ./tests
 
