@@ -1,4 +1,4 @@
-#include "lib/Bikini.h"
+#include "../lib/Bikini.h"
 
 #include <iostream>
 #include <array>
