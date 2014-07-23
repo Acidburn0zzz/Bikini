@@ -17,12 +17,12 @@ complete a b = do
                       , [':'],  ['='], ['{']
                       , ['(']
                       ]
-    let prgo = pck rl [ ['\\'], ['#']
+    let prgo = pck rl [ ['#']
                       , (unpack "template")
                       ]
 
     let len = length $ drop la ua
-    let scl = if pck rl [ (unpack "/*;*/") ]
+    let scl = if sck rl [ (unpack "/*;*/") ]
                     then ""
                     else ";"
 

@@ -26,9 +26,9 @@ cat out.cpp
 echo Compiling...
 
 ::Bikini -c bikini\tests.cxx
-g++ -o test.exe out.cpp -O3 -Wall -std=c++1y
+g++ -o bikini/tests.exe out.cpp -O3 -Wall -std=c++1y
 
-echo Tests:
+echo Tests
 
 bikini\tests.exe
 
