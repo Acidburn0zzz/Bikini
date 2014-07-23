@@ -19,7 +19,7 @@ int main()
              [=> 'a' => 0
              [=> 'b' => 1
              [~>     => 666
-         
+        
     cout << endl
     
     array <int, 5> Arr = { 0, 1, 2, 3, 4 }

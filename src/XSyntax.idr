@@ -35,7 +35,7 @@ blockRule' : (List Nat) -> Nat -> Nat -> String -> ((List Nat), String)
 blockRule' ln nn l s =
     let rr = srpl ln nn
     in case ln # nn of
-        Just n => if n > 0 && l == n then ((rr 0), s)
+        Just n => if n > 0 && l <= n then ((rr 0), s)
                                      else ((rr n), "")
         _ => ((rr 0), s)
 
@@ -51,7 +51,7 @@ blockRules ln l w = map (\(nn, s) => case ln # nn of
 {-
 blockRules' : (List Nat) -> Nat -> List (Nat, String) -> List (Nat, String)
 blockRules' ln l = map (\(nn, s) => case ln # nn of
-                                      Just n => if n > 0 && l == n then (0, s)
+                                      Just n => if n > 0 && l <= n then (0, s)
                                                                    else (n, "")
                                       _ => (0, s)
                        )
