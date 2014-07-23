@@ -4,36 +4,7 @@ import Control.IOExcept
 import Control.Eternal
 
 import Syntax
-
-complete : String -> String -> String
-complete a b = do
-    let ua  = unpack a
-    let la  = length $ takeWhile (== ' ') ua
-    let lb  = length $ takeWhile (== ' ') $ unpack b
-    
-
-    let sys      = isPrefixOf ['#'] ua
-    let template = isPrefixOf (unpack "template") ua
-    
-    let gogo = isSuffixOf ['\\'] ua || isSuffixOf [','] ua  
-            || isSuffixOf ['&'] ua  || isSuffixOf [':'] ua
-            || isSuffixOf ['='] ua  || isSuffixOf ['{'] ua
-            || isSuffixOf ['('] ua
-    
-    let len = length $ drop la ua
-
-    let scl = -- Temporary Hack to avoid ';'
-        if isSuffixOf (unpack "/*;*/") ua
-            then ""
-            else ";"
-
-    if len == 0 || sys || template || gogo
-        then (a ++ "\n" ++ b)
-        else if la == lb
-                then (a ++ scl ++ "\n" ++ b)
-                else if la > lb then let rpl = pack $ with List replicate lb ' '
-                                     in (a ++ scl ++ "\n" ++ rpl ++ "}\n" ++ b)
-                                else (a ++ " {\n" ++ b)
+import Complete
 
 blockRule : Nat -> Nat -> String -> List Char -> Nat
 blockRule n l s w =
@@ -61,7 +32,7 @@ completeAuto (mu, a) (mmu, b) = do
                 if isSuffixOf cl ua
                     then do let lb  = length $ takeWhile (== ' ') $ unpack b
                             let rpl = pack $ with List replicate lb ' '
-                            let (mn, semim) = blockRule' mu lb ("\n" ++ rpl ++ "} ();")
+                            let (mn, semim) = blockRule' mu lb ("\n" ++ rpl ++ "} ()")
                             (mn, (a ++ "\n" ++ b ++ semim))
                     else (mu, (a ++ "\n" ++ b))
 

@@ -20,13 +20,13 @@ tests.exe
 
 echo building Test application...
 
-::Bikini bikini/tests.cxx > out.cpp
-::cat out.cpp
+Bikini bikini/tests.cxx > out.cpp
+cat out.cpp
 
 echo Compiling...
 
-Bikini -c bikini\tests.cxx
-::g++ -o test.exe out.cpp -O3 -Wall -std=c++1y
+::Bikini -c bikini\tests.cxx
+g++ -o test.exe out.cpp -O3 -Wall -std=c++1y
 
 echo Tests:
 

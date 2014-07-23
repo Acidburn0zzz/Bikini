@@ -1,4 +1,4 @@
-#include "../lib/Bikini.h"
+#include "lib/Bikini.h"
 
 #include <iostream>
 #include <array>
@@ -13,14 +13,15 @@ int main()
              [=> 666 => 0
              [=> 111 => 1
              [~>     => 666
+    ;
     
     cout << "a : " \
          << match ('a')
              [=> 'a' => 0
              [=> 'b' => 1
              [~>     => 666
-         
-    cout << endl
+         << endl
+    ;
     
     array <int, 5> Arr = { 0, 1, 2, 3, 4 }
     
