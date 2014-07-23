@@ -1,5 +1,5 @@
 module Main
-import Bottom
+import IOProcess
 
 import Control.Eternal
 import Effect.System
