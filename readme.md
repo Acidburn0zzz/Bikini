@@ -13,14 +13,13 @@ let pm = match (x)
          [=> 666 => 0
          [=> 111 => 1
          [~>     => 666
-
+;
 cout << "a : " \
      << match ('a')
          [=> 'a' => 0
          [=> 'b' => 1
          [~>     => 666
-     
-cout << endl
+     << endl; /*}*/
 
 array <int, 5> Arr = { 0, 1, 2, 3, 4 }
 
@@ -59,6 +58,8 @@ go (buff, 4)
     cout << "x [=]:" << x << endl
 ()
 cout << "x:" << x << endl
+
+return 0
 ```
 
 Tests

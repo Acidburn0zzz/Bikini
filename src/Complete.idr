@@ -13,12 +13,12 @@ complete a b = do
     let lb = length $ takeWhile (== ' ') $ unpack b
     let rl = drop la ua
 
-    let sfgo = sck rl [ ['\\'], [','], ['&']
-                      , [':'],  ['='], ['{']
-                      , ['(']
-                      ]
     let prgo = pck rl [ ['#']
                       , (unpack "template")
+                      ]
+    let sfgo = sck rl [ ['\\'], [','], ['&']
+                      , [':'],  ['='], ['{']
+                      , ['('], (unpack "/*}*/")
                       ]
 
     let len = length $ drop la ua

@@ -2,12 +2,13 @@ module XSyntax
 
 import Control.Eternal
 
-xrules : List (Nat, String)
-xrules = [
-    (0, "[&]() { switch /* match */")
+xrules : List (Nat, String, Bool)
+xrules = with List [
+    (0, "[&]() { switch /* match */", True)
     ]
+
 yrules : List (Nat, String)
-yrules = [
+yrules = with List [
     (0, "} ()")
     ]
 
@@ -39,12 +40,14 @@ blockRule' ln nn l s =
                                      else ((rr n), "")
         _ => ((rr 0), s)
 
-blockRules : (List Nat) -> Nat -> List Char -> List (Nat, String) -> (List Nat)
-blockRules ln l w = map (\(nn, s) => case ln # nn of
-                                      Just n => if n == 0 then if isInfixOf (unpack s) w then l
-                                                                                         else 0
-                                                          else n
-                                      _ => 0
+blockRules : (List Nat) -> Nat -> List Char -> List (Nat, String, Bool) -> (List Nat)
+blockRules ln l w = map (\(nn, s, i) => case ln # nn of
+                                          Just n => if n == 0 then if i then if isInfixOf (unpack s) w then l
+                                                                                                       else 0
+                                                                        else if isPrefixOf (unpack s) w then l
+                                                                                                        else 0
+                                                              else n
+                                          _ => 0
                         )
                         
 -- Track idris issue to fix it
@@ -73,7 +76,7 @@ completeAuto (lmu, a) (_, b) = do
                             let rpl = pack $ with List replicate lb ' '
                             
                             -- let (mn, semim) = blockRules' lmu lb rpl yrules
-                            let (mn, semim) = blockRule' lmu 0 lb ("\n" ++ rpl ++ "} ();")
+                            let (mn, semim) = blockRule' lmu 0 lb ("\n" ++ rpl ++ "} ()")
                             
                             (mn, (a ++ "\n" ++ b ++ semim))
                     else (lmu, (a ++ "\n" ++ b))
