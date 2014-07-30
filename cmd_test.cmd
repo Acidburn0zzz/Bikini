@@ -20,13 +20,14 @@ tests.exe
 
 echo building Test application...
 
-Bikini bikini/tests.cxx > out.cpp
+Bikini bikini/Project/test.h > test.h
+Bikini bikini/Project/test.cxx > out.cpp
 cat out.cpp
 
 echo Compiling...
 
 ::Bikini -c bikini\tests.cxx
-g++ -o bikini/tests.exe out.cpp -O3 -Wall -std=c++1y
+g++ -I . -o bikini/tests.exe out.cpp -O3 -Wall -std=c++1y
 
 echo Tests
 
@@ -36,6 +37,8 @@ echo Cleaning...
 
 rm -rf tests.exe
 rm -rf bikini/tests.exe
+
 rm -rf out.cpp
+rm -rf test.h
 
 pause
