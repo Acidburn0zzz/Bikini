@@ -1,2 +1,2 @@
-bikini: test
-executable: test
+bikini : "test"
+executable : "test"

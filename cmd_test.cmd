@@ -22,6 +22,8 @@ tests.exe
 
 echo building Test application...
 
+Bikini -b bikini/Project/test.bproj
+
 Bikini bikini/Project/test.h > test.h
 Bikini bikini/Project/test.cxx > out.cpp
 cat out.cpp
