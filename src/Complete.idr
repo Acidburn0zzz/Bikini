@@ -14,7 +14,6 @@ complete a b = do
     let rl = drop la ua
 
     let prgo = pck rl [ ['#']
-                      , (unpack "template")
                       ]
     let sfgo = sck rl [ ['\\'], [','], ['&']
                       , [':'],  ['='], ['{']

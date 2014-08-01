@@ -3,7 +3,7 @@
 
 #include <map>
 
-template <typename ReturnType, typename... Args>
+template <typename ReturnType, typename... Args> \
 std::function<ReturnType (Args...)> memoize(std::function<ReturnType (Args...)> func) {
     std::map<std::tuple<Args...>, ReturnType> cache;
     return ([=](Args... args) mutable {
