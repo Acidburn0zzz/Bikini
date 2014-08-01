@@ -1,6 +1,6 @@
 package Bikini
 
-modules = Helper, Syntax, Complete, XSyntax, Lex, IOProcess, Bikini
+modules = Helper, Syntax, Complete, XSyntax, Lex, IOProcess, Top, Bikini
 opts = "-p effects -p Control.Eternal -p lightyear" 
 
 executable = Bikini

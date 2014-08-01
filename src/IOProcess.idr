@@ -55,16 +55,3 @@ readFile = readAcc [] where
   readAcc : List String -> FileIO (OpenFile Read) (List String)
   readAcc acc = if (not !eof) then readAcc $ !readLine :: acc
                               else return  $ reverse acc
-
-codegen : String -> FileIO () ()
-codegen f = do case !(open f Read) of
-                True => do quest !readFile True
-                           close {- =<< -}
-                False => putStrLn ("Error!")
-
-compile : String -> FileIO () ()
-compile f = do case !(open f Read) of
-                True  => do dat <- readFile
-                            close {- =<< -}
-                            questC dat True f
-                False => putStrLn ("Error!")
