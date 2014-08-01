@@ -22,22 +22,22 @@ writeFile (x :: xs) = do writeLine x
                          writeFile xs
 
 save : (List String) -> String -> FileIO () ()
-save ww f = do case !(open f Write) of
+save ww f = case !(open f Write) of
                 True  => do writeFile ww
                             close {- =<< -}
                 False => putStrLn ("Error!")
 
 quest : (List String) -> Bool -> { [STDIO] } Eff ()
-quest file bra = do
+quest file bra =
     let onestring = concat file
-    case parse (some bParser) onestring of
-      Left err => putStrLn $ "error: " ++ err
-      Right v  => putStrLn $ finalize v bra
+    in case parse (some bParser) onestring of
+          Left err => putStrLn $ "error: " ++ err
+          Right v  => putStrLn $ finalize v bra
 
 questC : (List String) -> Bool -> String -> FileIO () ()
-questC file bra fx = do
+questC file bra fx =
     let onestring = concat file
-    case parse (some bParser) onestring of
+    in case parse (some bParser) onestring of
       Left err => putStrLn $ ("error: " ++ err)
       Right v  => do let cpp = finalize v bra
                      let sln = splitLines cpp
