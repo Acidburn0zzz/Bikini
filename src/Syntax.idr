@@ -42,7 +42,7 @@ bString = char '"' $> map pack bString' <?> "Simple string"
 
 bParser : Parser BValue
 bParser =  (map BString bString)
-       <|> (map BLet $ string "let" $> map pack parseWord' <?> "bLet")
+       <|> (map BLet $ string "let" <$ char ' ' $> map pack parseWord'' <?> "bLet")
        
        <|> (map BMatch  $ string "match"    $> map pack parseWord' <?> "bMatch")
        <|> (map BMatchc $ string "[=>"      $> map pack parseUntilLine <?> "bMatchc")

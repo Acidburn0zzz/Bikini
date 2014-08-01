@@ -45,6 +45,10 @@ bString' = (char '"' $!> pure Prelude.List.Nil) <|> do
 parseWord' : Parser (List Char)
 parseWord' = (char ' ' $!> pure Prelude.List.Nil) <|> do
     c <- satisfy (/= ' '); map (c ::) parseWord'
+    
+parseWord'' : Parser (List Char)
+parseWord'' = (pure Prelude.List.Nil) <|> do
+    c <- satisfy (/= ' '); map (c ::) parseWord'
   
 parseUntilLine : Parser (List Char)
 parseUntilLine = (char '\n' $!> pure Prelude.List.Nil) <|> do

@@ -9,6 +9,7 @@ Bikini bikini/Prelude/Bikini.h  > lib/Prelude/Bikini.hpp
 Bikini bikini/Prelude/Memo.h    > lib/Prelude/Memo.hpp
 Bikini bikini/Prelude/Test.h    > lib/Prelude/Test.hpp
 Bikini bikini/Prelude/GC.h      > lib/Prelude/GC.hpp
+Bikini bikini/Prelude/GC.cxx    > lib/Prelude/GC.cpp
 
 Bikini bikini/Tests/Basics.h    > lib/Tests/Basics.hpp
 Bikini bikini/Tests/Memo.h      > lib/Tests/Memo.hpp

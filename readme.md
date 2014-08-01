@@ -100,9 +100,12 @@ there is let in the string
 Cleaning...
 ```
 
+Projects used:
+--------------
 
-
-
+ - GC: https://github.com/axilmar/cppgc
+ - Idris: https://github.com/idris-lang/Idris-dev
+ - ...
 
 
 
