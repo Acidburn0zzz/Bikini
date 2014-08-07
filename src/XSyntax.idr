@@ -51,6 +51,7 @@ blockRules ln l w = map (\(nn, s, i) => case ln # nn of
                         )
                         
 -- Track idris issue to fix it
+-- Issue to track: https://github.com/idris-lang/Idris-dev/issues/1418
 {-
 blockRules' : (List Nat) -> Nat -> List (Nat, String) -> List (Nat, String)
 blockRules' ln l = map (\(nn, s) => case ln # nn of
