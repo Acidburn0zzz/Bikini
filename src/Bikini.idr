@@ -5,7 +5,7 @@ import Control.Eternal
 import Effect.System
 
 version : String
-version = "0.0.2"
+version = "0.0.3"
 
 help : IO ()
 help = do

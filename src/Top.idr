@@ -58,12 +58,12 @@ instance BuildY YamlValue where
       fmtItem (k, v) = parseBuildConfig k v
   buildY (YamlArray xs) = concat $ map buildY xs
 
-buildB : (List String) -> { [STDIO] } Eff ()
+buildB : (List String) -> FileIO () ()
 buildB file =
     let onestring = concat file
     in case parse yamlToplevelValue onestring of
        Left err => putStrLn $ "error: " ++ err
-       Right v  => buildProject $ buildY v
+       Right v  => buildProject (buildY v) []
 
 codegen : String -> FileIO () ()
 codegen f = do case !(open f Read) of
@@ -80,6 +80,7 @@ compile f = do case !(open f Read) of
 
 build : String -> FileIO () ()
 build f = do case !(open f Read) of
-                True => do buildB !readFile
+                True => do dat <- readFile
                            close {- =<< -}
+                           buildB dat
                 False => putStrLn ("Error!")

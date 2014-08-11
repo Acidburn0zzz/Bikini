@@ -22,25 +22,27 @@ tests.exe
 
 echo building Test application...
 
-Bikini -b bikini/Project/test.bproj
+pushd .
+cd .\bikini/Project/
+set ABS_PATH=%CD%
+    "%ABS_PATH%/../../Bikini" -b %ABS_PATH%/test.bproj
+popd
 
-Bikini bikini/Project/test.h > test.h
-Bikini bikini/Project/test.cxx > out.cpp
-cat out.cpp
-
-echo Compiling...
-
+::Bikini bikini/Project/test.h > test.h
+::Bikini bikini/Project/test.cxx > out.cpp
+::cat out.cpp
+::echo Compiling...
 ::Bikini -c bikini\tests.cxx
-g++ -I . -o bikini/tests.exe out.cpp -O3 -Wall -std=c++1y
+::g++ -I . -o bikini/tests.exe out.cpp -O3 -Wall -std=c++1y
 
 echo Tests
 
-bikini\tests.exe
+bikini\Project\test.exe
 
 echo Cleaning...
 
 rm -rf tests.exe
-rm -rf bikini/tests.exe
+rm -rf bikini/Project/test.exe
 
 rm -rf out.cpp
 rm -rf test.h

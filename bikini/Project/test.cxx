@@ -1,5 +1,5 @@
-#include "lib/Bikini.h"
-#include "test.h"
+#include "../../lib/Bikini.h"
+#include "test.hpp"
 
 #include <iostream>
 #include <array>
