@@ -13,9 +13,8 @@ bquestX : List String -> Bool -> String -> FileIO () ()
 bquestX file bra cpf =
     case parse (some bParser) (concat file) of
       Left err => putStrLn $ "Error: " ++ err
-      Right v  => do let cpp = finalize v bra
-                     let sln = splitLines cpp
-                     save sln cpf
+      Right v  => let sln = splitLines $ finalize v bra
+                  in save sln cpf
 
 intercalateC : List String -> String
 intercalateC [] = ""
@@ -28,12 +27,12 @@ cleanUp (x::xs) = do sys $ "rm -rf " ++ x
                      cleanUp xs
 
 bquestY : String -> List String -> { [SYSTEM] } Eff ()
-bquestY f xs = do let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
-                  sys $ "g++ -I . -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
-                  cleanUp xs
+bquestY f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
+               in do sys $ "g++ -I . -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
+                     cleanUp xs
 
 bcompileX : String -> String -> FileIO () ()
-bcompileX f cpf = do case !(open f Read) of
+bcompileX f cpf = case !(open f Read) of
                       True  => do dat <- readFile
                                   close {- =<< -}
                                   bquestX dat True cpf
@@ -46,8 +45,6 @@ buildProject [x] ys = do putStrLn $ "out: " ++ x
                          bquestY x ys
                          putStrLn "Done"
 buildProject (x :: xs) ys = do putStr $ "compile: " ++ x
-                               let ffs = with String splitOn '.' x
-                               let rff = reverse ffs
                                {- DAMN IDRIS BUG !!!
                                let ext = case head' rff of
                                             Just "cxx"  => "cpp"
@@ -62,9 +59,11 @@ buildProject (x :: xs) ys = do putStr $ "compile: " ++ x
                                                     then "hpp"
                                                     else "WTF"
                                case rff # 1 of
-                                Just f => do let cpf = f ++ "." ++ ext
-                                             putStrLn $ " -> " ++ cpf
-                                             bcompileX x cpf
-                                             buildProject xs $ cpf :: ys
+                                Just f => let cpf = f ++ "." ++ ext
+                                          in do putStrLn $ " -> " ++ cpf
+                                                bcompileX x cpf
+                                                buildProject xs $ cpf :: ys
                                 _ => do putStrLn "Error!"
                                         buildProject xs ys
+  where rff : List String
+        rff = reverse $ with String splitOn '.' x

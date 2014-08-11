@@ -7,24 +7,7 @@ pck : List Char -> (List (List Char)) -> Bool
 pck rl = any (\lc => isPrefixOf lc rl)
 
 complete : String -> String -> String
-complete a b = do
-    let ua = unpack a
-    let la = length $ takeWhile (== ' ') ua
-    let lb = length $ takeWhile (== ' ') $ unpack b
-    let rl = drop la ua
-
-    let prgo = pck rl [ ['#']
-                      ]
-    let sfgo = sck rl [ ['\\'], [','], ['&']
-                      , [':'],  ['='], ['{']
-                      , ['('], (unpack "/*}*/")
-                      ]
-
-    let len = length $ drop la ua
-    let scl = if sck rl [ (unpack "/*;*/") ]
-                    then ""
-                    else ";"
-
+complete a b =
     if len == 0 || sfgo || prgo
         then (a ++ "\n" ++ b)
         else if la == lb
@@ -32,3 +15,33 @@ complete a b = do
                 else if la > lb then let rpl = pack $ with List replicate lb ' '
                                      in (a ++ scl ++ "\n" ++ rpl ++ "}\n" ++ b)
                                 else (a ++ " {\n" ++ b)
+  where
+    ua : List Char
+    ua = unpack a
+
+    la : Nat
+    la = length $ takeWhile (== ' ') ua
+
+    lb : Nat
+    lb = length $ takeWhile (== ' ') $ unpack b
+
+    rl : List Char
+    rl = drop la ua
+
+    prgo : Bool
+    prgo = pck rl [ ['#']
+                  ]
+
+    sfgo : Bool    
+    sfgo = sck rl [ ['\\'], [','], ['&']
+                  , [':'],  ['='], ['{']
+                  , ['('], (unpack "/*}*/")
+                  ]
+
+    scl : String
+    scl = if sck rl [ (unpack "/*;*/") ]
+                    then ""
+                    else ";"
+
+    len : Nat
+    len = length $ drop la ua

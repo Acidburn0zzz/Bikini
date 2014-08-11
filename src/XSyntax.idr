@@ -12,33 +12,38 @@ yrules = with List [
     (0, "} ()")
     ]
 
-rpl : (List Nat) -> Nat -> Nat -> (List Nat)
-rpl xs i x = do
-    let fore = take i xs
-    let aft  = drop (i+1) xs
-    fore ++ (x :: aft)
+rpl : List Nat -> Nat -> Nat -> List Nat
+rpl xs i x = fore ++ (x :: aft)
+  where
+    fore : List Nat
+    fore = take i xs
     
-srpl : (List Nat) -> Nat -> Nat -> (List Nat)
+    aft : List Nat
+    aft  = drop (i+1) xs
+    
+srpl : List Nat -> Nat -> Nat -> List Nat
 srpl xs i x = if i >= 0 && i < length xs
                 then rpl xs i x
                 else xs
 
 blockRule : (List Nat) -> Nat -> Nat -> String -> List Char -> (List Nat)
 blockRule ln nn l s w =
-    let rr = srpl ln nn
-    in case ln # nn of
+    case ln # nn of
         Just n => if n == 0 then if isInfixOf (unpack s) w then rr l
                                                            else rr 0
                             else rr n
         _ => rr 0
+  where rr : Nat -> List Nat
+        rr = srpl ln nn
 
 blockRule' : (List Nat) -> Nat -> Nat -> String -> ((List Nat), String)
 blockRule' ln nn l s =
-    let rr = srpl ln nn
-    in case ln # nn of
+    case ln # nn of
         Just n => if n > 0 && l <= n then ((rr 0), s)
                                      else ((rr n), "")
         _ => ((rr 0), s)
+  where rr : Nat -> List Nat
+        rr = srpl ln nn
 
 blockRules : (List Nat) -> Nat -> List Char -> List (Nat, String, Bool) -> (List Nat)
 blockRules ln l w = map (\(nn, s, i) => case ln # nn of
@@ -62,9 +67,7 @@ blockRules' ln l = map (\(nn, s) => case ln # nn of
 -}
 
 completeAuto : ((List Nat), String) -> ((List Nat), String) -> ((List Nat), String)
-completeAuto (lmu, a) (_, b) = do
-    let ua  = unpack b
-    let op : List Char = ['{']
+completeAuto (lmu, a) (_, b) =
     if isSuffixOf op ua
         then do
              let la  = length $ takeWhile (== ' ') ua
@@ -81,3 +84,9 @@ completeAuto (lmu, a) (_, b) = do
                             
                             (mn, (a ++ "\n" ++ b ++ semim))
                     else (lmu, (a ++ "\n" ++ b))
+  where
+    ua : List Char
+    ua = unpack b
+    
+    op : List Char
+    op = ['{']

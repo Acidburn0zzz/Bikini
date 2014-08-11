@@ -60,26 +60,27 @@ instance BuildY YamlValue where
 
 buildB : (List String) -> FileIO () ()
 buildB file =
-    let onestring = concat file
-    in case parse yamlToplevelValue onestring of
+    case parse yamlToplevelValue onestring of
        Left err => putStrLn $ "error: " ++ err
        Right v  => buildProject (buildY v) []
+  where onestring : String
+        onestring = concat file
 
 codegen : String -> FileIO () ()
-codegen f = do case !(open f Read) of
+codegen f = case !(open f Read) of
                 True => do quest !readFile True
                            close {- =<< -}
                 False => putStrLn ("Error!")
 
 compile : String -> FileIO () ()
-compile f = do case !(open f Read) of
+compile f = case !(open f Read) of
                 True  => do dat <- readFile
                             close {- =<< -}
                             questC dat True f
                 False => putStrLn ("Error!")
 
 build : String -> FileIO () ()
-build f = do case !(open f Read) of
+build f = case !(open f Read) of
                 True => do dat <- readFile
                            close {- =<< -}
                            buildB dat

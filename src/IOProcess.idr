@@ -29,18 +29,17 @@ save ww f = case !(open f Write) of
 
 quest : (List String) -> Bool -> { [STDIO] } Eff ()
 quest file bra =
-    let onestring = concat file
-    in case parse (some bParser) onestring of
+    case parse (some bParser) onestring of
           Left err => putStrLn $ "error: " ++ err
           Right v  => putStrLn $ finalize v bra
+  where onestring : String
+        onestring = concat file
 
 questC : (List String) -> Bool -> String -> FileIO () ()
 questC file bra fx =
-    let onestring = concat file
-    in case parse (some bParser) onestring of
+    case parse (some bParser) onestring of
       Left err => putStrLn $ ("error: " ++ err)
-      Right v  => do let cpp = finalize v bra
-                     let sln = splitLines cpp
+      Right v  => do let sln = splitLines $ finalize v bra
                      let ffs = with String splitOn '.' fx
                      case ffs # 0 of
                         Just f => do let cpf = (f ++ ".cpp")
@@ -49,6 +48,8 @@ questC file bra fx =
                                      sys $ "g++ -o " ++ exf ++ " " ++ cpf ++ " -O3 -Wall -std=c++1y"
                                      sys $ "rm -f " ++ cpf
                         _ => putStrLn ("Error!")
+  where onestring : String
+        onestring = concat file
 
 readFile : FileIO (OpenFile Read) (List String)
 readFile = readAcc [] where
