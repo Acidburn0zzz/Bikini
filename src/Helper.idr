@@ -4,6 +4,11 @@ import Lightyear.Core
 import Lightyear.Combinators
 import Lightyear.Strings
 
+import Control.Eternal
+
+splitLines : String -> List String
+splitLines s = splitOn '\n' s
+
 hex : Parser Int
 hex = do
     c <- map (ord . toUpper) $ satisfy isHexDigit
