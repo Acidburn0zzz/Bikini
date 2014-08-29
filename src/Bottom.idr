@@ -13,7 +13,7 @@ bquestX : List String -> Bool -> String -> FileIO () ()
 bquestX file bra cpf =
     case parse (some bParser) (concat file) of
       Left err => putStrLn $ "Error: " ++ err
-      Right v  => let sln = lines $ finalize v bra
+      Right v  => let sln = splitLines $ finalize v bra
                   in save sln cpf
 
 intercalateC : List String -> String
