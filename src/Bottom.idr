@@ -45,21 +45,12 @@ buildProject [x] ys = do putStrLn $ "out: " ++ x
                          bquestY x ys
                          putStrLn "Done"
 buildProject (x :: xs) ys = do putStr $ "compile: " ++ x
-                               {- DAMN IDRIS BUG !!!
-                               let ext = case head' rff of
-                                            Just "cxx"  => "cpp"
-                                            Just "h"    => "hpp"
-                                            Just ex     => ex
-                                            Nothing     => "WTF"
-                                            -}
-                               let Just JJ = head' rff
-                               let ext = if JJ == "cxx" 
-                                            then "cpp"
-                                            else if JJ == "h"
-                                                    then "hpp"
-                                                    else "WTF"
                                case rff # 1 of
-                                Just f => let cpf = f ++ "." ++ ext
+                                Just f => let ext = case head' rff of
+                                                Just "cxx"  => "cpp"
+                                                Just "h"    => "hpp"
+                                                _      => "WTF"
+                                              cpf = f ++ "." ++ ext
                                           in do putStrLn $ " -> " ++ cpf
                                                 bcompileX x cpf
                                                 buildProject xs $ cpf :: ys

@@ -39,11 +39,11 @@ questC : (List String) -> Bool -> String -> FileIO () ()
 questC file bra fx =
     case parse (some bParser) onestring of
       Left err => putStrLn $ ("error: " ++ err)
-      Right v  => do let sln = splitLines $ finalize v bra
-                     let ffs = with String splitOn '.' fx
-                     case ffs # 0 of
-                        Just f => do let cpf = (f ++ ".cpp")
-                                     let exf = (f ++ ".exe")
+      Right v  => let sln = splitLines $ finalize v bra
+                      ffs = with String splitOn '.' fx
+                  in case ffs # 0 of
+                        Just f => do let cpf = f ++ ".cpp"
+                                     let exf = f ++ ".exe"
                                      save sln cpf
                                      sys $ "g++ -o " ++ exf ++ " " ++ cpf ++ " -O3 -Wall -std=c++1y"
                                      sys $ "rm -f " ++ cpf

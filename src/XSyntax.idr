@@ -26,25 +26,6 @@ srpl xs i x = if i >= 0 && i < length xs
                 then rpl xs i x
                 else xs
 
-blockRule : (List Nat) -> Nat -> Nat -> String -> List Char -> (List Nat)
-blockRule ln nn l s w =
-    case ln # nn of
-        Just n => if n == 0 then if isInfixOf (unpack s) w then rr l
-                                                           else rr 0
-                            else rr n
-        _ => rr 0
-  where rr : Nat -> List Nat
-        rr = srpl ln nn
-
-blockRule' : (List Nat) -> Nat -> Nat -> String -> ((List Nat), String)
-blockRule' ln nn l s =
-    case ln # nn of
-        Just n => if n > 0 && l <= n then ((rr 0), s)
-                                     else ((rr n), "")
-        _ => ((rr 0), s)
-  where rr : Nat -> List Nat
-        rr = srpl ln nn
-
 blockRules : (List Nat) -> Nat -> List Char -> List (Nat, String, Bool) -> (List Nat)
 blockRules ln l w = map (\(nn, s, i) => case ln # nn of
                                           Just n => if n == 0 then if i then if isInfixOf (unpack s) w then l
@@ -54,35 +35,37 @@ blockRules ln l w = map (\(nn, s, i) => case ln # nn of
                                                               else n
                                           _ => 0
                         )
-                        
--- Track idris issue to fix it
 -- Issue to track: https://github.com/idris-lang/Idris-dev/issues/1418
 {-
 blockRules' : (List Nat) -> Nat -> List (Nat, String) -> List (Nat, String)
 blockRules' ln l = map (\(nn, s) => case ln # nn of
-                                      Just n => if n > 0 && l <= n then (0, s)
-                                                                   else (n, "")
-                                      _ => (0, s)
-                       )
--}
+                                          Just n => if n > 0 && l <= n then s
+                                                                       else ""
+                                          _ => s
+                       ) -}
+blockRule' : (List Nat) -> Nat -> Nat -> String -> ((List Nat), String)
+blockRule' ln nn l s =
+    case ln # nn of
+        Just n => if n > 0 && l <= n then ((rr 0), s)
+                                     else ((rr n), "")
+        _ => ((rr 0), s)
+  where rr : Nat -> List Nat
+        rr = srpl ln nn
 
 completeAuto : ((List Nat), String) -> ((List Nat), String) -> ((List Nat), String)
 completeAuto (lmu, a) (_, b) =
     if isSuffixOf op ua
-        then do
-             let la  = length $ takeWhile (== ' ') ua
-             let rl = drop la ua
-             let match = blockRules lmu la rl xrules
-             (match, (a ++ "\n" ++ b))
-        else do let cl : List Char = ['}']
-                if isSuffixOf cl ua
-                    then do let lb  = length $ takeWhile (== ' ') $ unpack b
-                            let rpl = pack $ with List replicate lb ' '
-                            
-                            -- let (mn, semim) = blockRules' lmu lb rpl yrules
-                            let (mn, semim) = blockRule' lmu 0 lb ("\n" ++ rpl ++ "} ()")
-                            
-                            (mn, (a ++ "\n" ++ b ++ semim))
+        then let la    = length $ takeWhile (== ' ') ua
+                 rl    = drop la ua
+                 match = blockRules lmu la rl xrules
+             in (match, (a ++ "\n" ++ b))
+        else let cl : List Char = ['}']
+             in if isSuffixOf cl ua
+                    then let lb  = length $ takeWhile (== ' ') $ unpack b
+                             rpl = pack $ with List replicate lb ' '
+                             --(mn, semim) = blockRules' lmu lb rpl yrules
+                             (mn, semim) = blockRule' lmu 0 lb ("\n" ++ rpl ++ "} ()")
+                         in (mn, (a ++ "\n" ++ b ++ semim))
                     else (lmu, (a ++ "\n" ++ b))
   where
     ua : List Char

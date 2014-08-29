@@ -17,15 +17,15 @@ data BValue = BString String
             | JustParse Char
 
 caseProcess : Bool -> String -> String
-caseProcess d s = do
-    let sa   = unpack s
-    let skp1 = 1 + (length $ takeWhile (== '[') sa)
-    let cwd  = if d then "default "
+caseProcess d s =
+    let sas  = unpack s
+        skp1 = 1 + (length $ takeWhile (== '[') sas)
+        cwd  = if d then "default "
                     else "case "
-    let val1 = (unpack cwd) ++ (drop skp1 sa)
-    let skp2 = length $ takeWhile (/= '=') val1
-    let val2 = (take skp2 val1) ++ (unpack ": return ") ++ (drop (skp2 + 2) val1)
-    (pack val2) ++ "\n"
+        val1 = (unpack cwd) ++ (drop skp1 sas)
+        skp2 = length $ takeWhile (/= '=') val1
+        val2 = (take skp2 val1) ++ (unpack ": return ") ++ (drop (skp2 + 2) val1)
+    in (pack val2) ++ "\n"
 
 instance Show BValue where
     show (BString s)    = show s
