@@ -13,13 +13,17 @@ bool run_test_set(test_set& ts, std::ostream& os)
         try
             if(!std::get<1>(t)())
                 if(nfail == 0) { os << std::endl; }
-                os << std::get<0>(t) << ": fail" << std::endl
+                os << std::get<0>(t) \
+                   << ": fail" << std::endl;
                 ++nfail
             else ++nsuc
         
         catch(...)
-            os << "Unexpected exception raised while running '" << std::get<0>(t) << "'" << std::endl
+            os  << "Unexpected exception raised while running '" \
+                << std::get<0>(t) << "'" << std::endl;
             throw
     
-    os << nsuc << "/" << std::get<1>(ts).size() << " passed" << std::endl
+    os << nsuc << "/" \
+       << std::get<1>(ts).size() \
+       << " passed" << std::endl;
     return nfail == 0

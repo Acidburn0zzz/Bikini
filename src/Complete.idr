@@ -36,6 +36,7 @@ complete a b =
     sfgo = sck rl [ ['\\'], [','], ['&']
                   , [':'],  ['='], ['{']
                   , ['('], (unpack "/*}*/")
+                  , [';']
                   ]
 
     scl : String

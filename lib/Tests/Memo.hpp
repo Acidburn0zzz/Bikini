@@ -13,7 +13,7 @@ test_set memo_tests {
             
             // memoization;
             auto sum = [](int a, int b) { return a + b; };
-            auto memoized_sum = memoize(std::function<int (int, int)>(sum));;
+            auto memoized_sum = memoize(std::function<int (int, int)>(sum));
             
             std::cout << memoized_sum(2, 2) << std::endl;
             std::cout << memoized_sum(2, 2) << std::endl;

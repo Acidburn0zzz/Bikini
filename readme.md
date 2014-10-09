@@ -19,7 +19,7 @@ cout << "a : " \
          [=> 'a' => 0
          [=> 'b' => 1
          [~>     => 666
-     << endl; /*}*/
+     << endl;
 
 array <int, 5> Arr = { 0, 1, 2, 3, 4 }
 
@@ -104,6 +104,7 @@ Projects used:
 --------------
 
  - GC: https://github.com/axilmar/cppgc
+ - C++ Quickcheck
  - Idris: https://github.com/idris-lang/Idris-dev
  - ...
 

@@ -128,7 +128,7 @@ class gc {
     template <class T> friend class gc_root_ptr;
     friend class gc_object;
 }
-;;
+;
 
 //gc ptr;
 class gc_ptr_base : public gc_collection_node<gc_ptr_base> {
@@ -163,7 +163,7 @@ class gc_ptr_base : public gc_collection_node<gc_ptr_base> {
     
     friend class gc;
 }
-;;
+;
 
 //A root ptr.;
 template <class T> class gc_root_ptr : public gc_ptr_base {
@@ -209,7 +209,7 @@ template <class T> class gc_root_ptr : public gc_ptr_base {
         return get();
     }
 }
-;;
+;
 
 //alternative type for gc root pointer;
 template <class T> using gc_ptr = gc_root_ptr<T>;
@@ -251,7 +251,7 @@ class gc_object : public gc_collection_node<gc_object> {
     friend class gc;
     template <class T> friend class gc_member_ptr;
 }
-;;
+;
 
 //A member ptr.;
 template <class T> class gc_member_ptr : public gc_ptr_base {
@@ -297,6 +297,6 @@ template <class T> class gc_member_ptr : public gc_ptr_base {
         return get();
     }
 }
-;;
+;
 
 #endif //GC_HPP

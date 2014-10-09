@@ -35,14 +35,25 @@ blockRules ln l w = map (\(nn, s, i) => case ln # nn of
                                                               else n
                                           _ => 0
                         )
--- Issue to track: https://github.com/idris-lang/Idris-dev/issues/1418
+                        
+-- tracking issue: https://github.com/idris-lang/Idris-dev/issues/1418
 {-
-blockRules' : (List Nat) -> Nat -> List (Nat, String) -> List (Nat, String)
-blockRules' ln l = map (\(nn, s) => case ln # nn of
-                                          Just n => if n > 0 && l <= n then s
-                                                                       else ""
-                                          _ => s
-                       ) -}
+blockRulesFold' : ((List Nat), String, Nat, Str4ing) -> ((List Nat), String, Nat, String)
+blockRulesFold' (ln, rpl, nn, s) (lnx, rplx, fn, fs) =
+    case ln # fn of
+          Just n => if n > 0 && l <= n then ((rr 0), s ++ ("\n" ++ rpl ++ fs))
+                                       else ((rr n), s)
+          _ => ((rr 0), s ++ ("\n" ++ rpl ++ fs))
+  where rr : Nat -> List Nat
+        rr = srpl ln nn
+blockRules' : (List Nat) -> Nat -> String -> List (Nat, String) -> ((List Nat), String)
+blockRules' ln l rpl lns = 
+    let (lnx, _, _, strx) = foldr1 blockRulesFold' mappedlns
+    in  (lnx, strx)
+  where mappedlns : List ((List Nat), String, Nat, String)
+        mappedlns = map (\(nn, s) => (ln, rpl, nn, s)) lns
+-}
+
 blockRule' : (List Nat) -> Nat -> Nat -> String -> ((List Nat), String)
 blockRule' ln nn l s =
     case ln # nn of
