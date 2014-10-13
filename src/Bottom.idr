@@ -36,7 +36,7 @@ bcompileX f cpf = case !(open f Read) of
                       True  => do dat <- readFile
                                   close {- =<< -}
                                   bquestX dat True cpf
-                      False => putStrLn ("Error!")
+                      False => putStrLn ("file not found :" ++ f)
 
 buildProject : List String -> List String -> FileIO () ()
 buildProject [] _ = putStrLn "There is nothing to do"
