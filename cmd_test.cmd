@@ -28,12 +28,14 @@ set ABS_PATH=%CD%
     "%ABS_PATH%/../../Bikini" -b %ABS_PATH%/test.bproj
 popd
 
-::Bikini bikini/Project/test.h > test.h
-::Bikini bikini/Project/test.cxx > out.cpp
-::cat out.cpp
-::echo Compiling...
-::Bikini -c bikini\tests.cxx
-::g++ -I . -o bikini/tests.exe out.cpp -O3 -Wall -std=c++1y
+rm -rf bikini/Quickcheck/examples.exe
+echo building Quickcheck examples...
+
+pushd .
+cd .\bikini/Quickcheck/
+set ABS_PATH=%CD%
+    "%ABS_PATH%/../../Bikini" -b %ABS_PATH%/examples.bproj
+popd
 
 echo Tests
 
@@ -47,4 +49,4 @@ rm -rf bikini/Project/test.exe
 rm -rf out.cpp
 rm -rf test.h
 
-pause
+bikini\Quickcheck\examples.exe
