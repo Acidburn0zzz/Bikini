@@ -38,23 +38,23 @@ bcompileX f cpf = case !(open f Read) of
                                   bquestX dat True cpf
                       False => putStrLn ("file not found :" ++ f)
 
-buildProject : List String -> List String -> FileIO () ()
+buildProject : List (Nat, String) -> List String -> FileIO () ()
 buildProject [] _ = putStrLn "There is nothing to do"
-buildProject [x] [] = putStrLn "No modules to compile"
-buildProject [x] ys = do putStrLn $ "out: " ++ x
-                         bquestY x ys
-                         putStrLn "Done"
-buildProject (x :: xs) ys = do putStr $ "compile: " ++ x
-                               case rff # 1 of
-                                Just f => let ext = case head' rff of
-                                                Just "cxx"  => "cpp"
-                                                Just "h"    => "hpp"
-                                                _      => "WTF"
-                                              cpf = f ++ "." ++ ext
-                                          in do putStrLn $ " -> " ++ cpf
-                                                bcompileX x cpf
-                                                buildProject xs $ cpf :: ys
-                                _ => do putStrLn "Error!"
-                                        buildProject xs ys
+buildProject [_] [] = putStrLn "No modules to compile"
+buildProject [(_,x)] ys = do putStrLn $ "out: " ++ x
+                             bquestY x ys
+                             putStrLn "Done"
+buildProject ((_,x) :: xs) ys = do putStr $ "compile: " ++ x
+                                   case rff # 1 of
+                                    Just f => let ext = case head' rff of
+                                                    Just "cxx"  => "cpp"
+                                                    Just "h"    => "hpp"
+                                                    _      => "WTF"
+                                                  cpf = f ++ "." ++ ext
+                                              in do putStrLn $ " -> " ++ cpf
+                                                    bcompileX x cpf
+                                                    buildProject xs $ cpf :: ys
+                                    _ => do putStrLn "Error!"
+                                            buildProject xs ys
   where rff : List String
         rff = reverse $ with String splitOn '.' x

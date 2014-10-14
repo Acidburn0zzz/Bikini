@@ -25,12 +25,12 @@ save : (List String) -> String -> FileIO () ()
 save ww f = case !(open f Write) of
                 True  => do writeFile ww
                             close {- =<< -}
-                False => putStrLn ("Error!")
+                False => putStrLn $ "Error writing file!" ++ f
 
 quest : (List String) -> Bool -> { [STDIO] } Eff ()
 quest file bra =
     case parse (some bParser) onestring of
-          Left err => putStrLn $ "error: " ++ err
+          Left err => putStrLn $ "Parsing Error: " ++ err
           Right v  => putStrLn $ finalize v bra
   where onestring : String
         onestring = concat file
@@ -38,7 +38,7 @@ quest file bra =
 questC : (List String) -> Bool -> String -> FileIO () ()
 questC file bra fx =
     case parse (some bParser) onestring of
-      Left err => putStrLn $ ("error: " ++ err)
+      Left err => putStrLn $ ("Parsing Error: " ++ err)
       Right v  => let sln = splitLines $ finalize v bra
                       ffs = with String splitOn '.' fx
                   in case ffs # 0 of

@@ -32,14 +32,18 @@ instance BuildX YamlValue where
   buildX (YamlArray  xs)  = show xs
 
 class BuildY a where
-    partial buildY : a -> List String
+    partial buildY : a -> List (Nat, String)
 
-parseBuildConfig : String -> YamlValue -> List String
+parseBuildConfig : String -> YamlValue -> List (Nat, String)
 parseBuildConfig k v = case k of
-                        "bikini"     => [ (buildX v) ++ ".h"
-                                        , (buildX v) ++ ".cxx"
+                        "bikini"     => [ (0, (buildX v) ++ ".h")
+                                        , (0, (buildX v) ++ ".cxx")
                                         ]
-                        "executable" => [(buildX v) ++ ".exe"]
+                        "executable" => [ (1, (buildX v) ++ ".exe") ]
+                        "library"    => [ (2, (buildX v) ++ ".o")
+                                        , (3, (buildX v) ++ ".h")
+                                        ]
+                        "compiler"   => [ (4, (buildX v)) ]
                         _            => []
 
 instance BuildY YamlValue where
@@ -51,7 +55,7 @@ instance BuildY YamlValue where
   buildY (YamlObject xs)  =
    intercalate (map fmtItem $ SortedMap.toList xs)
     where
-      intercalate : List (List String) -> List String
+      intercalate : List (List (Nat, String)) -> List (Nat, String)
       intercalate [] = []
       intercalate [x] = x
       intercalate (x :: xs) = x ++ (intercalate xs)
@@ -61,7 +65,7 @@ instance BuildY YamlValue where
 buildB : (List String) -> FileIO () ()
 buildB file =
     case parse yamlToplevelValue onestring of
-       Left err => putStrLn $ "error: " ++ err
+       Left err => putStrLn $ "Error parsing project YML: " ++ err
        Right v  => buildProject (buildY v) []
   where onestring : String
         onestring = concat file
@@ -70,18 +74,18 @@ codegen : String -> FileIO () ()
 codegen f = case !(open f Read) of
                 True => do quest !readFile True
                            close {- =<< -}
-                False => putStrLn ("Error!")
+                False => putStrLn $ "Codegen Error on file:" ++ f
 
 compile : String -> FileIO () ()
 compile f = case !(open f Read) of
                 True  => do dat <- readFile
                             close {- =<< -}
                             questC dat True f
-                False => putStrLn ("Error!")
+                False => putStrLn $ "Compile Error on file:" ++ f
 
 build : String -> FileIO () ()
 build f = case !(open f Read) of
                 True => do dat <- readFile
                            close {- =<< -}
                            buildB dat
-                False => putStrLn ("Error!")
+                False => putStrLn $ "Project file error:" ++ f
