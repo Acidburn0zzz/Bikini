@@ -2,11 +2,13 @@ module XSyntax
 
 import Control.Eternal
 
+||| Pre-rules
 xrules : List (Nat, String, Bool)
 xrules = with List [
     (0, "[&]() { switch /* match */", True)
     ]
 
+||| Post-rules
 yrules : List (Nat, String)
 yrules = with List [
     (0, "} ()")
