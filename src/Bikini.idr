@@ -5,16 +5,20 @@ import Control.Eternal
 import Effect.System
 
 version : String
-version = "0.0.3"
+version = "0.0.4"
+
+showVersion : IO ()
+showVersion = putStrLn $ "Bikini v." ++ version
 
 help : IO ()
 help = do
-    putStrLn $ "Bikini v." ++ version
-    putStrLn "--version:\t Display version"
-    putStrLn "--help:\t\t Display help"
+    showVersion
+    putStrLn "-v / --version:\t Display version"
+    putStrLn "-h / --help:\t\t Display help"
     putStrLn "-c:\t\t Compile file"
     putStrLn "-b:\t\t Build project"
     putStrLn "FILENAME:\t Generate C++ code"
+    putStrLn "FILENAME.bproj:\t Build project"
 
 bcompile : List String -> IO ()
 bcompile args = case args # 2 of
@@ -26,15 +30,22 @@ bproject args = case args # 2 of
                     Just f  => run $ build f
                     Nothing => putStrLn "File is not specified"
 
+noArgsFile : String -> IO ()
+noArgsFile file = do
+    if isSuffixOf ".bproj" file then run $ build file
+                                else run $ codegen file
+
 main : IO ()
 main = System.getArgs >>= \args =>
     if length args > 1 then
       case args # 1 of
         Just cmd => case cmd of
-                      "--version"   => putStrLn $ "Bikini v." ++ version
+                      "--version"   => showVersion
+                      "-v"          => showVersion
                       "--help"      => help
+                      "-h"          => help
                       "-c"          => bcompile args
                       "-b"          => bproject args
-                      file          => run $ codegen file
+                      file          => noArgsFile file
         _        => putStrLn "What?"
    else do putStrLn "Hi"

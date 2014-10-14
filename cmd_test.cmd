@@ -1,5 +1,7 @@
 @echo off
 
+Bikini --version
+
 echo building Prelude...
 
 mkdir "lib/Prelude"
@@ -25,7 +27,7 @@ echo building Test application...
 pushd .
 cd .\bikini/Project/
 set ABS_PATH=%CD%
-    "%ABS_PATH%/../../Bikini" -b %ABS_PATH%/test.bproj
+    "%ABS_PATH%/../../Bikini" %ABS_PATH%/test.bproj
 popd
 
 rm -rf bikini/Quickcheck/examples.exe
@@ -34,7 +36,7 @@ echo building Quickcheck examples...
 pushd .
 cd .\bikini/Quickcheck/
 set ABS_PATH=%CD%
-    "%ABS_PATH%/../../Bikini" -b %ABS_PATH%/examples.bproj
+    "%ABS_PATH%/../../Bikini" %ABS_PATH%/examples.bproj
 popd
 
 echo Tests

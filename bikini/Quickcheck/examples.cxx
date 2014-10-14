@@ -9,6 +9,7 @@ using namespace quickcheck
 
 typedef int Elem
 typedef std::vector<int> Vector
+
 using std::string
 
 template<class A> std::string toString(A a)
