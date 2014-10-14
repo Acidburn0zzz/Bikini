@@ -14,7 +14,7 @@ help : IO ()
 help = do
     showVersion
     putStrLn "-v / --version:\t Display version"
-    putStrLn "-h / --help:\t\t Display help"
+    putStrLn "-h / --help:\t Display help"
     putStrLn "-c:\t\t Compile file"
     putStrLn "-b:\t\t Build project"
     putStrLn "FILENAME:\t Generate C++ code"

@@ -20,7 +20,7 @@ rpl xs i x = fore ++ (x :: aft)
     
     aft : List Nat
     aft  = drop (i+1) xs
-    
+
 srpl : List Nat -> Nat -> Nat -> List Nat
 srpl xs i x = if i >= 0 && i < length xs
                 then rpl xs i x

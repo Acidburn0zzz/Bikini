@@ -50,9 +50,7 @@ buildProject [(t,x)] ys = do putStrLn $ "out: " ++ x
                              case toIntegerNat t of
                                 1 => bquestY x ys
                                 2 => bquestYL x ys
-                                _ => bquestY x ys -- maybe executable
-                             -- putStrLn "Done" 
-                             -- can't do it anymore due complex Effects bugs :D
+                                _ => bquestY x ys
 buildProject ((t,x) :: xs) ys = do putStr $ "compile: " ++ x
                                    case rff # 1 of
                                     Just f => let ext = case head' rff of

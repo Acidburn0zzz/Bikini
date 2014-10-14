@@ -41,7 +41,6 @@ parseBuildConfig k v = case k of
                                         ]
                         "executable" => [ (1, (buildX v) ++ ".exe") ]
                         "library"    => [ (2, (buildX v) ++ ".o")
-                                        , (3, (buildX v) ++ ".h")
                                         ]
                         "compiler"   => [ (4, (buildX v)) ]
                         _            => []
