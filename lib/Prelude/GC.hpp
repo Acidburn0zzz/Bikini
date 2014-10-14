@@ -32,10 +32,12 @@ template <class T> class gc_collection_node {
         assert((m_collection = nullptr) == nullptr);
     }
     
+    
     //does nothing;
     ~gc_collection_node() {
         assert(m_collection == nullptr);
     }
+    
     
     private:
     //pointer to the collection;
@@ -50,6 +52,7 @@ template <class T> class gc_collection_node {
     friend class gc_object;
 }
 
+
 //collection of items.;
 template <class T> class gc_collection {
     public:
@@ -62,6 +65,7 @@ template <class T> class gc_collection {
         m_objects.push_back(object);
     }
     
+    
     //remove an object;
     void remove(T *object) {
         assert(object->m_collection == this);
@@ -72,18 +76,22 @@ template <class T> class gc_collection {
                 last->m_collection_index = object->m_collection_index;
             }
         }
+        
         m_objects.pop_back();
         assert((object->m_collection = nullptr) == nullptr);
     }
+    
     
     private:
     //objects;
     std::vector<T *> m_objects;
 }
 
+
     friend class gc_object_collection;
     friend class gc;
 }
+
 
 //gc ptr collection;
 typedef gc_collection<gc_ptr_base> gc_ptr_collection;
@@ -96,9 +104,11 @@ class gc_object_collection : public gc_collection<gc_object> {
         delete_objects();
     }
     
+    
     //deletes all objects;
     void delete_objects();
 }
+
 
 //pointer to the collection of objects;
 typedef std::shared_ptr<gc_object_collection> gc_object_collection_ptr;
@@ -116,11 +126,13 @@ class gc {
         return &p;
     }
     
+    
     //get the current collection of objects;
     static gc_object_collection_ptr &get_objects() {
         static gc_object_collection_ptr p{std::make_shared<gc_object_collection>()};
         return p;
     }
+    
     
     //scan ptrs;
     static void _scan(gc_ptr_collection &ptrs, gc_object_collection &old, gc_object_collection &reached);
@@ -128,6 +140,7 @@ class gc {
     template <class T> friend class gc_root_ptr;
     friend class gc_object;
 }
+
 ;
 
 //gc ptr;
@@ -156,13 +169,16 @@ class gc_ptr_base : public gc_collection_node<gc_ptr_base> {
         }
     }
     
+    
     //remove the pointer from the owning collection;
     ~gc_ptr_base() {
         m_collection->remove(this);
     }
     
+    
     friend class gc;
 }
+
 ;
 
 //A root ptr.;
@@ -186,11 +202,13 @@ template <class T> class gc_root_ptr : public gc_ptr_base {
         return *this;
     }
     
+    
     //Assignment from pointer.;
     gc_root_ptr<T> &operator = (const gc_root_ptr<T> &ptr) {
         m_object = ptr.m_object;
         return *this;
     }
+    
     
     //Returns the value of the pointer.;
     T *get() const {
@@ -198,10 +216,12 @@ template <class T> class gc_root_ptr : public gc_ptr_base {
         return static_cast<T *>(m_object);
     }
     
+    
     //Auto conversion to ptr value.;
     operator T* () const {
         return get();
     }
+    
     
     //Accesses the underlying object's members.;
     T *operator ->() const {
@@ -209,6 +229,7 @@ template <class T> class gc_root_ptr : public gc_ptr_base {
         return get();
     }
 }
+
 ;
 
 //alternative type for gc root pointer;
@@ -225,6 +246,7 @@ class gc_object : public gc_collection_node<gc_object> {
         gc::get_objects()->add(this);
     }
     
+    
     //registers the object to the collector;
     gc_object(const gc_object &obj) :
     gc_object() {};
@@ -237,6 +259,7 @@ class gc_object : public gc_collection_node<gc_object> {
     virtual ~gc_object() {
         m_collection->remove(this);
     }
+    
     
     //not allowed;
     gc_object &operator = (const gc_object &) = delete;
@@ -251,6 +274,7 @@ class gc_object : public gc_collection_node<gc_object> {
     friend class gc;
     template <class T> friend class gc_member_ptr;
 }
+
 ;
 
 //A member ptr.;
@@ -274,11 +298,13 @@ template <class T> class gc_member_ptr : public gc_ptr_base {
         return *this;
     }
     
+    
     //Assignment from pointer.;
     gc_member_ptr<T> &operator = (const gc_member_ptr<T> &ptr) {
         m_object = ptr.m_object;
         return *this;
     }
+    
     
     //Returns the value of the pointer.;
     T *get() const {
@@ -286,10 +312,12 @@ template <class T> class gc_member_ptr : public gc_ptr_base {
         return static_cast<T *>(m_object);
     }
     
+    
     //Auto conversion to ptr value.;
     operator T* () const {
         return get();
     }
+    
     
     //Accesses the underlying object's members.;
     T *operator ->() const {
@@ -297,6 +325,7 @@ template <class T> class gc_member_ptr : public gc_ptr_base {
         return get();
     }
 }
+
 ;
 
 #endif //GC_HPP

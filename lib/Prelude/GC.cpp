@@ -11,6 +11,7 @@ void gc_object_collection::delete_objects() {
     }
 }
 
+
 //collects garbage, using the mark & sweep algorithm;
 void gc::collect() {
     gc_object_collection_ptr reachable{std::make_shared<gc_object_collection>()};
@@ -18,6 +19,7 @@ void gc::collect() {
     get_objects()->delete_objects();
     std::swap(get_objects(), reachable);
 }
+
 
 //scan ptrs;
 void gc::_scan(gc_ptr_collection &ptrs, gc_object_collection &old, gc_object_collection &reached) {
@@ -29,4 +31,5 @@ void gc::_scan(gc_ptr_collection &ptrs, gc_object_collection &old, gc_object_col
         }
     }
 }
+
 

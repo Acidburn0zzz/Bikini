@@ -35,33 +35,18 @@ blockRules ln l w = map (\(nn, s, i) => case ln # nn of
                                                               else n
                                           _ => 0
                         )
-                        
--- tracking issue: https://github.com/idris-lang/Idris-dev/issues/1418
-{-
-blockRulesFold' : ((List Nat), String, Nat, Str4ing) -> ((List Nat), String, Nat, String)
-blockRulesFold' (ln, rpl, nn, s) (lnx, rplx, fn, fs) =
-    case ln # fn of
-          Just n => if n > 0 && l <= n then ((rr 0), s ++ ("\n" ++ rpl ++ fs))
-                                       else ((rr n), s)
-          _ => ((rr 0), s ++ ("\n" ++ rpl ++ fs))
-  where rr : Nat -> List Nat
-        rr = srpl ln nn
-blockRules' : (List Nat) -> Nat -> String -> List (Nat, String) -> ((List Nat), String)
-blockRules' ln l rpl lns = 
-    let (lnx, _, _, strx) = foldr1 blockRulesFold' mappedlns
-    in  (lnx, strx)
-  where mappedlns : List ((List Nat), String, Nat, String)
-        mappedlns = map (\(nn, s) => (ln, rpl, nn, s)) lns
--}
 
-blockRule' : (List Nat) -> Nat -> Nat -> String -> ((List Nat), String)
-blockRule' ln nn l s =
-    case ln # nn of
-        Just n => if n > 0 && l <= n then ((rr 0), s)
-                                     else ((rr n), "")
-        _ => ((rr 0), s)
+blockRules' : (List Nat) -> Nat -> String -> List (Nat, String) -> ((List Nat), String)
+blockRules' _ _ _ [] = ([], "")
+blockRules' ln l rpl [(num, s)] = do
+    case ln # num of
+        Just n => if n > 0 && l <= n then ((rr 0), "\n" ++ rpl ++ s)
+                                     else ((rr n), "\n" ++ rpl ++ "")
+        _ => ((rr 0), "\n" ++ rpl ++ s)
   where rr : Nat -> List Nat
-        rr = srpl ln nn
+        rr = srpl ln num
+blockRules' ln l rpl (x::xs) = do let (nlst, s) = blockRules' ln l rpl [x]
+                                  blockRules' nlst l (s ++ rpl) xs
 
 completeAuto : ((List Nat), String) -> ((List Nat), String) -> ((List Nat), String)
 completeAuto (lmu, a) (_, b) =
@@ -74,8 +59,7 @@ completeAuto (lmu, a) (_, b) =
              in if isSuffixOf cl ua
                     then let lb  = length $ takeWhile (== ' ') $ unpack b
                              rpl = pack $ with List replicate lb ' '
-                             --(mn, semim) = blockRules' lmu lb rpl yrules
-                             (mn, semim) = blockRule' lmu 0 lb ("\n" ++ rpl ++ "} ()")
+                             (mn, semim) = blockRules' lmu lb rpl yrules
                          in (mn, (a ++ "\n" ++ b ++ semim))
                     else (lmu, (a ++ "\n" ++ b))
   where

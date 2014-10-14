@@ -10,6 +10,8 @@ std::function<ReturnType (Args...)> memoize(std::function<ReturnType (Args...)> 
         std::tuple<Args...> t(args...);
         return cache.find(t) == cache.end() ? func(args...) : cache[t];
     }
+    
     );
 }
+
 

@@ -31,25 +31,34 @@ bquestY f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
                in do sys $ "g++ -I . -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
                      cleanUp xs
 
+bquestYL : String -> List String -> { [SYSTEM] } Eff ()
+bquestYL f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
+                in do sys $ "g++ -I . -c -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
+                      cleanUp xs
+
 bcompileX : String -> String -> FileIO () ()
 bcompileX f cpf = case !(open f Read) of
                       True  => do dat <- readFile
                                   close {- =<< -}
                                   bquestX dat True cpf
-                      False => putStrLn ("file not found :" ++ f)
+                      False => putStrLn ("File not found :" ++ f)
 
 buildProject : List (Nat, String) -> List String -> FileIO () ()
 buildProject [] _ = putStrLn "There is nothing to do"
 buildProject [_] [] = putStrLn "No modules to compile"
-buildProject [(_,x)] ys = do putStrLn $ "out: " ++ x
-                             bquestY x ys
-                             putStrLn "Done"
-buildProject ((_,x) :: xs) ys = do putStr $ "compile: " ++ x
+buildProject [(t,x)] ys = do putStrLn $ "out: " ++ x
+                             case toIntegerNat t of
+                                1 => bquestY x ys
+                                2 => bquestYL x ys
+                                _ => bquestY x ys -- maybe executable
+                             -- putStrLn "Done" 
+                             -- can't do it anymore due complex Effects bugs :D
+buildProject ((t,x) :: xs) ys = do putStr $ "compile: " ++ x
                                    case rff # 1 of
                                     Just f => let ext = case head' rff of
-                                                    Just "cxx"  => "cpp"
-                                                    Just "h"    => "hpp"
-                                                    _      => "WTF"
+                                                          Just "cxx"  => "cpp"
+                                                          Just "h"    => "hpp"
+                                                          _           => "WTF"
                                                   cpf = f ++ "." ++ ext
                                               in do putStrLn $ " -> " ++ cpf
                                                     bcompileX x cpf

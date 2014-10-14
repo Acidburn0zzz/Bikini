@@ -18,8 +18,10 @@ bool run_test_set(test_set& ts, std::ostream& os) {
                    << ": fail" << std::endl;
                 ++nfail;
             }
+            
             else ++nsuc;
         }
+        
         
         catch(...) {
             os  << "Unexpected exception raised while running '" \
@@ -28,9 +30,11 @@ bool run_test_set(test_set& ts, std::ostream& os) {
         }
     }
     
+    
     os << nsuc << "/" \
        << std::get<1>(ts).size() \
        << " passed" << std::endl;
     return nfail == 0;
 }
+
 

@@ -16,6 +16,7 @@ test_set basics_tests {
             foreach(arr, [&](int x) {
                 std::cout << "x: " << x << std::endl;
             }
+            
             );
             
             unless(false) {
@@ -27,9 +28,12 @@ test_set basics_tests {
                 }
             }
             
+            
             return a == 3;
         }
+        
         )) /*;*/
     }
 }
+
 ;
