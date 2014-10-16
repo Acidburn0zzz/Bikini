@@ -25,7 +25,7 @@ intercalateC (x :: xs) = x ++ "," ++ intercalateC xs
 
 -- recursive rm -rf
 cleanUp : List String -> { [SYSTEM] } Eff ()
-cleanUp [x]     = sys $ "rm -rf " ++ x
+cleanUp []      = return ()
 cleanUp (x::xs) = do sys $ "rm -rf " ++ x
                      cleanUp xs
 
