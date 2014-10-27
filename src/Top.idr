@@ -32,17 +32,17 @@ instance BuildX YamlValue where
   buildX (YamlArray  xs)  = show xs
 
 class BuildY a where
-    partial buildY : a -> List (Nat, String)
+    partial buildY : a -> List (String, String)
 
 -- parse map .bproj YML
-parseBuildConfig : String -> YamlValue -> List (Nat, String)
+parseBuildConfig : String -> YamlValue -> List (String, String)
 parseBuildConfig k v = case k of
-                        "bikini"     => [ (0, (buildX v) ++ ".h")
-                                        , (0, (buildX v) ++ ".cxx")
+                        "bikini"     => [ ("src", (buildX v) ++ ".h")
+                                        , ("src", (buildX v) ++ ".cxx")
                                         ]
-                        "compiler"   => [ (1, (buildX v)) ]
-                        "executable" => [ (5, (buildX v) ++ ".exe") ]
-                        "library"    => [ (6, (buildX v) ++ ".o")
+                        "compiler"   => [ ("cc", (buildX v)) ]
+                        "executable" => [ ("out", (buildX v) ++ ".exe") ]
+                        "library"    => [ ("lib", (buildX v) ++ ".o")
                                         ]
                         _            => []
 
@@ -56,7 +56,7 @@ instance BuildY YamlValue where
   buildY (YamlObject xs)  =
    intercalate (map fmtItem $ SortedMap.toList xs)
     where
-      intercalate : List (List (Nat, String)) -> List (Nat, String)
+      intercalate : List (List (String, String)) -> List (String, String)
       intercalate [] = []
       intercalate [x] = x
       intercalate (x :: xs) = x ++ (intercalate xs)
@@ -69,9 +69,9 @@ buildB file =
     case parse yamlToplevelValue onestring of
        Left err => putStrLn $ "Error parsing project YML: " ++ err
        Right v  => let parsedConfig = buildY v
-                       source = map (\(n,s) => s) (filter (\(n,s) => n == 0) parsedConfig)
+                       source = map (\(n,s) => s) (filter (\(n,s) => n == "src") parsedConfig)
                        modules = map srcCompileNoEffect source
-                   in buildProject parsedConfig modules
+                   in buildProject parsedConfig modules "g++"
   where onestring : String
         onestring = concat file
 

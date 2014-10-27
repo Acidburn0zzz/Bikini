@@ -30,15 +30,15 @@ cleanUp (x::xs) = do sys $ "rm -rf " ++ x
                      cleanUp xs
 
 -- compile to executable
-bquestY : String -> List String -> { [SYSTEM] } Eff ()
-bquestY f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
-               in do sys $ "g++ -I . -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
+bquestY : String -> String -> List String -> { [SYSTEM] } Eff ()
+bquestY cc f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
+               in do sys $ cc ++ " -I . -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
                      cleanUp xs
 
 -- just compile with -c flag
-bquestYL : String -> List String -> { [SYSTEM] } Eff ()
-bquestYL f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
-                in do sys $ "g++ -I . -c -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
+bquestYL : String -> String -> List String -> { [SYSTEM] } Eff ()
+bquestYL cc f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
+                in do sys $ cc ++ " -I . -c -o " ++ f ++ " " ++ cpps ++ " -O3 -Wall -std=c++1y"
                       cleanUp xs
 
 -- Compile to C++ and save with bquestX
@@ -49,16 +49,13 @@ bcompileX f cpf = case !(open f Read) of
                                   bquestX dat True cpf
                       False => putStrLn ("File not found :" ++ f)
 
--- TODO: Set active compiler
-setCpp : String -> IO() -- { [SYSTEM] } Eff ()
-setCpp _ = putStrLn $ "Not implemented..."
-
 -- Src compile w/o Effect!
 srcCompileNoEffect : String -> String
 srcCompileNoEffect x = 
     case rff # 1 of
         Just f => let ext = case head' rff of
                               Just "cxx"  => "cpp"
+                              Just "hxx"  => "hpp"
                               Just "h"    => "hpp"
                               _           => "WTF"
                   in f ++ "." ++ ext
@@ -75,21 +72,21 @@ srcCompile x =
                   bcompileX x cpf
 
 -- Building project Point
-buildPoint : (Nat, String) -> List String -> FileIO () ()
-buildPoint (t,x) m =
-    case toIntegerNat t of
-        0 => do putStr $ "src: " ++ x
-                srcCompile x
-        1 => do putStrLn $ "Compiler set to: " ++ x
-        5 => do putStrLn $ "out: " ++ x
-                bquestY x m
-        6 => do bquestYL x m
-        _ => do putStrLn "What!?"
+buildPoint : (String, String) -> List String -> String -> FileIO () ()
+buildPoint (t,x) m cc =
+    case t of
+        "src" => do putStr $ "src: " ++ x
+                    srcCompile x
+        "out" => do putStrLn $ "out: " ++ x
+                    bquestY cc x m
+        "lib" => do bquestYL cc x m
+        _     => do putStrLn "What!?"
 
 -- Recursive project Build
-buildProject : List (Nat, String) -> List String -> FileIO () ()
-buildProject [] _               = putStrLn "There is nothing to do"
-buildProject _ []               = putStrLn "No modules to compile"
-buildProject [(t,x)] m          = buildPoint (t,x) m
-buildProject ((t,x) :: xs) m    = do buildProject [(t,x)] m
-                                     buildProject xs m
+buildProject : List (String, String) -> List String -> String -> FileIO () ()
+buildProject [] _ _               = putStrLn "There is nothing to do"
+buildProject _ [] _               = putStrLn "No modules to compile"
+buildProject [(t,x)] m cc         = buildPoint (t,x) m cc
+buildProject (("cc",x) :: xs) m _ = buildProject xs m x
+buildProject ((t,x) :: xs) m cc   = do buildProject [(t,x)] m cc
+                                       buildProject xs m cc

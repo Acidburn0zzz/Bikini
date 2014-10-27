@@ -1,0 +1,3 @@
+bikini : "b2"
+executable : "b2"
+compiler : "clang"

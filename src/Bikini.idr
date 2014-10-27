@@ -5,7 +5,7 @@ import Control.Eternal
 import Effect.System
 
 version : String
-version = "0.0.5"
+version = "0.0.6"
 
 showVersion : IO ()
 showVersion = putStrLn $ "Bikini v." ++ version

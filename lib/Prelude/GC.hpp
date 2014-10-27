@@ -13,7 +13,7 @@ class gc_object;
 template <class T> class gc_member_ptr;
 
 template <class T> class gc_collection_node {
-    public:
+    public:;
     //not allowed;
     gc_collection_node(const gc_collection_node<T> &) = delete;
     
@@ -26,7 +26,7 @@ template <class T> class gc_collection_node {
     //not allowed;
     gc_collection_node<T> &operator = (gc_collection_node<T> &n) = delete;
     
-    protected:
+    protected:;
     //the default constructor;
     gc_collection_node() {
         assert((m_collection = nullptr) == nullptr);
@@ -39,7 +39,7 @@ template <class T> class gc_collection_node {
     }
     
     
-    private:
+    private:;
     //pointer to the collection;
     gc_collection<T> *m_collection;
     
@@ -55,7 +55,7 @@ template <class T> class gc_collection_node {
 
 //collection of items.;
 template <class T> class gc_collection {
-    public:
+    public:;
     
     //add an object;
     void add(T *object) {
@@ -82,7 +82,7 @@ template <class T> class gc_collection {
     }
     
     
-    private:
+    private:;
     //objects;
     std::vector<T *> m_objects;
 }
@@ -98,7 +98,7 @@ typedef gc_collection<gc_ptr_base> gc_ptr_collection;
 
 //gc object collection;
 class gc_object_collection : public gc_collection<gc_object> {
-    public:
+    public:;
     //delete all objects;
     ~gc_object_collection() {
         delete_objects();
@@ -115,11 +115,11 @@ typedef std::shared_ptr<gc_object_collection> gc_object_collection_ptr;
 
 //the garbage collector;
 class gc {
-    public:
+    public:;
     //collects garbage, using the mark & sweep algorithm;
     static void collect();
     
-    private:
+    private:;
     //get the collection of root ptrs;
     static gc_ptr_collection *get_root_ptrs() {
         static gc_ptr_collection p;
@@ -145,7 +145,7 @@ class gc {
 
 //gc ptr;
 class gc_ptr_base : public gc_collection_node<gc_ptr_base> {
-    public:
+    public:;
     //not allowed;
     gc_ptr_base(const gc_ptr_base &) = delete;
     
@@ -158,12 +158,12 @@ class gc_ptr_base : public gc_collection_node<gc_ptr_base> {
     //not allowed;
     gc_ptr_base &operator = (gc_ptr_base &) = delete;
     
-    protected:
+    protected:;
     //the pointer to the object;
     gc_object *m_object;
     
     //the default constructor;
-    gc_ptr_base(gc_ptr_collection *owner, gc_object *object = nullptr) :
+    gc_ptr_base(gc_ptr_collection *owner, gc_object *object = nullptr) : {
         m_object(object) {
             owner->add(this);
         }
@@ -183,17 +183,17 @@ class gc_ptr_base : public gc_collection_node<gc_ptr_base> {
 
 //A root ptr.;
 template <class T> class gc_root_ptr : public gc_ptr_base {
-    public:
+    public:;
     //The default constructor.;
-    gc_root_ptr(T *object = nullptr) :
+    gc_root_ptr(T *object = nullptr) :;
     gc_ptr_base(gc::get_root_ptrs(), object) {};
     
     //The copy constructor.;
-    gc_root_ptr(const gc_root_ptr<T> &ptr) :
+    gc_root_ptr(const gc_root_ptr<T> &ptr) :;
     gc_ptr_base(gc::get_root_ptrs(), ptr.m_object) {};
     
     //The move constructor.;
-    gc_root_ptr(gc_root_ptr<T> &&ptr) :
+    gc_root_ptr(gc_root_ptr<T> &&ptr) :;
     gc_ptr_base(gc::get_root_ptrs(), ptr.m_object) {};
     
     //Assignment from object.;
@@ -237,7 +237,7 @@ template <class T> using gc_ptr = gc_root_ptr<T>;
 
 //gc object;
 class gc_object : public gc_collection_node<gc_object> {
-    public:
+    public:;
     //alternative type for gc root pointer;
     template <class T> using gc_ptr = gc_member_ptr<T>;
     
@@ -248,11 +248,11 @@ class gc_object : public gc_collection_node<gc_object> {
     
     
     //registers the object to the collector;
-    gc_object(const gc_object &obj) :
+    gc_object(const gc_object &obj) :;
     gc_object() {};
     
     //registers the object to the collector;
-    gc_object(gc_object &&obj) :
+    gc_object(gc_object &&obj) :;
     gc_object() {};
     
     //removes the object from the collector;
@@ -267,7 +267,7 @@ class gc_object : public gc_collection_node<gc_object> {
     //not allowed;
     gc_object &operator = (gc_object &&) = delete;
     
-    private:
+    private:;
     //member pointers;
     gc_ptr_collection m_member_ptrs;
     
@@ -279,17 +279,17 @@ class gc_object : public gc_collection_node<gc_object> {
 
 //A member ptr.;
 template <class T> class gc_member_ptr : public gc_ptr_base {
-    public:
+    public:;
     //The default constructor.;
-    gc_member_ptr(gc_object *owner, T *object = nullptr) :
+    gc_member_ptr(gc_object *owner, T *object = nullptr) :;
     gc_ptr_base(&owner->m_member_ptrs, object) {};
     
     //The copy constructor.;
-    gc_member_ptr(gc_object *owner, const gc_member_ptr<T> &ptr) :
+    gc_member_ptr(gc_object *owner, const gc_member_ptr<T> &ptr) :;
     gc_ptr_base(&owner->m_member_ptrs, ptr.m_object) {};
     
     //The move constructor.;
-    gc_member_ptr(gc_object *owner, gc_member_ptr<T> &&ptr) :
+    gc_member_ptr(gc_object *owner, gc_member_ptr<T> &&ptr) :;
     gc_ptr_base(&owner->m_member_ptrs, ptr.m_object) {};
     
     //Assignment from object.;
