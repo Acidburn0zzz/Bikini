@@ -31,8 +31,8 @@ save ww f = case !(open f Write) of
                 False => putStrLn $ "Error writing file!" ++ f
 
 -- Compile to C++
-quest : (List String) -> Bool -> { [STDIO] } Eff ()
-quest file bra =
+bikini : (List String) -> Bool -> { [STDIO] } Eff ()
+bikini file bra =
     case parse (some bParser) onestring of
           Left err => putStrLn $ "Parsing Error: " ++ err
           Right v  => putStrLn $ finalize v bra

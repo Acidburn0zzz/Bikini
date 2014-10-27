@@ -1,3 +1,5 @@
+lex : "lex.l"
+parse : "parse.y"
 bikini : "b2"
 executable : "b2"
 compiler : "clang"

@@ -29,6 +29,14 @@ cleanUp []      = return ()
 cleanUp (x::xs) = do sys $ "rm -rf " ++ x
                      cleanUp xs
 
+-- flex
+lex : String -> String -> { [SYSTEM] } Eff ()
+lex cc f = sys $ cc ++ " " ++ f
+
+-- bison
+parse : String -> String -> { [SYSTEM] } Eff ()
+parse cc f = sys $ cc ++ " -y -d " ++ f
+
 -- compile to executable
 bquestY : String -> String -> List String -> { [SYSTEM] } Eff ()
 bquestY cc f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
@@ -65,7 +73,8 @@ srcCompileNoEffect x =
 
 -- Building source Point
 srcCompile : String -> FileIO () ()
-srcCompile x = 
+srcCompile x = do 
+    putStr $ "src: " ++ x
     case srcCompileNoEffect x of
         ""  => putStrLn "What?"
         cpf => do putStrLn $ " -> " ++ cpf
@@ -73,14 +82,12 @@ srcCompile x =
 
 -- Building project Point
 buildPoint : (String, String) -> List String -> String -> FileIO () ()
-buildPoint (t,x) m cc =
-    case t of
-        "src" => do putStr $ "src: " ++ x
-                    srcCompile x
-        "out" => do putStrLn $ "out: " ++ x
-                    bquestY cc x m
-        "lib" => do bquestYL cc x m
-        _     => do putStrLn "What!?"
+buildPoint ("lex",x) _ _  = lex "flex" x
+buildPoint ("parse",x) _ _ = parse "bison" x
+buildPoint ("src",x) m _  = srcCompile x
+buildPoint ("out",x) m cc = bquestY cc x m
+buildPoint ("lib",x) m cc = bquestYL cc x m
+buildPoint (_,_) _ _      = putStrLn "What!?"
 
 -- Recursive project Build
 buildProject : List (String, String) -> List String -> String -> FileIO () ()

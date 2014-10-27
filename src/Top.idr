@@ -35,16 +35,16 @@ class BuildY a where
     partial buildY : a -> List (String, String)
 
 -- parse map .bproj YML
-parseBuildConfig : String -> YamlValue -> List (String, String)
-parseBuildConfig k v = case k of
-                        "bikini"     => [ ("src", (buildX v) ++ ".h")
-                                        , ("src", (buildX v) ++ ".cxx")
-                                        ]
-                        "compiler"   => [ ("cc", (buildX v)) ]
-                        "executable" => [ ("out", (buildX v) ++ ".exe") ]
-                        "library"    => [ ("lib", (buildX v) ++ ".o")
-                                        ]
-                        _            => []
+parseBuildConfig : String -> String -> List (String, String)
+parseBuildConfig "lex" v        = [ ("lex", v ++ ".l") ]
+parseBuildConfig "parse" v      = [ ("parse", v ++ ".y") ]
+parseBuildConfig "bikini" v     = [ ("src", v ++ ".h")
+                                  , ("src", v ++ ".cxx")
+                                  ]
+parseBuildConfig "compiler" v   = [ ("cc", v) ]
+parseBuildConfig "executable" v = [ ("out", v ++ ".exe") ]
+parseBuildConfig "library" v    = [ ("lib", v ++ ".o") ]
+parseBuildConfig _ _            = []
 
 -- bproj YML parser
 instance BuildY YamlValue where
@@ -60,7 +60,7 @@ instance BuildY YamlValue where
       intercalate [] = []
       intercalate [x] = x
       intercalate (x :: xs) = x ++ (intercalate xs)
-      fmtItem (k, v) = parseBuildConfig k v
+      fmtItem (k, v) = parseBuildConfig k (buildX v)
   buildY (YamlArray xs) = concat $ map buildY xs
 
 -- Parse bprj YML and run recursive building
@@ -78,7 +78,7 @@ buildB file =
 -- Generate C++ code
 codegen : String -> FileIO () ()
 codegen f = case !(open f Read) of
-                True => do quest !readFile True
+                True => do bikini !readFile True
                            close {- =<< -}
                 False => putStrLn $ "Codegen Error on file:" ++ f
 
