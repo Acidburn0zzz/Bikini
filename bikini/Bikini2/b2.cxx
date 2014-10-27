@@ -7,7 +7,7 @@ int ex(nodeType *p)
     switch(p->type)
         case typeCon: return p->con.value
         case typeId:  return sym[p->id.i]
-        case typeOpr: \
+        case typeOpr:
         switch(p->opr.oper)
             case WHILE: while(ex(p->opr.op[0])) ex(p->opr.op[1]); return 0
             case IF:

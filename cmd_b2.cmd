@@ -30,8 +30,10 @@ set ABS_PATH=%CD%
     "%ABS_PATH%/../../Bikini" %ABS_PATH%/b2.cxx > %ABS_PATH%/b2.c
     bison -y -d parse.y
     flex lex.l
-    clang -c y.tab.c lex.yy.c
-    clang y.tab.o lex.yy.o b2.c -o b2.exe
+    ::clang -c y.tab.c lex.yy.c
+    ::clang y.tab.o lex.yy.o b2.c -o b2.exe
+    gcc -c y.tab.c lex.yy.c
+    gcc y.tab.o lex.yy.o b2.c -o b2.exe
 popd
 
 pause
