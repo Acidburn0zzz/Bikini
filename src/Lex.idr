@@ -1,9 +1,6 @@
 module Lex
 
-import Control.IOExcept
-import Control.Eternal
-
-import Syntax
+import public Syntax
 import XSyntax
 import Complete
 

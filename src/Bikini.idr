@@ -1,11 +1,10 @@
 module Main
-import Top
 
-import Control.Eternal
-import Effect.System
+import Top
+import System
 
 version : String
-version = "0.0.6"
+version = "0.0.7"
 
 showVersion : IO ()
 showVersion = putStrLn $ "Bikini v." ++ version

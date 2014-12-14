@@ -1,13 +1,7 @@
 module Syntax
 
-import Control.IOExcept
-import Control.Eternal
-
-import Lightyear.Core
-import Lightyear.Combinators
-import Lightyear.Strings
-
-import Helper
+import public Helper
+import public Control.IOExcept
 
 data BValue = BString String
             | BLet String

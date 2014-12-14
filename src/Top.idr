@@ -1,15 +1,8 @@
 module Top
 
-import Effect.StdIO
-import Effect.System
-import Effect.File
-
-import IOProcess
-import Yaml
-import Bottom
-
-import Control.IOExcept
-import Control.Eternal
+import public IOProcess
+import public Bottom
+import public Yaml
 
 -- Treat YML value as String
 class BuildX a where

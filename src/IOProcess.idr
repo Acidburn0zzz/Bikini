@@ -1,13 +1,11 @@
 module IOProcess
 
-import Effect.StdIO
-import Effect.System
-import Effect.File
+import public Effects
+import public Effect.StdIO
+import public Effect.System
+import public Effect.File
 
-import Lex
-
-import Control.IOExcept
-import Control.Eternal
+import public Lex
 
 FileIO : Type -> Type -> Type
 FileIO st t = { [FILE_IO st, STDIO, SYSTEM] } Eff t 
@@ -39,7 +37,7 @@ bikini file bra =
   where onestring : String
         onestring = concat file
 
--- Fast compile simple C++ code to exe {- Deprecated method -}
+-- [DEPRECATED] Fast compile simple C++ code to exe
 questC : (List String) -> Bool -> String -> FileIO () ()
 questC file bra fx =
     case parse (some bParser) onestring of

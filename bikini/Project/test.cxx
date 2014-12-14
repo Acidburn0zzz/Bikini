@@ -25,8 +25,9 @@ int main()
     array <int, 5> Arr = { 0, 1, 2, 3, 4 }
     
     foreach( Arr, [&](int a)
-        cout << "a: " << a++ << endl
+        cout << "foreach a: " << a++ << endl
     )
+    for( int a : Arr ) cout << "for a: " << a++ << endl
     
     /* TAB LEN IS 2 HERE, SO IT COULD BE DYNAMIC */
     unless(false)

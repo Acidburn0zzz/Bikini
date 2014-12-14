@@ -1,13 +1,6 @@
 module Bottom
 
-import Effect.StdIO
-import Effect.System
-import Effect.File
-
-import IOProcess
-
-import Control.IOExcept
-import Control.Eternal
+import public IOProcess
 
 -- Compile to C++ and save
 bquestX : List String -> Bool -> String -> FileIO () ()
@@ -59,7 +52,7 @@ bcompileX f cpf = case !(open f Read) of
 
 -- Src compile w/o Effect!
 srcCompileNoEffect : String -> String
-srcCompileNoEffect x = 
+srcCompileNoEffect x =
     case rff # 1 of
         Just f => let ext = case head' rff of
                               Just "cxx"  => "cpp"
@@ -84,7 +77,7 @@ srcCompile x = do
 buildPoint : (String, String) -> List String -> String -> FileIO () ()
 buildPoint ("lex",x) _ _  = lex "flex" x
 buildPoint ("parse",x) _ _ = parse "bison" x
-buildPoint ("src",x) m _  = srcCompile x
+buildPoint ("src",x) m _ = srcCompile x
 buildPoint ("out",x) m cc = bquestY cc x m
 buildPoint ("lib",x) m cc = bquestYL cc x m
 buildPoint (_,_) _ _      = putStrLn "What!?"

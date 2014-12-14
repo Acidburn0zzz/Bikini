@@ -1,10 +1,10 @@
 module Helper
 
-import Lightyear.Core
-import Lightyear.Combinators
-import Lightyear.Strings
+import public Lightyear.Core
+import public Lightyear.Combinators
+import public Lightyear.Strings
 
-import Control.Eternal
+import public Control.Eternal
 
 splitLines : String -> List String
 splitLines s = splitOn '\n' s
