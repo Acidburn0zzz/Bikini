@@ -50,9 +50,9 @@ bcompileX f cpf = case !(open f Read) of
                                   bquestX dat True cpf
                       False => putStrLn ("File not found :" ++ f)
 
--- Src compile w/o Effect!
-srcCompileNoEffect : String -> String
-srcCompileNoEffect x =
+-- get module name
+getModuleName : String -> String -> String
+getModuleName "g++" x =
     case rff # 1 of
         Just f => let ext = case head' rff of
                               Just "cxx"  => "cpp"
@@ -63,30 +63,44 @@ srcCompileNoEffect x =
         _ => ""
   where rff : List String
         rff = reverse $ with String splitOn '.' x
+getModuleName "gcc" x =
+    case rff # 1 of
+        Just f => let ext = case head' rff of
+                              Just "cxx"  => "c"
+                              Just "hxx"  => "h"
+                              _           => "WTF"
+                  in f ++ "." ++ ext
+        _ => ""
+  where rff : List String
+        rff = reverse $ with String splitOn '.' x
+getModuleName "clang" x = getModuleName "gcc" x
+getModuleName _ x = getModuleName "g++" x
 
 -- Building source Point
-srcCompile : String -> FileIO () ()
-srcCompile x = do 
+srcCompile : String -> String -> String -> FileIO () ()
+srcCompile cc x m = do 
     putStr $ "src: " ++ x
-    case srcCompileNoEffect x of
-        ""  => putStrLn "What?"
-        cpf => do putStrLn $ " -> " ++ cpf
-                  bcompileX x cpf
+    case m of ""  => putStrLn "What?"
+              cpf => do putStrLn $ " -> " ++ cpf
+                        bcompileX x cpf
 
 -- Building project Point
 buildPoint : (String, String) -> List String -> String -> FileIO () ()
-buildPoint ("lex",x) _ _  = lex "flex" x
-buildPoint ("parse",x) _ _ = parse "bison" x
-buildPoint ("src",x) m _ = srcCompile x
-buildPoint ("out",x) m cc = bquestY cc x m
-buildPoint ("lib",x) m cc = bquestYL cc x m
-buildPoint (_,_) _ _      = putStrLn "What!?"
+buildPoint ("out",x) m cc   = bquestY cc x m
+buildPoint ("lib",x) m cc   = bquestYL cc x m
+buildPoint (_,_) _ _        = putStrLn "What!?"
 
 -- Recursive project Build
 buildProject : List (String, String) -> List String -> String -> FileIO () ()
-buildProject [] _ _               = putStrLn "There is nothing to do"
-buildProject _ [] _               = putStrLn "No modules to compile"
-buildProject [(t,x)] m cc         = buildPoint (t,x) m cc
-buildProject (("cc",x) :: xs) m _ = buildProject xs m x
-buildProject ((t,x) :: xs) m cc   = do buildProject [(t,x)] m cc
-                                       buildProject xs m cc
+buildProject [] _ _                     = putStrLn "There is nothing to do"
+buildProject (("cc",x) :: xs) m _       = buildProject xs m x
+buildProject (("lex",x) :: xs) m cc     = do lex "flex" x
+                                             buildProject xs m cc
+buildProject (("parse",x) :: xs) m cc   = do parse "bison" x
+                                             buildProject xs m cc
+buildProject (("src",x) :: xs) m cc     = do let mn = getModuleName cc x
+                                             srcCompile cc x mn
+                                             buildProject xs (mn::m) cc
+buildProject [(t,x)] m cc               = buildPoint (t,x) m cc
+buildProject ((t,x) :: xs) m cc         = do buildProject [(t,x)] m cc
+                                             buildProject xs m cc

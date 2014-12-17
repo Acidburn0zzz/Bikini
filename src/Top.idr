@@ -61,10 +61,7 @@ buildB : (List String) -> FileIO () ()
 buildB file =
     case parse yamlToplevelValue onestring of
        Left err => putStrLn $ "Error parsing project YML: " ++ err
-       Right v  => let parsedConfig = buildY v
-                       source = map (\(n,s) => s) (filter (\(n,s) => n == "src") parsedConfig)
-                       modules = map srcCompileNoEffect source
-                   in buildProject parsedConfig modules "g++"
+       Right v  => buildProject (buildY v) [] "g++"
   where onestring : String
         onestring = concat file
 
