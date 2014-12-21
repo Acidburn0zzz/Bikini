@@ -10,7 +10,7 @@ test_set basics_tests
         std::make_tuple(
         std::string("Basics test"),
         std::function<bool()>([]() -> bool
-            let a = 0
+            a <- 0
             std::array<int, 3> arr = {1, 2, 3}
             foreach(arr, [&](int x)
                 std::cout << "x: " << x << std::endl

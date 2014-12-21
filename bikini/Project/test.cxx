@@ -8,9 +8,11 @@ using namespace std
 
 int main()
     
-    let x = 666
+    xxx <- 666
     
-    let pm = match (x)
+    // TODO: use <- and match syntax in the same codeline
+    // right recursion: parse & analyse value first
+    auto pm = match (xxx)
              [=> 666 => 0
              [=> 111 => 1
              [~>     => 666
@@ -39,7 +41,7 @@ int main()
     let go = [](const char* buff, int n)
         if (n > 0)
             printf("0x")
-            for (let i = 0; i < n; i++)
+            for (auto i = 0; i < n; i++)
                 printf("%02X", buff[i])
         printf("\n")
     ;
@@ -52,9 +54,9 @@ int main()
     go (buff, 4)
     
     [=]() mutable
-        x++
-        cout << "x [=]:" << x << endl
+        xxx++
+        cout << "xxx [=]:" << xxx << endl
     ()
-    cout << "x:" << x << endl
+    cout << "xxx:" << xxx << endl
     
     return 0

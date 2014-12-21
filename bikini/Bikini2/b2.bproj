@@ -1,5 +1,0 @@
-lex : "lex"
-parse : "parse"
-bikini : "b2"
-executable : "b2"
-compiler : "gcc"
