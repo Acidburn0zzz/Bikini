@@ -10,9 +10,7 @@ int main()
     
     xxx <- 666
     
-    // TODO: use <- and match syntax in the same codeline
-    // right recursion: parse & analyse value first
-    auto pm = match (xxx)
+    pm <- match (xxx)
              [=> 666 => 0
              [=> 111 => 1
              [~>     => 666

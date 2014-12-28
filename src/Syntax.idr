@@ -7,7 +7,7 @@ import public Data.SortedMap
 
 data BValue = BString String
             | BLet String
-            | BInit (String, String)
+            | BInit (String, BValue)
             | BMatch String
             | BMatchc String
             | BMatchd String
@@ -27,7 +27,7 @@ caseProcess d s =
 instance Show BValue where
     show (BString s)    = show s
     show (BLet s)       = "const auto "
-    show (BInit (k, v)) = "auto " ++ k ++ " =" ++ v ++ "\n"
+    show (BInit (k, v)) = "auto " ++ k ++ " =" ++ (show v) -- ++ "\n"
 
     show (BMatch s)     = "[&]() { switch /* match */ "
     show (BMatchc s)    = caseProcess False s
@@ -38,18 +38,19 @@ instance Show BValue where
 bString : Parser String
 bString = char '"' $> map pack bString' <?> "Simple string"
 
-bInit : Parser (String, String)
-bInit = do key <- map pack (many (satisfy $ not . isSpace)) <$ space
-           val <- string "<-" $> map pack parseUntilLine
-           pure (key, val)
+mutual
+    bInit : Parser (String, BValue)
+    bInit = do key <- map pack (many (satisfy $ not . isSpace)) <$ space
+               val <- string "<-" $> bParser -- map pack parseUntilLine
+               pure (key, val)
 
-bParser : Parser BValue
-bParser =  (map BString bString)
-       <|> (map BLet $ string "let" <$ space $> map pack parseWord'' <?> "bLet")
+    bParser : Parser BValue
+    bParser =  (map BString bString)
+           <|> (map BLet $ string "let" <$ space $> map pack parseWord'' <?> "bLet")
 
-       <|> (map BMatch  $ string "match"    $> map pack parseWord' <?> "bMatch")
-       <|> (map BMatchc $ string "[=>"      $> map pack parseUntilLine <?> "bMatchc")
-       <|> (map BMatchd $ string "[~>"      $> map pack parseUntilLine <?> "bMatchd")
+           <|> (map BMatch  $ string "match"    $> map pack parseWord' <?> "bMatch")
+           <|> (map BMatchc $ string "[=>"      $> map pack parseUntilLine <?> "bMatchc")
+           <|> (map BMatchd $ string "[~>"      $> map pack parseUntilLine <?> "bMatchd")
 
-       <|>| map BInit bInit
-       <|>| map JustParse justParse
+           <|>| map BInit bInit
+           <|>| map JustParse justParse
