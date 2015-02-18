@@ -1,5 +1,5 @@
-Bikini
-------
+<img src="http://fc02.deviantart.net/fs70/i/2012/242/7/a/cute_anime_fairy_render_by_maymugilee-d5cyr89.png"/>
+<br/>
 
 [![Build Status](https://travis-ci.org/Heather/Bikini.png?branch=master)](https://travis-ci.org/Heather/Bikini)
 
@@ -78,6 +78,7 @@ int main()
     
     return 0
 ```
+<img align="left" src="http://fc06.deviantart.net/fs71/f/2014/106/0/b/anime_render_16_by_cheshire_pops-d7eoifz.png"/>
 
 Tests
 -----
@@ -117,6 +118,8 @@ there is let in the string
 Cleaning...
 ```
 
+<img src="http://fc04.deviantart.net/fs70/f/2012/045/8/6/gorgeous_by_namibekkklein-d4ppfzv.png"/>
+
 Projects used:
 --------------
 
@@ -124,3 +127,5 @@ Projects used:
  - C++ Quickcheck
  - Idris: https://github.com/idris-lang/Idris-dev
  - ...
+
+<img align="left" src="http://fc04.deviantart.net/fs70/i/2012/249/8/9/cute_anime_fairy_render__complete__by_maymugilee-d5drw4f.png"/>
