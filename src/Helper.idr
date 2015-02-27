@@ -5,8 +5,9 @@ import public Lightyear.Combinators
 import public Lightyear.Strings
 
 import public Control.Eternal
+import public Control.Unicode
 
-splitLines : String -> List String
+splitLines : String → (List String)
 splitLines s = splitOn '\n' s
 
 hex : Parser Int
@@ -21,7 +22,7 @@ hexQuad = do
     b <- hex
     c <- hex
     d <- hex
-    pure $ a * 4096 + b * 256 + c * 16 + d
+    pure $ a × 4096 + b × 256 + c × 16 + d
 
 specialChar : Parser Char
 specialChar = do

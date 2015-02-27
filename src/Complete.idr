@@ -1,16 +1,18 @@
 module Complete
 
-sck : List Char -> (List (List Char)) -> Bool
-sck rl = any (\lc => isSuffixOf lc rl)
+import public Control.Unicode
 
-pck : List Char -> (List (List Char)) -> Bool
-pck rl = any (\lc => isPrefixOf lc rl)
+sck : (List Char) → (List (List Char)) → Bool
+sck rl = ∀λ lc → isSuffixOf lc rl
 
-complete : String -> String -> String
+pck : (List Char) → (List (List Char)) → Bool
+pck rl = ∀λ lc → isPrefixOf lc rl
+
+complete : String → String → String
 complete a b =
     if len == 0 || sfgo || prgo
         then (a ++ "\n" ++ b)
-        else if la == lb
+        else if la ≡ lb
                 then (a ++ scl ++ "\n" ++ b)
                 else if la > lb then let rpl = pack $ with List replicate lb ' '
                                      in (a ++ scl ++ "\n" ++ rpl ++ "}\n" ++ b)

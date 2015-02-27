@@ -7,29 +7,29 @@ import public Effect.File
 
 import public Lex
 
-FileIO : Type -> Type -> Type
+FileIO : Type → Type → Type
 FileIO st t = { [FILE_IO st, STDIO, SYSTEM] } Eff t 
 
 -- system w/o return
-sys : String -> { [SYSTEM] } Eff ()
+sys : String → { [SYSTEM] } Eff ()
 sys ss = do system ss
             return ()
 
 -- Recursive writeLine
-writeFile : (List String) -> { [FILE_IO (OpenFile Write)] } Eff ()
+writeFile : (List String) → { [FILE_IO (OpenFile Write)] } Eff ()
 writeFile [] = return ()
 writeFile (x :: xs) = do writeLine x
                          writeFile xs
 
 -- List String => FileIO
-save : (List String) -> String -> FileIO () ()
+save : (List String) → String → FileIO () ()
 save ww f = case !(open f Write) of
                 True  => do writeFile ww
                             close {- =<< -}
                 False => putStrLn $ "Error writing file!" ++ f
 
 -- Compile to C++
-bikini : (List String) -> Bool -> { [STDIO] } Eff ()
+bikini : (List String) → Bool → { [STDIO] } Eff ()
 bikini file bra =
     case parse (some bParser) onestring of
           Left err => putStrLn $ "Parsing Error: " ++ err
@@ -38,7 +38,7 @@ bikini file bra =
         onestring = concat file
 
 -- [DEPRECATED] Fast compile simple C++ code to exe
-questC : (List String) -> Bool -> String -> FileIO () ()
+questC : (List String) → Bool → String → FileIO () ()
 questC file bra fx =
     case parse (some bParser) onestring of
       Left err => putStrLn $ ("Parsing Error: " ++ err)

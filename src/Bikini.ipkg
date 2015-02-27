@@ -1,7 +1,7 @@
 package Bikini
 
 modules = Helper, Syntax, Complete, XSyntax, Lex, IOProcess, Bottom, Top, Bikini
-opts = "-p effects -p Control.Eternal -p lightyear -p yaml --no-partial-eval"
+opts = "-p effects -p Control.Eternal -p Control.Unicode -p lightyear -p yaml --no-partial-eval"
 
 executable = Bikini
 main = Bikini

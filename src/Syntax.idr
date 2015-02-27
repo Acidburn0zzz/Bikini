@@ -13,7 +13,7 @@ data BValue = BString String
             | BMatchd String
             | JustParse Char
 
-caseProcess : Bool -> String -> String
+caseProcess : Bool → String → String
 caseProcess d s =
     let sas  = unpack s
         skp1 = 1 + (length $ takeWhile (== '[') sas)

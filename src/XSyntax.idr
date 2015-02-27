@@ -1,6 +1,7 @@
 module XSyntax
 
 import Control.Eternal
+import Control.Unicode
 
 ||| Pre-rules
 xrules : List (Nat, String, Bool)
@@ -14,7 +15,7 @@ yrules = with List [
     (0, "} ()")
     ]
 
-rpl : List Nat -> Nat -> Nat -> List Nat
+rpl : (List Nat) → Nat → Nat → (List Nat)
 rpl xs i x = fore ++ (x :: aft)
   where
     fore : List Nat
@@ -23,22 +24,22 @@ rpl xs i x = fore ++ (x :: aft)
     aft : List Nat
     aft  = drop (i+1) xs
 
-srpl : List Nat -> Nat -> Nat -> List Nat
+srpl : (List Nat) → Nat → Nat → (List Nat)
 srpl xs i x = if i >= 0 && i < length xs
                 then rpl xs i x
                 else xs
 
-blockRules : (List Nat) -> Nat -> List Char -> List (Nat, String, Bool) -> (List Nat)
+blockRules : (List Nat) → Nat → (List Char) → (List (Nat, String, Bool)) → (List Nat)
 blockRules ln l w = map (\(nn, s, i) => case ln # nn of
-                                          Just n => if n == 0 then if i then if isInfixOf (unpack s) w then l
+                                          Just n => if n ≡ 0 then if i then if isInfixOf (unpack s) w then l
+                                                                                                      else 0
+                                                                       else if isPrefixOf (unpack s) w then l
                                                                                                        else 0
-                                                                        else if isPrefixOf (unpack s) w then l
-                                                                                                        else 0
-                                                              else n
+                                                             else n
                                           _ => 0
                         )
 
-blockRules' : (List Nat) -> Nat -> String -> List (Nat, String) -> ((List Nat), String)
+blockRules' : (List Nat) → Nat → String → (List (Nat, String)) → ((List Nat), String)
 blockRules' _ _ _ [] = ([], "")
 blockRules' ln l rpl [(num, s)] = do
     case ln # num of
@@ -50,7 +51,7 @@ blockRules' ln l rpl [(num, s)] = do
 blockRules' ln l rpl (x::xs) = do let (nlst, s) = blockRules' ln l rpl [x]
                                   blockRules' nlst l (s ++ rpl) xs
 
-completeAuto : ((List Nat), String) -> ((List Nat), String) -> ((List Nat), String)
+completeAuto : ((List Nat), String) → ((List Nat), String) → ((List Nat), String)
 completeAuto (lmu, a) (_, b) =
     if isSuffixOf op ua
         then let la    = length $ takeWhile (== ' ') ua

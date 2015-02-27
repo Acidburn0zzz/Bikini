@@ -6,7 +6,7 @@ import public Yaml
 
 -- Treat YML value as String
 class BuildX a where
-    partial buildX : a -> String
+    partial buildX : a → String
 instance BuildX YamlValue where
   buildX (YamlString s)   = s
   buildX (YamlNumber x)   = ""
@@ -16,19 +16,19 @@ instance BuildX YamlValue where
   buildX (YamlObject xs)  =
       "{" ++ intercalate ", " (map fmtItem $ SortedMap.toList xs) ++ "}"
     where
-      intercalate : String -> List String -> String
+      intercalate : String → (List String) → String
       intercalate sep [] = ""
       intercalate sep [x] = x
       intercalate sep (x :: xs) = x ++ sep ++ intercalate sep xs
 
       fmtItem (k, v) = k ++ ": " ++ show v
-  buildX (YamlArray  xs)  = show xs
+  buildX (YamlArray  xs) = show xs
 
 class BuildY a where
-    partial buildY : a -> List (String, String)
+    partial buildY : a → List (String, String)
 
 -- parse map .bproj YML
-parseBuildConfig : String -> String -> List (String, String)
+parseBuildConfig : String → String → (List (String, String))
 parseBuildConfig "lex" v        = [ ("lex", v ++ ".l") ]
 parseBuildConfig "parse" v      = [ ("parse", v ++ ".y") ]
 parseBuildConfig "bikini" v     = [ ("src", v ++ ".h")
@@ -49,7 +49,7 @@ instance BuildY YamlValue where
   buildY (YamlObject xs)  =
    intercalate (map fmtItem $ SortedMap.toList xs)
     where
-      intercalate : List (List (String, String)) -> List (String, String)
+      intercalate : (List (List (String, String))) → (List (String, String))
       intercalate [] = []
       intercalate [x] = x
       intercalate (x :: xs) = x ++ (intercalate xs)
@@ -57,7 +57,7 @@ instance BuildY YamlValue where
   buildY (YamlArray xs) = concat $ map buildY xs
 
 -- Parse bprj YML and run recursive building
-buildB : (List String) -> FileIO () ()
+buildB : (List String) → FileIO () ()
 buildB file =
     case parse yamlToplevelValue onestring of
        Left err => putStrLn $ "Error parsing project YML: " ++ err
@@ -66,14 +66,14 @@ buildB file =
         onestring = concat file
 
 -- Generate C++ code
-codegen : String -> FileIO () ()
+codegen : String → FileIO () ()
 codegen f = case !(open f Read) of
                 True => do bikini !readFile True
                            close {- =<< -}
                 False => putStrLn $ "Codegen Error on file:" ++ f
 
 -- Compile cimple CXX file {- Deprecated -}
-compile : String -> FileIO () ()
+compile : String → FileIO () ()
 compile f = case !(open f Read) of
                 True  => do dat <- readFile
                             close {- =<< -}
@@ -81,7 +81,7 @@ compile f = case !(open f Read) of
                 False => putStrLn $ "Compile Error on file:" ++ f
 
 -- Build project: .bproj => FileIO
-build : String -> FileIO () ()
+build : String → FileIO () ()
 build f = case !(open f Read) of
                 True => do dat <- readFile
                            close {- =<< -}
