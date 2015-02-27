@@ -125,4 +125,4 @@ Projects used:
  - Idris: https://github.com/idris-lang/Idris-dev
  - ...
 
-<img src="http://fc04.deviantart.net/fs70/f/2012/045/8/6/gorgeous_by_namibekkklein-d4ppfzv.png"/>
+<img align="left" src="http://fc06.deviantart.net/fs71/f/2014/106/0/b/anime_render_16_by_cheshire_pops-d7eoifz.png"/>
