@@ -43,13 +43,13 @@ justParse : Parser Char
 justParse = satisfy (const True) <?> "Whatever"
 
 bString' : Parser (List Char)
-bString' = (char '"' $!> pure Prelude.List.Nil) <|> do
+bString' = (char '"' *!> pure Prelude.List.Nil) <|> do
     c <- satisfy (/= '"')
-    if (c == '\\') then map (::) specialChar <$> bString'
+    if (c == '\\') then map (::) specialChar <*> bString'
                    else map (c ::) bString'
 
 parseWord' : Parser (List Char)
-parseWord' = (space $!> pure Prelude.List.Nil) <|> do
+parseWord' = (space *!> pure Prelude.List.Nil) <|> do
     c <- satisfy (/= ' '); map (c ::) parseWord'
 
 parseWord'' : Parser (List Char)
@@ -57,5 +57,5 @@ parseWord'' = (pure Prelude.List.Nil) <|> do
     c <- satisfy (/= ' '); map (c ::) parseWord'
 
 parseUntilLine : Parser (List Char)
-parseUntilLine = (char '\n' $!> pure Prelude.List.Nil) <|> do
+parseUntilLine = (char '\n' *!> pure Prelude.List.Nil) <|> do
     c <- satisfy (/= '\n'); map (c ::) parseUntilLine

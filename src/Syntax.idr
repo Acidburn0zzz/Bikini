@@ -36,21 +36,21 @@ instance Show BValue where
     show (JustParse c)  = pack $ with List [c]
 
 bString : Parser String
-bString = char '"' $> map pack bString' <?> "Simple string"
+bString = char '"' *> map pack bString' <?> "Simple string"
 
 mutual
     bInit : Parser (String, BValue)
-    bInit = do key <- map pack (many (satisfy $ not . isSpace)) <$ space
-               val <- string "<-" $> bParser -- map pack parseUntilLine
+    bInit = do key <- map pack (many (satisfy $ not . isSpace)) <* space
+               val <- string "<-" *> bParser -- map pack parseUntilLine
                pure (key, val)
 
     bParser : Parser BValue
     bParser =  (map BString bString)
-           <|> (map BLet $ string "let" <$ space $> map pack parseWord'' <?> "bLet")
+           <|> (map BLet $ string "let" <* space *> map pack parseWord'' <?> "bLet")
 
-           <|> (map BMatch  $ string "match"    $> map pack parseWord' <?> "bMatch")
-           <|> (map BMatchc $ string "[=>"      $> map pack parseUntilLine <?> "bMatchc")
-           <|> (map BMatchd $ string "[~>"      $> map pack parseUntilLine <?> "bMatchd")
+           <|> (map BMatch  $ string "match"    *> map pack parseWord' <?> "bMatch")
+           <|> (map BMatchc $ string "[=>"      *> map pack parseUntilLine <?> "bMatchc")
+           <|> (map BMatchd $ string "[~>"      *> map pack parseUntilLine <?> "bMatchd")
 
            <|>| map BInit bInit
            <|>| map JustParse justParse
