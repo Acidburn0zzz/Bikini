@@ -10,13 +10,13 @@ pck rl = ∀λ lc → isPrefixOf lc rl
 
 complete : String → String → String
 complete a b =
-    if len == 0 || sfgo || prgo
-        then (a ++ "\n" ++ b)
+    if (len ≡ 0) ∨ sfgo ∨ prgo
+        then (a ⧺ "\n" ⧺ b)
         else if la ≡ lb
-                then (a ++ scl ++ "\n" ++ b)
+                then (a ⧺ scl ⧺ "\n" ⧺ b)
                 else if la > lb then let rpl = pack $ with List replicate lb ' '
-                                     in (a ++ scl ++ "\n" ++ rpl ++ "}\n" ++ b)
-                                else (a ++ " {\n" ++ b)
+                                     in (a ⧺ scl ⧺ "\n" ⧺ rpl ⧺ "}\n" ⧺ b)
+                                else (a ⧺ " {\n" ⧺ b)
   where
     ua : List Char
     ua = unpack a

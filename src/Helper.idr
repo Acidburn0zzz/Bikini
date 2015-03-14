@@ -13,8 +13,8 @@ splitLines s = splitOn '\n' s
 hex : Parser Int
 hex = do
     c <- map (ord . toUpper) $ satisfy isHexDigit
-    pure $ if c >= ord '0' && c <= ord '9' then c - ord '0'
-                                           else 10 + c - ord 'A'
+    pure $ if (c ≥ ord '0') ∧ (c ≤ ord '9') then c - ord '0'
+                                            else 10 + c - ord 'A'
 
 hexQuad : Parser Int
 hexQuad = do
@@ -45,8 +45,8 @@ justParse = satisfy (const True) <?> "Whatever"
 bString' : Parser (List Char)
 bString' = (char '"' *!> pure Prelude.List.Nil) <|> do
     c <- satisfy (/= '"')
-    if (c == '\\') then map (::) specialChar <*> bString'
-                   else map (c ::) bString'
+    if (c ≡ '\\') then map (::) specialChar <*> bString'
+                  else map (c ::) bString'
 
 parseWord' : Parser (List Char)
 parseWord' = (space *!> pure Prelude.List.Nil) <|> do

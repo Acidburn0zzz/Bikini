@@ -19,9 +19,9 @@ instance BuildX YamlValue where
       intercalate : String → (List String) → String
       intercalate sep [] = ""
       intercalate sep [x] = x
-      intercalate sep (x :: xs) = x ++ sep ++ intercalate sep xs
+      intercalate sep (x :: xs) = x ⧺ sep ⧺ intercalate sep xs
 
-      fmtItem (k, v) = k ++ ": " ++ show v
+      fmtItem (k, v) = k ⧺ ": " ⧺ show v
   buildX (YamlArray  xs) = show xs
 
 class BuildY a where
@@ -29,14 +29,14 @@ class BuildY a where
 
 -- parse map .bproj YML
 parseBuildConfig : String → String → (List (String, String))
-parseBuildConfig "lex" v        = [ ("lex", v ++ ".l") ]
-parseBuildConfig "parse" v      = [ ("parse", v ++ ".y") ]
-parseBuildConfig "bikini" v     = [ ("src", v ++ ".h")
-                                  , ("src", v ++ ".cxx")
+parseBuildConfig "lex" v        = [ ("lex", v ⧺ ".l") ]
+parseBuildConfig "parse" v      = [ ("parse", v ⧺ ".y") ]
+parseBuildConfig "bikini" v     = [ ("src", v ⧺ ".h")
+                                  , ("src", v ⧺ ".cxx")
                                   ]
 parseBuildConfig "compiler" v   = [ ("cc", v) ]
-parseBuildConfig "executable" v = [ ("out", v ++ ".exe") ]
-parseBuildConfig "library" v    = [ ("lib", v ++ ".o") ]
+parseBuildConfig "executable" v = [ ("out", v ⧺ ".exe") ]
+parseBuildConfig "library" v    = [ ("lib", v ⧺ ".o") ]
 parseBuildConfig _ _            = []
 
 -- bproj YML parser
@@ -52,7 +52,7 @@ instance BuildY YamlValue where
       intercalate : (List (List (String, String))) → (List (String, String))
       intercalate [] = []
       intercalate [x] = x
-      intercalate (x :: xs) = x ++ (intercalate xs)
+      intercalate (x :: xs) = x ⧺ (intercalate xs)
       fmtItem (k, v) = parseBuildConfig k (buildX v)
   buildY (YamlArray xs) = concat $ map buildY xs
 
@@ -60,17 +60,17 @@ instance BuildY YamlValue where
 buildB : (List String) → FileIO () ()
 buildB file =
     case parse yamlToplevelValue onestring of
-       Left err => putStrLn $ "Error parsing project YML: " ++ err
+       Left err => putStrLn $ "Error parsing project YML: " ⧺ err
        Right v  => buildProject (buildY v) [] "g++"
   where onestring : String
         onestring = concat file
 
--- Generate C++ code
+-- Generate C⧺ code
 codegen : String → FileIO () ()
 codegen f = case !(open f Read) of
                 True => do bikini !readFile True
                            close {- =<< -}
-                False => putStrLn $ "Codegen Error on file:" ++ f
+                False => putStrLn $ "Codegen Error on file:" ⧺ f
 
 -- Compile cimple CXX file {- Deprecated -}
 compile : String → FileIO () ()
@@ -78,7 +78,7 @@ compile f = case !(open f Read) of
                 True  => do dat <- readFile
                             close {- =<< -}
                             questC dat True f
-                False => putStrLn $ "Compile Error on file:" ++ f
+                False => putStrLn $ "Compile Error on file:" ⧺ f
 
 -- Build project: .bproj => FileIO
 build : String → FileIO () ()
@@ -86,4 +86,4 @@ build f = case !(open f Read) of
                 True => do dat <- readFile
                            close {- =<< -}
                            buildB dat
-                False => putStrLn $ "Project file error:" ++ f
+                False => putStrLn $ "Project file error:" ⧺ f

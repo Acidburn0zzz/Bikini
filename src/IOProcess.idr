@@ -26,30 +26,30 @@ save : (List String) → String → FileIO () ()
 save ww f = case !(open f Write) of
                 True  => do writeFile ww
                             close {- =<< -}
-                False => putStrLn $ "Error writing file!" ++ f
+                False => putStrLn $ "Error writing file!" ⧺ f
 
 -- Compile to C++
 bikini : (List String) → Bool → { [STDIO] } Eff ()
 bikini file bra =
     case parse (some bParser) onestring of
-          Left err => putStrLn $ "Parsing Error: " ++ err
+          Left err => putStrLn $ "Parsing Error: " ⧺ err
           Right v  => putStrLn $ finalize v bra
   where onestring : String
         onestring = concat file
 
--- [DEPRECATED] Fast compile simple C++ code to exe
+-- [DEPRECATED] Fast compile simple C⧺ code to exe
 questC : (List String) → Bool → String → FileIO () ()
 questC file bra fx =
     case parse (some bParser) onestring of
-      Left err => putStrLn $ ("Parsing Error: " ++ err)
+      Left err => putStrLn $ ("Parsing Error: " ⧺ err)
       Right v  => let sln = splitLines $ finalize v bra
                       ffs = with String splitOn '.' fx
-                  in case ffs # 0 of
-                        Just f => do let cpf = f ++ ".cpp"
-                                     let exf = f ++ ".exe"
+                  in case ffs ‼ 0 of
+                        Just f => do let cpf = f ⧺ ".cpp"
+                                     let exf = f ⧺ ".exe"
                                      save sln cpf
-                                     sys $ "g++ -o " ++ exf ++ " " ++ cpf ++ " -O3 -Wall -std=c++1y"
-                                     sys $ "rm -f " ++ cpf
+                                     sys $ "g++ -o " ⧺ exf ⧺ " " ⧺ cpf ⧺ " -O3 -Wall -std=c++1y"
+                                     sys $ "rm -f " ⧺ cpf
                         _ => putStrLn ("Error!")
   where onestring : String
         onestring = concat file

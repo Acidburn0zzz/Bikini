@@ -19,15 +19,15 @@ caseProcess d s =
         skp1 = 1 + (length $ takeWhile (== '[') sas)
         cwd  = if d then "default "
                     else "case "
-        val1 = (unpack cwd) ++ (drop skp1 sas)
+        val1 = (unpack cwd) ⧺ (drop skp1 sas)
         skp2 = length $ takeWhile (/= '=') val1
-        val2 = (take skp2 val1) ++ (unpack ": return ") ++ (drop (skp2 + 2) val1)
-    in (pack val2) ++ "\n"
+        val2 = (take skp2 val1) ⧺ (unpack ": return ") ⧺ (drop (skp2 + 2) val1)
+    in (pack val2) ⧺ "\n"
 
 instance Show BValue where
     show (BString s)    = show s
     show (BLet s)       = "const auto "
-    show (BInit (k, v)) = "auto " ++ k ++ " =" ++ (show v) -- ++ "\n"
+    show (BInit (k, v)) = "auto " ⧺ k ⧺ " =" ⧺ (show v)
 
     show (BMatch s)     = "[&]() { switch /* match */ "
     show (BMatchc s)    = caseProcess False s
@@ -41,7 +41,7 @@ bString = char '"' *> map pack bString' <?> "Simple string"
 mutual
     bInit : Parser (String, BValue)
     bInit = do key <- map pack (many (satisfy $ not . isSpace)) <* space
-               val <- string "<-" *> bParser -- map pack parseUntilLine
+               val <- string "<-" *> bParser
                pure (key, val)
 
     bParser : Parser BValue
