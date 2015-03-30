@@ -1,6 +1,3 @@
-<img src="http://fc02.deviantart.net/fs70/i/2012/242/7/a/cute_anime_fairy_render_by_maymugilee-d5cyr89.png"/>
-<br/>
-
 [![Build Status](https://travis-ci.org/Heather/Bikini.png?branch=master)](https://travis-ci.org/Heather/Bikini)
 
 in current state you should know how it works to use it... and it's terrible
