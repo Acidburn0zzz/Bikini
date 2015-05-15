@@ -3,10 +3,10 @@ module Complete
 import public Control.Unicode
 
 sck : (List Char) → (List (List Char)) → Bool
-sck rl = ∀λ lc → isSuffixOf lc rl
+sck rl = any(\lc => isSuffixOf lc rl)
 
 pck : (List Char) → (List (List Char)) → Bool
-pck rl = ∀λ lc → isPrefixOf lc rl
+pck rl = any(\lc => isPrefixOf lc rl)
 
 complete : String → String → String
 complete a b =
