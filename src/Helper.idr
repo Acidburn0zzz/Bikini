@@ -5,18 +5,18 @@ import public Lightyear.Combinators
 import public Lightyear.Strings
 
 import public Control.Eternal
-import public Control.Unicode
+import public Unicode
 
 splitLines : String → (List String)
 splitLines s = splitOn '\n' s
 
-hex : Parser Int
+hex : Parser ℤ
 hex = do
-    c <- map (ord . toUpper) $ satisfy isHexDigit
+    c <- (ord . toUpper) ∰ satisfy isHexDigit
     pure $ if (c ≥ ord '0') ∧ (c ≤ ord '9') then c - ord '0'
                                             else 10 + c - ord 'A'
 
-hexQuad : Parser Int
+hexQuad : Parser ℤ
 hexQuad = do
     a <- hex
     b <- hex

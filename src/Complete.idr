@@ -1,12 +1,12 @@
 module Complete
 
-import public Control.Unicode
+import public Unicode
 
 sck : (List Char) → (List (List Char)) → Bool
-sck rl = any(\lc => isSuffixOf lc rl)
+sck rl = any (λ lc → isSuffixOf lc rl)
 
 pck : (List Char) → (List (List Char)) → Bool
-pck rl = any(\lc => isPrefixOf lc rl)
+pck rl = any (λ lc → isPrefixOf lc rl)
 
 complete : String → String → String
 complete a b =
@@ -21,10 +21,10 @@ complete a b =
     ua : List Char
     ua = unpack a
 
-    la : Nat
+    la : ℕ
     la = length $ takeWhile (== ' ') ua
 
-    lb : Nat
+    lb : ℕ
     lb = length $ takeWhile (== ' ') $ unpack b
 
     rl : List Char
@@ -34,17 +34,17 @@ complete a b =
     prgo = pck rl [ ['#']
                   ]
 
-    sfgo : Bool    
+    sfgo : Bool
     sfgo = sck rl [ ['\\'], [','], ['&']
                   , [':'], ['='], ['{']
-                  , ['('], (unpack "/*}*/")
+                  , ['('], (፨ "/*}*/")
                   , [';']
                   ]
 
     scl : String
-    scl = if sck rl [ (unpack "/*;*/") ]
+    scl = if sck rl [ (፨ "/*;*/") ]
                     then ""
                     else ";"
 
-    len : Nat
+    len : ℕ
     len = length $ drop la ua

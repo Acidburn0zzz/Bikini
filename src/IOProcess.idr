@@ -8,16 +8,16 @@ import public Effect.File
 import public Lex
 
 FileIO : Type → Type → Type
-FileIO st t = { [FILE_IO st, STDIO, SYSTEM] } Eff t 
+FileIO st t = { [FILE_IO st, STDIO, SYSTEM] } ♬ t
 
 -- system w/o return
 sys : String → { [SYSTEM] } Eff ()
 sys ss = do system ss
-            return ()
+            ❂ ()
 
 -- Recursive writeLine
-writeFile : (List String) → { [FILE_IO (OpenFile Write)] } Eff ()
-writeFile [] = return ()
+writeFile : (List String) → { [FILE_IO (OpenFile Write)] } ♬ ()
+writeFile [] = ❂ ()
 writeFile (x :: xs) = do writeLine x
                          writeFile xs
 
@@ -26,14 +26,14 @@ save : (List String) → String → FileIO () ()
 save ww f = case !(open f Write) of
                 True  => do writeFile ww
                             close {- =<< -}
-                False => putStrLn $ "Error writing file!" ⧺ f
+                False => ➢ ( "Error writing file!" ⧺ f )
 
 -- Compile to C++
-bikini : (List String) → Bool → { [STDIO] } Eff ()
+bikini : (List String) → Bool → { [STDIO] } ♬ ()
 bikini file bra =
     case parse (some bParser) onestring of
-          Left err => putStrLn $ "Parsing Error: " ⧺ err
-          Right v  => putStrLn $ finalize v bra
+          Left err => ➢ ( "Parsing Error: " ⧺ err )
+          Right v  => ➢ ( finalize v bra )
   where onestring : String
         onestring = concat file
 
@@ -50,7 +50,7 @@ questC file bra fx =
                                      save sln cpf
                                      sys $ "g++ -o " ⧺ exf ⧺ " " ⧺ cpf ⧺ " -O3 -Wall -std=c++1y"
                                      sys $ "rm -f " ⧺ cpf
-                        _ => putStrLn ("Error!")
+                        _ => ➢ "Error!"
   where onestring : String
         onestring = concat file
 

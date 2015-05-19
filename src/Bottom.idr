@@ -6,7 +6,7 @@ import public IOProcess
 bquestX : (List String) → Bool → String → FileIO () ()
 bquestX file bra cpf =
     case parse (some bParser) (concat file) of
-      Left err => putStrLn $ "Failed to parse: " ⧺ err
+      Left err => ➢ ( "Failed to parse: " ⧺ err )
       Right v  => let sln = splitLines $ finalize v bra
                   in save sln cpf
 
@@ -17,27 +17,27 @@ intercalateC [x] = x
 intercalateC (x :: xs) = x ⧺ "," ⧺ intercalateC xs
 
 -- recursive rm -rf
-cleanUp : (List String) → { [SYSTEM] } Eff ()
-cleanUp []      = return ()
+cleanUp : (List String) → { [SYSTEM] } ♬ ()
+cleanUp []      = ❂ ()
 cleanUp (x::xs) = do sys $ "rm -rf " ⧺ x
                      cleanUp xs
 
 -- flex
-lex : String → String → { [SYSTEM] } Eff ()
+lex : String → String → { [SYSTEM] } ♬ ()
 lex cc f = sys $ cc ⧺ " " ⧺ f
 
 -- bison
-parse : String → String → { [SYSTEM] } Eff ()
+parse : String → String → { [SYSTEM] } ♬ ()
 parse cc f = sys $ cc ⧺ " -y -d " ⧺ f
 
 -- compile to executable
-bquestY : String → String → (List String) → { [SYSTEM] } Eff ()
+bquestY : String → String → (List String) → { [SYSTEM] } ♬ ()
 bquestY cc f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
         in do sys $ cc ⧺ " -I . -o " ⧺ f ⧺ " " ⧺ cpps ⧺ " -O3 -Wall -std=c++1y"
               cleanUp xs
 
 -- just compile with -c flag
-bquestYL : String → String → (List String) → { [SYSTEM] } Eff ()
+bquestYL : String → String → (List String) → { [SYSTEM] } ♬ ()
 bquestYL cc f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
         in do sys $ cc ⧺ " -I . -c -o " ⧺ f ⧺ " " ⧺ cpps ⧺ " -O3 -Wall -std=c++1y"
               cleanUp xs
@@ -78,7 +78,7 @@ getModuleName _ x = getModuleName "g++" x
 
 -- Building source Point
 srcCompile : String → String → String → FileIO () ()
-srcCompile cc x m = do 
+srcCompile cc x m = do
     putStr $ "src: " ⧺ x
     case m of ""  => putStrLn "What?"
               cpf => do putStrLn $ " -> " ⧺ cpf
@@ -88,11 +88,11 @@ srcCompile cc x m = do
 buildPoint : (String, String) → (List String) → String → FileIO () ()
 buildPoint ("out",x) m cc   = bquestY cc x m
 buildPoint ("lib",x) m cc   = bquestYL cc x m
-buildPoint (_,_) _ _        = putStrLn "What!?"
+buildPoint (_,_) _ _        = ➢ "What!?"
 
 -- Recursive project Build
 buildProject : (List (String, String)) → (List String) → String → FileIO () ()
-buildProject [] _ _                     = putStrLn "There is nothing to do"
+buildProject [] _ _                     = ➢ "There is nothing to do"
 buildProject (("cc",x) :: xs) m _       = buildProject xs m x
 buildProject (("lex",x) :: xs) m cc     = do lex "flex" x
                                              buildProject xs m cc

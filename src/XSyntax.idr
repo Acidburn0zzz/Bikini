@@ -1,40 +1,40 @@
 module XSyntax
 
 import Control.Eternal
-import Control.Unicode
+import Unicode
 
 ||| Pre-rules
-xrules : List (Nat, String, Bool)
+xrules : List (ℕ, String, Bool)
 xrules = with List [
     (0, "[&]() { switch /* match */", True)
     ]
 
 ||| Post-rules
-yrules : List (Nat, String)
+yrules : List (ℕ, String)
 yrules = with List [
     (0, "} ()")
     ]
 
-rpl : (List Nat) → Nat → Nat → (List Nat)
+rpl : (List Nat) → Nat → Nat → (List ℕ)
 rpl xs i x = fore ⧺ (x :: aft)
   where
-    fore : List Nat
+    fore : List ℕ
     fore = take i xs
-    
+
     aft : List Nat
     aft  = drop (i+1) xs
 
-srpl : (List Nat) → Nat → Nat → (List Nat)
+srpl : (List Nat) → Nat → Nat → (List ℕ)
 srpl xs i x = if (i ≥ 0) ∧ (i < length xs)
                 then rpl xs i x
                 else xs
 
-blockRules : (List Nat) → Nat → (List Char) → (List (Nat, String, Bool)) → (List Nat)
+blockRules : (List Nat) → Nat → (List Char) → (List (Nat, String, Bool)) → (List ℕ)
 blockRules ln l w = map (\(nn, s, i) => case ln ‼ nn of
-                                          Just n => if n ≡ 0 then if i then if isInfixOf (unpack s) w then l
-                                                                                                      else 0
-                                                                       else if isPrefixOf (unpack s) w then l
-                                                                                                       else 0
+                                          Just n => if n ≡ 0 then if i then if isInfixOf (፨ s) w then l
+                                                                                                 else 0
+                                                                       else if isPrefixOf (፨ s) w then l
+                                                                                                  else 0
                                                              else n
                                           _ => 0
                         )
@@ -46,7 +46,7 @@ blockRules' ln l rpl [(num, s)] = do
         Just n => if (n > 0) ∧ (l ≤ n) then ((rr 0), "\n" ⧺ rpl ⧺ s)
                                        else ((rr n), "\n" ⧺ rpl ⧺ "")
         _ => ((rr 0), "\n" ⧺ rpl ⧺ s)
-  where rr : Nat → (List Nat)
+  where rr : Nat → (List ℕ)
         rr = srpl ln num
 blockRules' ln l rpl (x::xs) = let (nlst, s) = blockRules' ln l rpl [x]
                                in blockRules' nlst l (s ⧺ rpl) xs
@@ -60,14 +60,14 @@ completeAuto (lmu, a) (_, b) =
              in (match, (a ⧺ "\n" ⧺ b))
         else let cl : List Char = ['}']
              in if isSuffixOf cl ua
-                    then let lb  = length $ takeWhile (== ' ') $ unpack b
-                             rpl = pack $ with List replicate lb ' '
+                    then let lb  = length $ takeWhile (== ' ') $ ፨ b
+                             rpl = ◉ ( with List replicate lb ' ' )
                              (mn, semim) = blockRules' lmu lb rpl yrules
                          in (mn, (a ⧺ "\n" ⧺ b ⧺ semim))
                     else (lmu, (a ⧺ "\n" ⧺ b))
   where
     ua : List Char
     ua = unpack b
-    
+
     op : List Char
     op = ['{']
