@@ -7,6 +7,10 @@ import public Effect.File
 
 import public Lex
 
+-- TODO: get form conf file or elsewhere
+options : String
+options = " -O3 -Wall -std=c++1y"
+
 FileIO : Type → Type → Type
 FileIO st t = { [FILE_IO st, STDIO, SYSTEM] } ♬ t
 
@@ -48,7 +52,7 @@ questC file bra fx =
                         Just f => do let cpf = f ⧺ ".cpp"
                                      let exf = f ⧺ ".exe"
                                      save sln cpf
-                                     sys $ "g++ -o " ⧺ exf ⧺ " " ⧺ cpf ⧺ " -O3 -Wall -std=c++1y"
+                                     sys $ "g++ -o " ⧺ exf ⧺ " " ⧺ cpf ⧺ options
                                      sys $ "rm -f " ⧺ cpf
                         _ => ➢ "Error!"
   where onestring : String

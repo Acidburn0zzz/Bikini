@@ -8,7 +8,7 @@ using test_set = std::tuple<std::string,std::vector<test_t>>
 bool run_test_set(test_set& ts, std::ostream& os)
     os << "Running test set '" << std::get<0>(ts) << "'...\n"
     auto nsuc = 0, nfail = 0
-    
+    //
     for(const auto& t : std::get<1>(ts))
         try
             if(!std::get<1>(t)())
@@ -17,12 +17,12 @@ bool run_test_set(test_set& ts, std::ostream& os)
                    << ": fail" << std::endl;
                 ++nfail
             else ++nsuc
-        
+        //
         catch(...)
             os  << "Unexpected exception raised while running '" \
                 << std::get<0>(t) << "'" << std::endl;
             throw
-    
+    //
     os << nsuc << "/" \
        << std::get<1>(ts).size() \
        << " passed" << std::endl;

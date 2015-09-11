@@ -23,7 +23,7 @@ test_set basics_tests
                     until(a > 2)
                         std::cout << "a: " << a << std::endl
                         a++
-            
+            //
             return arr[2] == 4 && a == 3
         )) /*;*/
 ;

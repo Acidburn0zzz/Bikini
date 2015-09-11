@@ -33,13 +33,13 @@ parse cc f = sys $ cc ⧺ " -y -d " ⧺ f
 -- compile to executable
 bquestY : String → String → (List String) → { [SYSTEM] } ♬ ()
 bquestY cc f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
-        in do sys $ cc ⧺ " -I . -o " ⧺ f ⧺ " " ⧺ cpps ⧺ " -O3 -Wall -std=c++1y"
+        in do sys $ cc ⧺ " -I . -o " ⧺ f ⧺ " " ⧺ cpps ⧺ options
               cleanUp xs
 
 -- just compile with -c flag
 bquestYL : String → String → (List String) → { [SYSTEM] } ♬ ()
 bquestYL cc f xs = let cpps = intercalateC $ filter (isSuffixOf "cpp") xs
-        in do sys $ cc ⧺ " -I . -c -o " ⧺ f ⧺ " " ⧺ cpps ⧺ " -O3 -Wall -std=c++1y"
+        in do sys $ cc ⧺ " -I . -c -o " ⧺ f ⧺ " " ⧺ cpps ⧺ options
               cleanUp xs
 
 -- Compile to C++ and save with bquestX

@@ -32,7 +32,7 @@ test_set basics_tests {
                 }
             }
             
-            
+            //;
             return arr[2] == 4 && a == 3;
         }
         

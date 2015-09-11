@@ -10,11 +10,11 @@ test_set memo_tests {
         std::make_tuple(
         std::string("Memoization test"),
         std::function<bool()>([]() -> bool {
-            
+            //;
             // memoization;
             const auto sum = [](int a, int b) { return a + b; };
             const auto memoized_sum = memoize(std::function<int (int, int)>(sum));
-            
+            //;
             std::cout << memoized_sum(2, 2) << std::endl;
             std::cout << memoized_sum(2, 2) << std::endl;
             std::cout << memoized_sum(2, 2) << std::endl;
@@ -27,3 +27,4 @@ test_set memo_tests {
 }
 
 ;
+
