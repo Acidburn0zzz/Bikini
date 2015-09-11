@@ -1,7 +1,9 @@
 module Main
 
 import Top
-import System
+
+{- NOT SYSTEM (thanks to David Christiansen) -}
+import Prelude.Interactive
 
 version : String
 version = "0.1.0"
@@ -36,7 +38,7 @@ noArgsFile file = run
       else codegen file
 
 main : ໒ ()
-main = System.getArgs >>= λ args →
+main = getArgs >>= λ args →
     if length args <= 1 then help
       else case args ‼ 1 of
         Just cmd => case cmd of
