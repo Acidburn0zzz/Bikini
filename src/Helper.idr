@@ -7,6 +7,16 @@ import public Lightyear.Strings
 import public Control.Eternal
 import public Unicode
 
+natToInt : (ℕ) → ℤ
+natToInt Z = 0
+natToInt (S k) = 1 + (natToInt k)
+
+intToNat : (ℤ) → ℕ;
+in' : Bool -> Nat -> Int -> Nat;
+in' True n i = n;
+in' False n i = S (intToNat (i-1));
+intToNat n = in' (n <= 0) Z n;
+
 splitLines : String → (List String)
 splitLines s = splitOn '\n' s
 

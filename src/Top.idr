@@ -65,7 +65,7 @@ buildB file =
   where onestring : String
         onestring = concat file
 
--- Generate C⧺ code
+-- Generate C++ code
 codegen : String → FileIO () ()
 codegen f = case !(open f Read) of
                 True => do bikini !readFile True

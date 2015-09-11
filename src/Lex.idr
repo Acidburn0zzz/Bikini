@@ -22,22 +22,29 @@ copenclose a =
     sz : ℕ
     sz = length $ takeWhile (== ' ') ua
 
-replicateX : Nat → Nat → Nat → Nat → String → String → String
+replicateX : Nat → Nat → Nat → Int → String → String → String
 replicateX x st s r a b =
-    if x > r then (a ⧺ "\n" ⧺ b)
-             else let rpl = pack $ with List replicate (st + (s × x)) ' '
-                  in replicateX (x + 1) st s r a (rpl ⧺ "}\n" ⧺ b)
+    if (natToInt x) > r
+        then (a ⧺ "\n" ⧺ b)
+        else let rpl = pack $ with List replicate (st + (s × x)) ' '
+             in replicateX (x + 1) st s r a (rpl ⧺ "}\n" ⧺ b)
 
 endComplete : (Nat, Nat, Nat, String) → (Nat, Nat, Nat, String) → (Nat, Nat, Nat, String)
 endComplete (sc, oa, ca, a) (sb, ob, cb, b) = do
-    if ca > 1
-        then let stex = if ca ≡ 3 then ob - oa
-                                  else 0
-                 step = if stex ≡ 0 then sc
-                                    else stex
-                 s = "\n"
+    if ca > 1 {- There is weird Int <-> Nat behaviour I need to resolve -}
+        then let stex : Nat = if ca ≡ 3 then let obi : Int = natToInt ob
+                                                 oai : Int = natToInt oa
+                                                 res : Int = obi - oai
+                                             in intToNat res
+                                        else 0
+                 step : Nat = if stex ≡ 0 then sc
+                                          else stex
+                 s : String = "\n"
              in if cb ≡ 1
-                    then let diff = ((oa - ob) `div` step) - 1
+                    then let oai : Int = natToInt oa
+                             obi : Int = natToInt ob
+                             stepi : Int = natToInt step
+                             diff : Int = ((oai - obi) `div` stepi) - 1
                              strx = replicateX 1 ob step diff a b
                          in (step, ob, 2, strx) -- and now we check for it until the end
                     else if cb ≡ 2 then (step, ob, ca + 1, (a ⧺ s ⧺ b))
