@@ -12,7 +12,7 @@ natToInt Z = 0
 natToInt (S k) = 1 + (natToInt k)
 
 intToNat : (ℤ) → ℕ;
-in' : Bool -> Nat -> Int -> Nat;
+in' : Bool → (ℕ) → (ℤ) → ℕ;
 in' True n i = n;
 in' False n i = S (intToNat (i-1));
 intToNat n = in' (n <= 0) Z n;
