@@ -37,12 +37,12 @@ complete a b =
     sfgo : Bool
     sfgo = sck rl [ ['\\'], [','], ['&']
                   , [':'], ['='], ['{']
-                  , ['('], (፨ "/*}*/")
+                  , ['('], (❃ "/*}*/")
                   , [';']
                   ]
 
     scl : String
-    scl = if sck rl [ (፨ "/*;*/") ]
+    scl = if sck rl [ (❃ "/*;*/") ]
                     then ""
                     else ";"
 

@@ -15,13 +15,13 @@ data BValue = BString String
 
 caseProcess : Bool → String → String
 caseProcess d s =
-    let sas  = ፨ s
+    let sas  = ❃ s
         skp1 = 1 + (length $ takeWhile (== '[') sas)
         cwd  = if d then "default "
                     else "case "
         val1 = (unpack cwd) ⧺ (drop skp1 sas)
         skp2 = length $ takeWhile (/= '=') val1
-        val2 = (take skp2 val1) ⧺ (፨ ": return ") ⧺ (drop (skp2 + 2) val1)
+        val2 = (take skp2 val1) ⧺ (❃ ": return ") ⧺ (drop (skp2 + 2) val1)
     in (◉ val2) ⧺ "\n"
 
 instance Show BValue where

@@ -31,9 +31,9 @@ srpl xs i x = if (i ≥ 0) ∧ (i < length xs)
 
 blockRules : (List ℕ) → (ℕ) → (List Char) → (List (ℕ, String, Bool)) → (List ℕ)
 blockRules ln l w = map (\(nn, s, i) => case ln ‼ nn of
-                                          Just n => if n ≡ 0 then if i then if isInfixOf (፨ s) w then l
+                                          Just n => if n ≡ 0 then if i then if isInfixOf (❃ s) w then l
                                                                                                  else 0
-                                                                       else if isPrefixOf (፨ s) w then l
+                                                                       else if isPrefixOf (❃ s) w then l
                                                                                                   else 0
                                                              else n
                                           _ => 0
@@ -60,7 +60,7 @@ completeAuto (lmu, a) (_, b) =
              in (match, (a ⧺ "\n" ⧺ b))
         else let cl : List Char = ['}']
              in if isSuffixOf cl ua
-                    then let lb  = length $ takeWhile (== ' ') $ ፨ b
+                    then let lb  = length $ takeWhile (== ' ') $ ❃ b
                              rpl = ◉ ( with List replicate lb ' ' )
                              (mn, semim) = blockRules' lmu lb rpl yrules
                          in (mn, (a ⧺ "\n" ⧺ b ⧺ semim))
