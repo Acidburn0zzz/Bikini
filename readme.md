@@ -113,13 +113,3 @@ there is let in the string
 0x74686572
 Cleaning...
 ```
-
-Projects used:
---------------
-
- - GC: https://github.com/axilmar/cppgc
- - C++ Quickcheck
- - Idris: https://github.com/idris-lang/Idris-dev
- - ...
-
-<img align="left" src="http://fc06.deviantart.net/fs71/f/2014/106/0/b/anime_render_16_by_cheshire_pops-d7eoifz.png"/>
