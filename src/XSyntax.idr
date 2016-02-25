@@ -18,7 +18,10 @@ yrules = with List [
     ]
 
 ||| Replace
-rpl : (List ℕ) → (ℕ) → (ℕ) → (List ℕ)
+rpl : (List ℕ)
+    → (ℕ)
+    → (ℕ)
+    → (List ℕ)
 rpl xs i x = fore ⧺ (x :: aft)
   where fore : List ℕ
         fore = take i xs
@@ -26,13 +29,20 @@ rpl xs i x = fore ⧺ (x :: aft)
         aft  = drop (i+1) xs
 
 ||| Safe replace function (with length checks)
-srpl : (List ℕ) → (ℕ) → (ℕ) → (List ℕ)
+srpl : (List ℕ)
+     → (ℕ)
+     → (ℕ)
+     → (List ℕ)
 srpl xs i x = if (i ≥ 0) ∧ (i < length xs)
                 then rpl xs i x
                 else xs
 
 ||| Find Rules to process
-blockRules : (List ℕ) → (ℕ) → (List Char) → (List (ℕ, String, Bool)) → (List ℕ)
+blockRules : (List ℕ)
+           → (ℕ)
+           → (List Char)
+           → (List (ℕ, String, Bool))
+           → (List ℕ)
 blockRules ln l w = map (
   \(nn, s, i) =>
     case ln ‼ nn of
@@ -45,7 +55,12 @@ blockRules ln l w = map (
           else n
       _ => 0)
 
-blockRules' : (List ℕ) → (ℕ) → String → (List (ℕ, String)) → ((List ℕ), String)
+||| Process found rules
+blockRules' : (List ℕ)
+            → (ℕ)
+            → String
+            → (List (ℕ, String))
+            → ((List ℕ), String)
 blockRules' _ _ _ [] = ([], "")
 blockRules' ln l rpl [(num, s)] = do
     case ln ‼ num of
@@ -57,7 +72,10 @@ blockRules' ln l rpl [(num, s)] = do
 blockRules' ln l rpl (x::xs) = let (nlst, s) = blockRules' ln l rpl [x]
                                in blockRules' nlst l (s ⧺ rpl) xs
 
-completeAuto : ((List ℕ), String) → ((List ℕ), String) → ((List ℕ), String)
+||| fold-process rules
+completeAuto : ((List ℕ), String)
+             → ((List ℕ), String)
+             → ((List ℕ), String)
 completeAuto (lmu, a) (_, b) =
     if isSuffixOf op ua
         then let la    = length $ takeWhile (== ' ') ua
@@ -71,9 +89,7 @@ completeAuto (lmu, a) (_, b) =
                              (mn, semim) = blockRules' lmu lb rpl yrules
                          in (mn, (a ⧺ "\n" ⧺ b ⧺ semim))
                     else (lmu, (a ⧺ "\n" ⧺ b))
-  where
-    ua : List Char
-    ua = unpack b
-
-    op : List Char
-    op = ['{']
+  where ua : List Char
+        ua = unpack b
+        op : List Char
+        op = ['{']

@@ -1,8 +1,6 @@
 module Main
 
 import Top
-
-{- NOT SYSTEM (thanks to David Christiansen) -}
 import Prelude.Interactive
 
 version : String

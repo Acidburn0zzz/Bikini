@@ -6,7 +6,7 @@ import public Yaml
 
 %access public export
 
--- Treat YML value as String
+||| Treat YML value as String
 interface BuildX a where
     partial buildX : a → String
 implementation BuildX YamlValue where
@@ -29,8 +29,10 @@ implementation BuildX YamlValue where
 interface BuildY a where
     partial buildY : a → List (String, String)
 
--- parse map .bproj YML
-parseBuildConfig : String → String → (List (String, String))
+||| parse map .bproj YML
+parseBuildConfig : String
+                 → String
+                 → (List (String, String))
 parseBuildConfig "lex" v        = [ ("lex", v ⧺ ".l") ]
 parseBuildConfig "parse" v      = [ ("parse", v ⧺ ".y") ]
 parseBuildConfig "bikini" v     = [ ("src", v ⧺ ".h")
@@ -41,7 +43,7 @@ parseBuildConfig "executable" v = [ ("out", v ⧺ ".exe") ]
 parseBuildConfig "library" v    = [ ("lib", v ⧺ ".o") ]
 parseBuildConfig _ _            = []
 
--- bproj YML parser
+||| bproj YML parser
 implementation BuildY YamlValue where
   buildY (YamlString s)   = []
   buildY (YamlNumber x)   = []
@@ -58,7 +60,7 @@ implementation BuildY YamlValue where
       fmtItem (k, v) = parseBuildConfig k (buildX v)
   buildY (YamlArray xs) = concat $ buildY ∰ xs
 
--- Parse bprj YML and run recursive building
+||| Parse bprj YML and run recursive building
 buildB : (List String) → FileIO () ()
 buildB file =
     case parse yamlToplevelValue onestring of
@@ -67,14 +69,14 @@ buildB file =
   where onestring : String
         onestring = concat file
 
--- Generate C++ code
+||| Generate C++ code
 codegen : String → FileIO () ()
 codegen f = case !(open f Read) of
                 True => do bikini !readFile True
                            close {- =<< -}
                 False => ➢ ( "Codegen Error on file:" ⧺ f )
 
--- Compile cimple CXX file {- Deprecated -}
+||| [Deprecated] Compile cimple CXX file
 compile : String → FileIO () ()
 compile f = case !(open f Read) of
                 True  => do dat <- readFile
@@ -82,7 +84,7 @@ compile f = case !(open f Read) of
                             questC dat True f
                 False => ➢ ( "Compile Error on file:" ⧺ f )
 
--- Build project: .bproj => FileIO
+||| Build project: .bproj => FileIO
 build : String → FileIO () ()
 build f = case !(open f Read) of
                 True => do dat <- readFile

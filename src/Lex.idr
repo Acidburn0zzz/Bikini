@@ -6,6 +6,7 @@ import Complete
 
 %access public export
 
+||| calculate open/close brackets
 copenclose : String → (ℕ, ℕ, ℕ, String)
 copenclose a =
     if isSuffixOf op ua
@@ -31,7 +32,10 @@ replicateX x st s r a b =
         else let rpl = pack $ with List replicate (st + (s × x)) ' '
              in replicateX (x + 1) st s r a (rpl ⧺ "}\n" ⧺ b)
 
-endComplete : (ℕ, ℕ, ℕ, String) → (ℕ, ℕ, ℕ, String) → (ℕ, ℕ, ℕ, String)
+||| fold-process open / close brackets
+endComplete : (ℕ, ℕ, ℕ, String)
+            → (ℕ, ℕ, ℕ, String)
+            → (ℕ, ℕ, ℕ, String)
 endComplete (sc, oa, ca, a) (sb, ob, cb, b) = do
     if ca > 1 {- There is weird Int <-> Nat behaviour I need to resolve -}
         then let stex : ℕ = if ca ≡ 3 then let obi : ℤ = natToInt ob
@@ -53,6 +57,7 @@ endComplete (sc, oa, ca, a) (sb, ob, cb, b) = do
                                    else (step, ob, ca, (a ⧺ s ⧺ b))
         else (4, ob, cb, (a ⧺ "\n" ⧺ b))
 
+||| build brackets by folding lines / steps
 bracketBuilder : String → String
 bracketBuilder noBra =
     let strlines        = splitLines noBra
