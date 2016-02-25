@@ -12,17 +12,6 @@ test_set basics_tests {
         std::string("Basics test"),
         std::function<bool()>([]() -> bool {
             auto a = 0;
-            std::array<int, 3> arr = {1, 2, 3};
-            apply(arr, [](int z) {
-                return (z + 1);
-            }
-            
-            );
-            foreach(arr, [&](int x) {
-                std::cout << "x: " << x << std::endl;
-            }
-            
-            );
             unless(false) {
                 repeat(2) {
                     until(a > 2) {
@@ -33,7 +22,7 @@ test_set basics_tests {
             }
             
             //;
-            return arr[2] == 4 && a == 3;
+            return a == 3;
         }
         
         )) /*;*/

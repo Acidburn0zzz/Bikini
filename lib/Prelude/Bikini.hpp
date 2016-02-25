@@ -15,9 +15,3 @@ _Fn1 foreach(_coll x, _Fn1 _Func) {
 }
 
 
-template<class _coll, class _Fn1> inline \
-void apply(_coll x, _Fn1 _Func) {
-    std::transform(x.begin(), x.end(), x.begin(), _Func);
-}
-
-
