@@ -15,16 +15,16 @@ template <class T> class gc_member_ptr;
 template <class T> class gc_collection_node {
     public:
     //not allowed;
-    gc_collection_node(const gc_collection_node<T> &) = deconst auto e;
+    gc_collection_node(const gc_collection_node<T> &) = delete;
     
     //not allowed;
-    gc_collection_node(gc_collection_node<T> &&) = deconst auto e;
+    gc_collection_node(gc_collection_node<T> &&) = delete;
     
     //not allowed;
-    gc_collection_node<T> &operator = (const gc_collection_node<T> &) = deconst auto e;
+    gc_collection_node<T> &operator = (const gc_collection_node<T> &) = delete;
     
     //not allowed;
-    gc_collection_node<T> &operator = (gc_collection_node<T> &n) = deconst auto e;
+    gc_collection_node<T> &operator = (gc_collection_node<T> &n) = delete;
     
     protected:
     //the default constructor;
@@ -99,14 +99,14 @@ typedef gc_collection<gc_ptr_base> gc_ptr_collection;
 //gc object collection;
 class gc_object_collection : public gc_collection<gc_object> {
     public:
-    //deconst auto e all objects;
+    //delete all objects;
     ~gc_object_collection() {
-        deconst auto e_objects();
+        delete_objects();
     }
     
     
-    //deconst auto es all objects;
-    void deconst auto e_objects();
+    //deletes all objects;
+    void delete_objects();
 }
 
 
@@ -147,16 +147,16 @@ class gc {
 class gc_ptr_base : public gc_collection_node<gc_ptr_base> {
     public:
     //not allowed;
-    gc_ptr_base(const gc_ptr_base &) = deconst auto e;
+    gc_ptr_base(const gc_ptr_base &) = delete;
     
     //not allowed;
-    gc_ptr_base(gc_ptr_base &) = deconst auto e;
+    gc_ptr_base(gc_ptr_base &) = delete;
     
     //not allowed;
-    gc_ptr_base &operator = (const gc_ptr_base &) = deconst auto e;
+    gc_ptr_base &operator = (const gc_ptr_base &) = delete;
     
     //not allowed;
-    gc_ptr_base &operator = (gc_ptr_base &) = deconst auto e;
+    gc_ptr_base &operator = (gc_ptr_base &) = delete;
     
     protected:
     //the pointer to the object;
@@ -262,10 +262,10 @@ class gc_object : public gc_collection_node<gc_object> {
     
     
     //not allowed;
-    gc_object &operator = (const gc_object &) = deconst auto e;
+    gc_object &operator = (const gc_object &) = delete;
     
     //not allowed;
-    gc_object &operator = (gc_object &&) = deconst auto e;
+    gc_object &operator = (gc_object &&) = delete;
     
     private:
     //member pointers;

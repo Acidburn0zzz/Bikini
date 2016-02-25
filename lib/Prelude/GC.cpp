@@ -4,10 +4,10 @@
 #include <iostream>
 using namespace std;
 
-//deconst auto e all objects;
-void gc_object_collection::deconst auto e_objects() {
+//delete all objects;
+void gc_object_collection::delete_objects() {
     while (!m_objects.empty()) {
-        deconst auto e m_objects.back();
+        delete m_objects.back();
     }
 }
 
@@ -16,7 +16,7 @@ void gc_object_collection::deconst auto e_objects() {
 void gc::collect() {
     gc_object_collection_ptr reachable{std::make_shared<gc_object_collection>()};
     _scan(*get_root_ptrs(), *get_objects().get(), *reachable.get());
-    get_objects()->deconst auto e_objects();
+    get_objects()->delete_objects();
     std::swap(get_objects(), reachable);
 }
 
