@@ -3,6 +3,8 @@ module XSyntax
 import Control.Eternal
 import Unicode
 
+%access public export
+
 ||| Pre-rules
 xrules : List (ℕ, String, Bool)
 xrules = with List [

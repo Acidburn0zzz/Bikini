@@ -5,6 +5,8 @@ import public Control.IOExcept
 
 import public Data.SortedMap
 
+%access public export
+
 data BValue = BString String
             | BLet String
             | BInit (String, BValue)
@@ -24,7 +26,7 @@ caseProcess d s =
         val2 = (take skp2 val1) ⧺ (❃ ": return ") ⧺ (drop (skp2 + 2) val1)
     in (◉ val2) ⧺ "\n"
 
-instance Show BValue where
+implementation Show BValue where
     show (BString s)    = ✪ s
     show (BLet s)       = "const auto "
     show (BInit (k, v)) = "auto " ⧺ k ⧺ " =" ⧺ (✪ v)

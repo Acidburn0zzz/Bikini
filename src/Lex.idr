@@ -4,6 +4,8 @@ import public Syntax
 import XSyntax
 import Complete
 
+%access public export
+
 copenclose : String → (ℕ, ℕ, ℕ, String)
 copenclose a =
     if isSuffixOf op ua

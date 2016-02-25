@@ -7,6 +7,8 @@ import public Effect.File
 
 import public Lex
 
+%access public export
+
 -- TODO: get form conf file or elsewhere
 options : String
 options = " -O3 -Wall -std=c++1y"
@@ -20,14 +22,14 @@ sys ss = do system ss
             ❂ ()
 
 -- Recursive writeLine
-writeFile : (List String) → { [FILE_IO (OpenFile Write)] } ♬ ()
+writeFile : (List String) → { [FILE_IO (OpenFile WriteTruncate)] } ♬ ()
 writeFile [] = ❂ ()
 writeFile (x :: xs) = do writeLine x
                          writeFile xs
 
 -- List String => FileIO
 save : (List String) → String → FileIO () ()
-save ww f = case !(open f Write) of
+save ww f = case !(open f WriteTruncate) of
                 True  => do writeFile ww
                             close {- =<< -}
                 False => ➢ ( "Error writing file!" ⧺ f )

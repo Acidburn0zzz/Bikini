@@ -3,9 +3,12 @@ module Helper
 import public Lightyear.Core
 import public Lightyear.Combinators
 import public Lightyear.Strings
+import public Lightyear.Char
 
 import public Control.Eternal
 import public Unicode
+
+%access public export
 
 natToInt : (ℕ) → ℤ
 natToInt Z = 0

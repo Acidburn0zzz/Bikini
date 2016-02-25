@@ -2,6 +2,8 @@ module Bottom
 
 import public IOProcess
 
+%access public export
+
 -- Compile to C++ and save
 bquestX : (List String) → Bool → String → FileIO () ()
 bquestX file bra cpf =

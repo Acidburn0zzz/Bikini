@@ -4,10 +4,12 @@ import public IOProcess
 import public Bottom
 import public Yaml
 
+%access public export
+
 -- Treat YML value as String
-class BuildX a where
+interface BuildX a where
     partial buildX : a → String
-instance BuildX YamlValue where
+implementation BuildX YamlValue where
   buildX (YamlString s)   = s
   buildX (YamlNumber x)   = ""
   buildX (YamlBool True ) = ""
@@ -24,7 +26,7 @@ instance BuildX YamlValue where
       fmtItem (k, v) = k ⧺ ": " ⧺ (✪ v)
   buildX (YamlArray  xs) = ✪ xs
 
-class BuildY a where
+interface BuildY a where
     partial buildY : a → List (String, String)
 
 -- parse map .bproj YML
@@ -40,7 +42,7 @@ parseBuildConfig "library" v    = [ ("lib", v ⧺ ".o") ]
 parseBuildConfig _ _            = []
 
 -- bproj YML parser
-instance BuildY YamlValue where
+implementation BuildY YamlValue where
   buildY (YamlString s)   = []
   buildY (YamlNumber x)   = []
   buildY (YamlBool True)  = []

@@ -2,6 +2,8 @@ module Complete
 
 import public Unicode
 
+%access public export
+
 sck : (List Char) → (List (List Char)) → Bool
 sck rl = any (λ lc → isSuffixOf lc rl)
 
