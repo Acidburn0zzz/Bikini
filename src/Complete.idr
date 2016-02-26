@@ -16,6 +16,12 @@ pck : (List Char)
     → Bool
 pck rl = any (λ lc → isPrefixOf lc rl)
 
+||| filter infix
+ick : (List Char)
+    → (List (List Char))
+    → Bool
+ick rl = any (λ lc → isInfixOf lc rl)
+
 ||| fold-process bracket endings
 complete : String -- first line
          → String -- second line
@@ -57,7 +63,10 @@ complete fst snd =
                   ]
 
   ||| ending semicolon
-  end : String
+  end : String -- TODO: MultiWayIf
   end = if sck rfst [ (❃ "/*;*/") ]
-            then ""
-            else ";"
+          then ""
+          else if (pck rfst [ (❃ "template") ])
+                ∧ (not $ ick rfst [ ['='] ])
+                then ""
+                else ";"
