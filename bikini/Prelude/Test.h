@@ -7,7 +7,8 @@ using test_t = std::tuple<std::string,std::function<bool()>>
 using test_set = std::tuple<std::string,std::vector<test_t>>
 bool run_test_set(test_set& ts, std::ostream& os)
     os << "Running test set '" << std::get<0>(ts) << "'...\n"
-    auto nsuc = 0, nfail = 0
+    nsuc  <- 0
+    nfail <- 0
     //
     for(const auto& t : std::get<1>(ts))
         try

@@ -47,10 +47,10 @@ endComplete (sc, oa, ca, a) (sb, ob, cb, b) = do
                                         else stex
                  s : String = "\n"
              in if cb ≡ 1
-                    then let oai : ℤ = natToInt oa
-                             obi : ℤ = natToInt ob
-                             stepi : ℤ = natToInt step
-                             diff : ℤ = ((oai - obi) `div` stepi) - 1
+                    then let oai : ℤ    = natToInt oa
+                             obi : ℤ    = natToInt ob
+                             stepi : ℤ  = natToInt step
+                             diff : ℤ   = ((oai - obi) `div` stepi) - 1
                              strx = replicateX 1 ob step diff a b
                          in (step, ob, 2, strx) -- and now we check for it until the end
                     else if cb ≡ 2 then (step, ob, ca + 1, (a ⧺ s ⧺ b))
