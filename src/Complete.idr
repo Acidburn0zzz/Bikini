@@ -16,46 +16,48 @@ pck : (List Char)
     → Bool
 pck rl = any (λ lc → isPrefixOf lc rl)
 
-||| brackets processor
-complete : String
-         → String
-         → String
-complete a b =
-  if (len ≡ 0) ∨ sfgo ∨ prgo
-      then (a ⧺ "\n" ⧺ b)
-      else if la ≡ lb
-              then (a ⧺ scl ⧺ "\n" ⧺ b)
-              else if la > lb then let rpl = pack $ with List replicate lb ' '
-                                   in (a ⧺ scl ⧺ "\n" ⧺ rpl ⧺ "}\n" ⧺ b)
-                              else (a ⧺ " {\n" ⧺ b)
+||| fold-process bracket endings
+complete : String -- first line
+         → String -- second line
+         → String -- folding
+complete fst snd =
+  if ((length rfst) ≡ 0) ∨ sfgo ∨ prgo
+    then (fst ⧺ "\n" ⧺ snd)
+    else if lfst ≡ lsnd
+          then (fst ⧺ end ⧺ "\n" ⧺ snd)
+          else if lfst > lsnd
+            then let rpl = pack $ with List replicate lsnd ' '
+                 in (fst ⧺ end ⧺ "\n" ⧺ rpl ⧺ "}\n" ⧺ snd)
+            else (fst ⧺ " {\n" ⧺ snd)
  where
-  ua : List Char
-  ua = unpack a
+  ufst : List Char
+  ufst = unpack fst
 
-  la : ℕ
-  la = length $ takeWhile (== ' ') ua
+  lfst : ℕ
+  lfst = length $ takeWhile (== ' ') ufst
 
-  lb : ℕ
-  lb = length $ takeWhile (== ' ') $ unpack b
+  lsnd : ℕ
+  lsnd = length $ takeWhile (== ' ') $ unpack snd
 
-  rl : List Char
-  rl = drop la ua
+  ||| first element without indentation
+  rfst: List Char
+  rfst = drop lfst ufst
 
+  ||| do not end-complete with that prefix
   prgo : Bool
-  prgo = pck rl [ ['#']
-                ]
+  prgo = pck rfst [ ['#']
+                  ]
 
+  ||| do not end-complete with that suffix
   sfgo : Bool
-  sfgo = sck rl [ ['\\'], [','], ['&']
-                , [':'], ['='], ['{']
-                , ['('], (❃ "/*}*/")
-                , [';']
-                ]
+  sfgo = sck rfst [ ['\\'], [','], ['&']
+                  , [':'], ['='], ['{']
+                  , ['('], (❃ "/*}*/")
+                  , [';']
+                  ]
 
-  scl : String
-  scl = if sck rl [ (❃ "/*;*/") ]
-                  then ""
-                  else ";"
-
-  len : ℕ
-  len = length $ drop la ua
+  ||| ending semicolon
+  end : String
+  end = if sck rfst [ (❃ "/*;*/") ]
+            then ""
+            else ";"
