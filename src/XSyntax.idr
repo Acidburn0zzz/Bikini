@@ -73,10 +73,10 @@ blockRules' ln l rpl (x::xs) = let (nlst, s) = blockRules' ln l rpl [x]
                                in blockRules' nlst l (s ⧺ rpl) xs
 
 ||| fold-process rules
-completeAuto : ((List ℕ), String)
-             → ((List ℕ), String)
-             → ((List ℕ), String)
-completeAuto (lmu, a) (_, b) =
+foldProcessRules : ((List ℕ), String)
+                 → ((List ℕ), String)
+                 → ((List ℕ), String)
+foldProcessRules (lmu, a) (_, b) =
     if isSuffixOf op ua
         then let la    = length $ takeWhile (== ' ') ua
                  rl    = drop la ua

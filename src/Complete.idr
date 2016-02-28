@@ -23,35 +23,34 @@ ick : (List Char)
 ick rl = any (λ lc → isInfixOf lc rl)
 
 ||| fold-process bracket endings
-complete : String -- first line
-         → String -- second line
-         → String -- folding
-complete fst snd =
+||| (first parsing step)
+foldProcessLines : String -- first line
+                 → String -- second line
+                 → String -- folding
+foldProcessLines fst snd =
   if ((length rfst) ≡ 0) ∨ sfgo ∨ prgo
     then (fst ⧺ "\n" ⧺ snd)
     else if lfst ≡ lsnd
           then (fst ⧺ end ⧺ "\n" ⧺ snd)
           else if lfst > lsnd
+            -- TODO: avoid just blank lines
             then let rpl = pack $ with List replicate lsnd ' '
                  in (fst ⧺ end ⧺ "\n" ⧺ rpl ⧺ "}\n" ⧺ snd)
             else (fst ⧺ " {\n" ⧺ snd)
  where
-  ufst : List Char
-  ufst = unpack fst
-
   lfst : ℕ
-  lfst = length $ takeWhile (== ' ') ufst
+  lfst = length $ takeWhile (== ' ') $ unpack fst
 
   lsnd : ℕ
   lsnd = length $ takeWhile (== ' ') $ unpack snd
 
   ||| first element without indentation
   rfst: List Char
-  rfst = drop lfst ufst
+  rfst = drop lfst $ unpack fst
 
   ||| do not end-complete with that prefix
   prgo : Bool
-  prgo = pck rfst [ ['#']
+  prgo = pck rfst [ ['#'], ['/','/']
                   ]
 
   ||| do not end-complete with that suffix

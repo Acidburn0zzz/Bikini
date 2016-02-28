@@ -3,15 +3,9 @@ module Main
 import Top
 import Prelude.Interactive
 
-version : String
-version = "0.1.0"
-
-showVersion : IO ()
-showVersion = ➢ ( "Bikini v." ⧺ version )
-
 help : ໒ ()
 help = do
-    showVersion
+    printVersion
     ➢ "-v / --version:\t Display version"
     ➢ "-h / --help:\t Display help"
     ➢ "-c:\t\t Compile file"
@@ -40,8 +34,8 @@ main = getArgs >>= λ args →
     if length args <= 1 then help
       else case args ‼ 1 of
         Just cmd => case cmd of
-                      "--version"   => showVersion
-                      "-v"          => showVersion
+                      "--version"   => printVersion
+                      "-v"          => printVersion
                       "--help"      => help
                       "-h"          => help
                       "-c"          => bcompile args

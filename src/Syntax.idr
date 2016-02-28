@@ -9,6 +9,7 @@ import public Data.SortedMap
 
 data BValue = BString String
             | BLet String
+            | BC String
             | BInit (String, BValue)
             | BMatch String
             | BMatchc String
@@ -31,6 +32,7 @@ caseProcess d s =
 implementation Show BValue where
   show (BString s)    = ✪ s
   show (BLet s)       = "const auto "
+  show (BC s)         = "/*;*/"
   show (BInit (k, v)) = "auto " ⧺ k ⧺ " =" ⧺ (✪ v)
 
   show (BMatch s)     = "[&]() { switch /* match */ "
@@ -51,6 +53,7 @@ mutual
   bParser : Parser BValue
   bParser =  (map BString bString)
          <|> (map BLet $ string "let" <* spaces *> map pack parseWord'' <?> "bLet")
+         <|> (map BC $ string "<!>" *> map pack parseWord'' <?> "bC")
 
          <|> (map BMatch  $ string "match"    *> map pack parseWord' <?> "bMatch")
          <|> (map BMatchc $ string "[=>"      *> map pack parseUntilLine <?> "bMatchc")
