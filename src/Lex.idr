@@ -60,7 +60,7 @@ endComplete (sc, oa, ca, a)
 ||| build brackets by folding lines / steps
 bracketBuilder : String → String
 bracketBuilder noBra =
-  let fnlns   = filter (/= "") (splitLines noBra)
+  let fnlns   = filter (\s => trim s /= "") (splitLines noBra)
       cStrs   = fnlns ⧺ [""] -- new line in the end
       cauto   = foldr1 foldProcessLines cStrs
       (_, cA) = foldl1 foldProcessRules $ (λ l → ([0, 0], l))
