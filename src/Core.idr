@@ -6,7 +6,7 @@ import public Unicode
 %access public export
 
 version : String
-version = "0.1.1"
+version = "0.1.2"
 
 showVersion : String
 showVersion = "Bikini v." ⧺ version

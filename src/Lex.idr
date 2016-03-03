@@ -60,7 +60,9 @@ endComplete (sc, oa, ca, a)
 ||| build brackets by folding lines / steps
 bracketBuilder : String → String
 bracketBuilder noBra =
-  let cauto   = foldr1 foldProcessLines $ splitLines noBra
+  let fnlns   = filter (/= "") (splitLines noBra)
+      cStrs   = fnlns ⧺ [""] -- new line in the end
+      cauto   = foldr1 foldProcessLines cStrs
       (_, cA) = foldl1 foldProcessRules $ (λ l → ([0, 0], l))
                                        ∰ (splitLines cauto)
       -- Generate map for indentation calculation
