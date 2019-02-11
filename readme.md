@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/Heather/Bikini.png?branch=master)](https://travis-ci.org/Heather/Bikini)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/Heather/Bikini.svg)](http://isitmaintained.com/project/Heather/Bikini "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/Heather/Bikini.svg)](http://isitmaintained.com/project/Heather/Bikini "Percentage of issues still open")
 
 in current state you should know how it works to use it... and it's terrible
 
